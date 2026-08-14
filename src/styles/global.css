@@ -1,0 +1,275 @@
+@import 'tailwindcss';
+/* Efecto 3D de los mockups (Atropos, 2 KB) */
+@import 'atropos/atropos.min.css';
+
+/* ==========================================================================
+   TOKENS DE MARCA ÁGORA
+   Derivados del manual de branding. Cambia un valor aquí y cambia toda la web.
+   ========================================================================== */
+@theme {
+  /* Color */
+  --color-neon: #0aff7a;
+  --color-neon-soft: #47f59a;
+  --color-ink: #101016; /* fondo de página, más profundo que la base de marca */
+  --color-surface: #171720; /* tarjetas */
+  --color-surface-2: #292933; /* base de marca */
+  --color-graphite: #2b2b2b;
+  --color-line: #2e2e3a;
+  --color-bone: #ffffff;
+  --color-muted: #9aa0ad;
+  --color-danger: #ff4d5e;
+  --color-gold: #f5c451;
+
+  /* Tipografía */
+  --font-display: 'Orbitron', ui-sans-serif, system-ui, sans-serif;
+  --font-body: 'Montserrat', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+
+  /* Escala tipográfica */
+  --text-eyebrow: 0.6875rem;
+  --text-eyebrow--line-height: 1.2;
+  --text-hero: clamp(2.6rem, 9vw, 6.5rem);
+  --text-hero--line-height: 0.92;
+  --text-display: clamp(1.9rem, 5.2vw, 3.4rem);
+  --text-display--line-height: 1.02;
+  --text-title: clamp(1.35rem, 2.6vw, 1.9rem);
+
+  /* Ritmo */
+  --spacing-section: clamp(3.5rem, 8vw, 8rem);
+  --radius-card: 14px;
+
+  /* Movimiento */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ==========================================================================
+   BASE
+   ========================================================================== */
+@layer base {
+  html {
+    overflow-x: clip; /* junto con .u-rail evita el desbordamiento horizontal en móvil */
+    background-color: var(--color-ink);
+    color-scheme: dark;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    font-family: var(--font-body);
+    color: var(--color-bone);
+    background-color: var(--color-ink);
+    font-size: 1rem;
+    line-height: 1.65;
+    overflow-x: clip;
+    /* Atmósfera: dos halos verdes muy tenues fijos al fondo */
+    background-image:
+      radial-gradient(60rem 40rem at 12% -8%, rgb(10 255 122 / 0.09), transparent 62%),
+      radial-gradient(48rem 34rem at 96% 4%, rgb(71 245 154 / 0.055), transparent 60%);
+    background-attachment: fixed;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    font-weight: 800;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+  }
+
+  p { text-wrap: pretty; }
+
+  ::selection {
+    background: var(--color-neon);
+    color: var(--color-ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-neon);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  a { color: inherit; text-decoration: none; }
+
+  img, svg, video { display: block; max-width: 100%; height: auto; }
+
+  /* Scrollbar coherente con la marca */
+  * { scrollbar-color: var(--color-line) transparent; scrollbar-width: thin; }
+}
+
+/* ==========================================================================
+   COMPONENTES DE MARCA
+   ========================================================================== */
+@layer components {
+  .u-shell {
+    width: 100%;
+    max-width: 78rem;
+    margin-inline: auto;
+    padding-inline: 1.25rem;
+  }
+  @media (min-width: 768px) {
+    .u-shell { padding-inline: 2rem; }
+  }
+
+  /* Eyebrow: etiqueta monoespaciada con tracking amplio, como el manifiesto */
+  .u-eyebrow {
+    font-family: var(--font-mono);
+    font-size: var(--text-eyebrow);
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--color-neon);
+  }
+
+  /* SIGNATURE — el "riel de bracket": conector en L de un cuadro de torneo.
+     Estructura, no decoración: marca el avance de una ronda a la siguiente. */
+  .u-bracket {
+    position: relative;
+    padding-left: 2.25rem;
+  }
+  .u-bracket::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.45em;
+    bottom: 0.2em;
+    width: 1px;
+    background: linear-gradient(
+      to bottom,
+      var(--color-neon) 0,
+      rgb(10 255 122 / 0.35) 22%,
+      rgb(10 255 122 / 0.08) 100%
+    );
+  }
+  .u-bracket::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.45em;
+    width: 1.15rem;
+    height: 1px;
+    background: var(--color-neon);
+  }
+
+  /* Cualquier fila horizontal dentro de un grid: sin esto el documento se
+     ensancha en móvil y aparece zoom raro. */
+  .u-rail {
+    min-width: 0;
+    max-width: 100%;
+    contain: inline-size;
+  }
+
+  .u-card {
+    background: color-mix(in srgb, var(--color-surface) 88%, transparent);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-card);
+    transition:
+      border-color 0.45s var(--ease-out-expo),
+      transform 0.45s var(--ease-out-expo),
+      background-color 0.45s var(--ease-out-expo);
+  }
+  .u-card:hover {
+    border-color: color-mix(in srgb, var(--color-neon) 45%, transparent);
+    background: color-mix(in srgb, var(--color-surface) 100%, transparent);
+  }
+
+  .u-rule {
+    height: 1px;
+    background: linear-gradient(
+      to right,
+      var(--color-neon),
+      color-mix(in srgb, var(--color-neon) 18%, transparent) 30%,
+      transparent 78%
+    );
+  }
+
+  /* Botones */
+  .u-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.55rem;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.8125rem;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+    padding: 0.95rem 1.6rem;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: all 0.35s var(--ease-out-expo);
+    white-space: nowrap;
+  }
+  .u-btn--primary {
+    background: var(--color-neon);
+    color: var(--color-ink);
+    box-shadow: 0 0 0 0 rgb(10 255 122 / 0.5);
+  }
+  .u-btn--primary:hover {
+    background: var(--color-neon-soft);
+    box-shadow: 0 0 34px -6px rgb(10 255 122 / 0.65);
+    transform: translateY(-2px);
+  }
+  .u-btn--ghost {
+    border-color: var(--color-line);
+    color: var(--color-bone);
+    background: transparent;
+  }
+  .u-btn--ghost:hover {
+    border-color: var(--color-neon);
+    color: var(--color-neon);
+    transform: translateY(-2px);
+  }
+  .u-btn[disabled] { opacity: 0.45; cursor: not-allowed; transform: none; }
+
+  .u-input {
+    width: 100%;
+    background: rgb(16 16 22 / 0.72);
+    border: 1px solid var(--color-line);
+    border-radius: 8px;
+    padding: 0.9rem 1rem;
+    color: var(--color-bone);
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    transition: border-color 0.3s var(--ease-out-expo), background-color 0.3s;
+  }
+  .u-input::placeholder { color: color-mix(in srgb, var(--color-muted) 75%, transparent); }
+  .u-input:focus { border-color: var(--color-neon); outline: none; background: rgb(16 16 22 / 0.95); }
+  .u-input[aria-invalid='true'] { border-color: var(--color-danger); }
+
+  .u-prose { max-width: 44rem; }
+  .u-prose p { color: var(--color-muted); margin-block: 1rem; }
+  .u-prose h2 { font-size: var(--text-title); margin-top: 2.75rem; margin-bottom: 0.85rem; }
+  .u-prose h3 { font-size: 1.1rem; margin-top: 1.9rem; margin-bottom: 0.6rem; }
+  .u-prose ul { margin-block: 1rem; padding-left: 1.1rem; list-style: none; }
+  .u-prose li { color: var(--color-muted); margin-block: 0.5rem; position: relative; padding-left: 1rem; }
+  .u-prose li::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0.72em;
+    width: 0.5rem; height: 1px;
+    background: var(--color-neon);
+  }
+  .u-prose a { color: var(--color-neon); text-decoration: underline; text-underline-offset: 3px; }
+  .u-prose strong { color: var(--color-bone); }
+}
+
+/* ==========================================================================
+   MOVIMIENTO
+   Estado inicial aplicado solo si JS está vivo (evita contenido invisible).
+   ========================================================================== */
+.js [data-reveal] {
+  opacity: 0;
+  transform: translateY(26px);
+  will-change: transform, opacity;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .js [data-reveal] { opacity: 1 !important; transform: none !important; }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

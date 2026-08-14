@@ -1,0 +1,299 @@
+---
+import { Image } from 'astro:assets';
+import { FORM } from '../../data/site.js';
+import Icon from '../ui/Icon.astro';
+import marcoPionero from '../../assets/marcos/marco-pionero.png';
+import badgeRise from '../../assets/marcos/badge-rise.png';
+import cofreOro from '../../assets/cofres/cofre-oro.png';
+import styxx from '../../assets/mascotas/styxx-estandarte.png';
+
+interface Props { compact?: boolean; id?: string }
+const { compact = false, id = 'pre-registro' } = Astro.props;
+
+const perks = [
+  { img: marcoPionero, name: 'Marco Pionero', sub: 'Solo para los primeros', alt: 'Marco de avatar Pionero' },
+  { img: badgeRise, name: '7 días de Rise', sub: 'Con insignia y marco exclusivos', alt: 'Insignia de Ágora Rise' },
+  { img: cofreOro, name: 'Pack Fundador', sub: 'Cofres, AR y cosméticos', alt: 'Cofre de oro de Ágora' },
+];
+---
+
+<section id={id} class="u-shell scroll-mt-24 py-[var(--spacing-section)]">
+  <div
+    class="relative overflow-hidden rounded-[22px] border border-neon/25 bg-[linear-gradient(160deg,rgb(10_255_122/0.09),transparent_55%)]"
+    data-reveal
+  >
+    <!-- Rejilla y halo -->
+    <div
+      class="pointer-events-none absolute inset-0 opacity-[0.35] [background-image:linear-gradient(rgb(10_255_122/0.06)_1px,transparent_1px),linear-gradient(90deg,rgb(10_255_122/0.06)_1px,transparent_1px)] [background-size:34px_34px] [mask-image:radial-gradient(ellipse_75%_70%_at_50%_0%,black,transparent)]"
+      aria-hidden="true"
+    >
+    </div>
+
+    <div class="relative grid gap-10 p-6 sm:p-10 lg:grid-cols-[1.05fr_1fr] lg:gap-14 lg:p-14">
+      <!-- Argumento -->
+      <div>
+        <div
+          class="inline-flex items-center gap-2 rounded-full border border-neon/30 bg-neon/10 px-3.5 py-1.5"
+        >
+          <span class="relative flex h-2 w-2">
+            <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-neon opacity-70"></span>
+            <span class="relative inline-flex h-2 w-2 rounded-full bg-neon"></span>
+          </span>
+          <span class="font-mono text-[0.64rem] uppercase tracking-[0.2em] text-neon"
+            >Pre-registro abierto</span
+          >
+        </div>
+
+        <h2 class="mt-6 text-display">
+          Entra antes<br /><span class="text-neon">de que abra la arena</span>
+        </h2>
+        <p class="mt-5 max-w-md text-muted">
+          Reserva tu plaza en menos de diez segundos. El día del lanzamiento recibes el Pack
+          Fundador y 7 días de Ágora Rise, sin tarjeta y sin suscripción.
+        </p>
+
+        <ul class="mt-8 grid gap-3 sm:grid-cols-3" data-reveal-group>
+          {
+            perks.map((p) => (
+              <li class="u-card flex items-center gap-3 p-3" data-reveal-item>
+                <Image src={p.img} alt={p.alt} width={72} densities={[1, 2]} class="h-12 w-12 shrink-0 object-contain" />
+                <div class="min-w-0">
+                  <p class="font-display text-[0.72rem] font-bold uppercase tracking-wide">{p.name}</p>
+                  <p class="mt-0.5 text-[0.72rem] text-muted">{p.sub}</p>
+                </div>
+              </li>
+            ))
+          }
+        </ul>
+
+        {
+          !compact && (
+            <div class="mt-10 hidden items-end gap-5 lg:flex">
+              <Image
+                src={styxx}
+                alt="Styxx, mascota de Ágora, sosteniendo el estandarte"
+                width={230}
+                densities={[1, 2]}
+                class="w-[190px] drop-shadow-[0_18px_36px_rgb(0_0_0/0.6)]"
+              />
+              <p class="mb-6 max-w-[15rem] border-l border-neon/40 pl-4 text-sm italic text-muted">
+                «Los primeros que entren se llevan un marco que ya no volverá a repartirse.»
+              </p>
+            </div>
+          )
+        }
+      </div>
+
+      <!-- Formulario -->
+      <div class="u-card !bg-surface/85 p-6 sm:p-8">
+        <div class="flex items-baseline justify-between gap-4">
+          <h3 class="font-display text-lg font-black uppercase tracking-wide">Reserva tu plaza</h3>
+          <p class="text-right">
+            <span
+              class="block font-display text-lg font-black text-neon"
+              data-count-to={FORM.slots}>0</span
+            >
+            <span class="font-mono text-[0.58rem] uppercase tracking-[0.16em] text-muted"
+              >plazas</span
+            >
+          </p>
+        </div>
+
+        <form class="mt-6 space-y-4" data-prereg novalidate>
+          <div>
+            <label class="mb-1.5 block font-mono text-[0.64rem] uppercase tracking-[0.16em] text-muted" for="pr-user">
+              Nombre de usuario
+            </label>
+            <input
+              class="u-input"
+              id="pr-user"
+              name="username"
+              type="text"
+              maxlength="20"
+              autocomplete="username"
+              autocapitalize="off"
+              spellcheck="false"
+              placeholder="Tu nombre en la arena"
+              required
+            />
+            <p class="mt-1.5 text-[0.72rem] text-muted">
+              Así te verán en el feed, en el ranking y en los torneos.
+            </p>
+            <p class="mt-1 hidden text-[0.72rem] text-danger" data-err="username" role="alert"></p>
+          </div>
+
+          <div>
+            <label class="mb-1.5 block font-mono text-[0.64rem] uppercase tracking-[0.16em] text-muted" for="pr-email">
+              Correo electrónico
+            </label>
+            <input
+              class="u-input"
+              id="pr-email"
+              name="email"
+              type="email"
+              autocomplete="email"
+              placeholder="tu@correo.com"
+              required
+            />
+            <p class="mt-1 hidden text-[0.72rem] text-danger" data-err="email" role="alert"></p>
+          </div>
+
+          <div>
+            <label class="mb-1.5 block font-mono text-[0.64rem] uppercase tracking-[0.16em] text-muted" for="pr-month">
+              Fecha de nacimiento
+            </label>
+            <div class="flex gap-2.5">
+              <select class="u-input" id="pr-month" name="birth_month" required>
+                <option value="">Mes</option>
+                <option value="01">Enero</option>
+                <option value="02">Febrero</option>
+                <option value="03">Marzo</option>
+                <option value="04">Abril</option>
+                <option value="05">Mayo</option>
+                <option value="06">Junio</option>
+                <option value="07">Julio</option>
+                <option value="08">Agosto</option>
+                <option value="09">Septiembre</option>
+                <option value="10">Octubre</option>
+                <option value="11">Noviembre</option>
+                <option value="12">Diciembre</option>
+              </select>
+              <select class="u-input !max-w-[8.5rem]" id="pr-year" name="birth_year" required>
+                <option value="">Año</option>
+              </select>
+            </div>
+            <p class="mt-1.5 text-[0.72rem] text-muted">
+              Ágora es para mayores de {FORM.minAge} años.
+            </p>
+            <p class="mt-1 hidden text-[0.72rem] text-danger" data-err="birth" role="alert"></p>
+          </div>
+
+          <label
+            class="flex cursor-pointer items-start gap-3 rounded-lg border border-line bg-ink/40 p-3.5 transition-colors hover:border-neon/50"
+            data-gdpr-box
+          >
+            <input type="checkbox" class="mt-0.5 h-4 w-4 shrink-0 accent-[#0AFF7A]" name="gdpr" required />
+            <span class="text-[0.78rem] leading-relaxed text-muted">
+              Acepto los <a href={FORM.legalUrl} target="_blank" rel="noopener" class="text-neon underline underline-offset-2">términos y la política de privacidad</a>, incluido el tratamiento de mis datos para el pre-registro.
+            </span>
+          </label>
+
+          <button type="submit" class="u-btn u-btn--primary w-full !py-4" data-submit>
+            <span data-submit-text>Reservar mi plaza</span>
+            <Icon name="arrow" class="h-4 w-4" />
+          </button>
+
+          <p class="text-center font-mono text-[0.6rem] uppercase tracking-[0.16em] text-muted">
+            Sin tarjeta · Sin suscripción · Datos bajo RGPD
+          </p>
+        </form>
+
+        <!-- Éxito -->
+        <div class="hidden text-center" data-prereg-ok>
+          <div class="mx-auto grid h-16 w-16 place-items-center rounded-full border-2 border-neon/45 bg-neon/10">
+            <Icon name="check" class="h-7 w-7 text-neon" />
+          </div>
+          <h3 class="mt-5 font-display text-lg font-black uppercase">Plaza reservada</h3>
+          <p class="mx-auto mt-3 max-w-xs text-sm text-muted">
+            Revisa tu correo para confirmar la cuenta. El Pack Fundador y los 7 días de Rise te
+            esperan el día del lanzamiento.
+          </p>
+          <a class="u-btn u-btn--ghost mt-6" data-mail-link href="#">Abrir mi correo</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script define:vars={{ endpoint: FORM.endpoint, minAge: FORM.minAge }}>
+  const form = document.querySelector('[data-prereg]');
+  if (form) {
+    const year = form.querySelector('#pr-year');
+    const now = new Date().getFullYear();
+    for (let y = now - minAge; y >= now - 100; y--) {
+      year.insertAdjacentHTML('beforeend', `<option value="${y}">${y}</option>`);
+    }
+
+    const err = (k, msg) => {
+      const el = form.querySelector(`[data-err="${k}"]`);
+      if (!el) return;
+      el.textContent = msg ?? '';
+      el.classList.toggle('hidden', !msg);
+    };
+
+    const mailbox = (email) => {
+      const d = (email.split('@')[1] || '').toLowerCase();
+      if (d.includes('gmail')) return 'https://mail.google.com';
+      if (/outlook|hotmail|live|msn/.test(d)) return 'https://outlook.live.com';
+      if (d.includes('yahoo')) return 'https://mail.yahoo.com';
+      if (d.includes('proton')) return 'https://mail.proton.me';
+      return `mailto:${email}`;
+    };
+
+    const ageOk = (m, y) => {
+      if (!m || !y) return false;
+      const birth = new Date(+y, +m - 1, 1);
+      const diff = new Date(Date.now() - birth.getTime()).getUTCFullYear() - 1970;
+      return diff >= minAge;
+    };
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const data = new FormData(form);
+      const username = String(data.get('username') || '').trim();
+      const email = String(data.get('email') || '').trim();
+      const bm = String(data.get('birth_month') || '');
+      const by = String(data.get('birth_year') || '');
+      const box = form.querySelector('[data-gdpr-box]');
+
+      ['username', 'email', 'birth'].forEach((k) => err(k, ''));
+      box?.classList.remove('!border-danger');
+      let ok = true;
+
+      if (!/^[a-zA-Z0-9_.]{3,20}$/.test(username)) {
+        err('username', 'Entre 3 y 20 caracteres: letras, números, guion bajo y punto.');
+        ok = false;
+      }
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        err('email', 'Revisa el correo, algo no cuadra.');
+        ok = false;
+      }
+      if (!ageOk(bm, by)) {
+        err('birth', `Necesitas al menos ${minAge} años para entrar.`);
+        ok = false;
+      }
+      if (!data.get('gdpr')) {
+        box?.classList.add('!border-danger');
+        ok = false;
+      }
+      if (!ok) return;
+
+      const btn = form.querySelector('[data-submit]');
+      const txt = form.querySelector('[data-submit-text]');
+      const prev = txt.textContent;
+      btn.disabled = true;
+      txt.textContent = 'Reservando…';
+
+      try {
+        const res = await fetch(endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, email, birth_date: `${by}-${bm}` }),
+        });
+        if (res.ok) {
+          const link = form.parentElement.querySelector('[data-mail-link]');
+          if (link) link.href = mailbox(email);
+          form.classList.add('hidden');
+          form.parentElement.querySelector('[data-prereg-ok]')?.classList.remove('hidden');
+          return;
+        }
+        const body = await res.json().catch(() => ({}));
+        err('username', body?.error?.message || body?.detail || 'Ese usuario o correo ya está cogido.');
+      } catch {
+        err('email', 'No hemos podido conectar. Inténtalo de nuevo en un momento.');
+      }
+      btn.disabled = false;
+      txt.textContent = prev;
+    });
+  }
+</script>

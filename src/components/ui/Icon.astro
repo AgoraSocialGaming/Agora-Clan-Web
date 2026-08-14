@@ -1,0 +1,31 @@
+---
+interface Props { name: string; class?: string }
+const { name, class: className = 'h-5 w-5' } = Astro.props;
+const p: Record<string, string> = {
+  home: 'M4 11.5 12 4l8 7.5M6 10v10h12V10',
+  trophy: 'M7 4h10v5a5 5 0 0 1-10 0V4ZM7 6H4v1a4 4 0 0 0 3 3.8M17 6h3v1a4 4 0 0 1-3 3.8M9 20h6M12 14v6',
+  pad: 'M7 12H3.5M5.25 10.25v3.5M17 12h.01M20 12h.01M18.5 10.5v.01M18.5 13.5v.01M6 7h12a4 4 0 0 1 4 4v2a4 4 0 0 1-4 4c-2 0-2.5-2-6-2s-4 2-6 2a4 4 0 0 1-4-4v-2a4 4 0 0 1 4-4Z',
+  download: 'M12 4v11m0 0 4-4m-4 4-4-4M4 19h16',
+  help: 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18ZM9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.3-1 .9-1 1.6v.3M12 17h.01',
+  arrow: 'M5 12h14m0 0-6-6m6 6-6 6',
+  check: 'M4 12.5 9 17.5 20 6.5',
+  bolt: 'M13 3 5 14h6l-1 7 8-11h-6l1-7Z',
+  shield: 'M12 3 4 6v6c0 4.4 3.3 8.3 8 9 4.7-.7 8-4.6 8-9V6l-8-3Z',
+  users: 'M9 11a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7ZM2.5 20c0-3.3 2.9-5.5 6.5-5.5s6.5 2.2 6.5 5.5M16 4.5a3.5 3.5 0 0 1 0 7M18 14.7c2 .7 3.5 2.4 3.5 4.8',
+  bracket: 'M3 6h4l3 6 3-6h4M3 18h4l3-6M21 12h-4',
+  plus: 'M12 5v14M5 12h14',
+  play: 'M8 5.5v13l11-6.5-11-6.5Z',
+  star: 'M12 3.5 14.6 9l6 .9-4.3 4.2 1 6-5.3-2.8L6.7 20l1-6L3.4 9.9l6-.9L12 3.5Z',
+  clock: 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18ZM12 7v5l3.5 2',
+};
+---
+<svg
+  viewBox="0 0 24 24"
+  class={className}
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.7"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  aria-hidden="true"
+><path d={p[name] ?? p.arrow} /></svg>

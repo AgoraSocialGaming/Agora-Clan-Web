@@ -1,0 +1,29 @@
+---
+import { Image } from 'astro:assets';
+import horizontal from '../../assets/brand/logo-horizontal.png';
+import vertical from '../../assets/brand/logo-vertical.png';
+
+interface Props {
+  variant?: 'horizontal' | 'vertical';
+  class?: string;
+  width?: number;
+  priority?: boolean;
+}
+const {
+  variant = 'horizontal',
+  class: className = 'h-9 w-auto',
+  width = 320,
+  priority = false,
+} = Astro.props;
+const src = variant === 'vertical' ? vertical : horizontal;
+---
+
+<Image
+  src={src}
+  alt="Ágora — la arena digital para gamers"
+  width={width}
+  densities={[1, 2]}
+  loading={priority ? 'eager' : 'lazy'}
+  fetchpriority={priority ? 'high' : 'auto'}
+  class={className}
+/>

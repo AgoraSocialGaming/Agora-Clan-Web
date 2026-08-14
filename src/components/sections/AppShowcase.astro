@@ -1,0 +1,391 @@
+---
+import { Image } from 'astro:assets';
+import Icon from '../ui/Icon.astro';
+
+import inicio from '../../assets/app/agora-app-inicio.png';
+import feedPublicacion from '../../assets/app/agora-app-feed-publicacion.png';
+import arenaTorneos from '../../assets/app/agora-app-arena-torneos.png';
+import partidaModo from '../../assets/app/agora-app-partida-modo.png';
+import clanes from '../../assets/app/agora-app-clanes.png';
+import perfil from '../../assets/app/agora-app-perfil.png';
+import perfilEstadisticas from '../../assets/app/agora-app-perfil-estadisticas.png';
+
+// Cada apartado puede llevar varias capturas: hay pantallas que no caben en una sola.
+const pantallas = [
+  {
+    id: 'inicio',
+    icon: 'home',
+    tab: 'Inicio',
+    title: 'Tu feed, con los tuyos dentro',
+    body: 'Publica jugadas, comenta las de otros y mantén viva la racha. Lo que sube arriba lo decide un motor propio que mide likes, comentarios, tiempo de visualización y reposts.',
+    tags: ['Para ti', 'Siguiendo', 'Tendencia', 'Busco grupo'],
+    shots: [
+      { img: inicio, alt: 'Pantalla de inicio de la app de Ágora con accesos rápidos y feed', cap: 'Inicio y accesos' },
+      { img: feedPublicacion, alt: 'Publicación de un jugador en el feed de la app de Ágora', cap: 'Publicaciones' },
+    ],
+  },
+  {
+    id: 'arena',
+    icon: 'trophy',
+    tab: 'Arena',
+    title: 'Aquí se decide quién gana',
+    body: 'Torneos abiertos, duelo con un amigo o batalla aleatoria. Y si no encuentras el tuyo, lo creas: eliges formato y reglas, y el bracket se monta solo.',
+    tags: ['Torneos', 'Duelo', 'Aleatoria', 'Personalizado'],
+    shots: [
+      { img: arenaTorneos, alt: 'Torneos abiertos y creación de torneo personalizado en la Arena de Ágora', cap: 'Torneos y modos' },
+      { img: partidaModo, alt: 'Elección entre partida amistosa y competitiva en la app de Ágora', cap: 'Amistoso o competitivo' },
+    ],
+  },
+  {
+    id: 'clanes',
+    icon: 'shield',
+    tab: 'Clanes',
+    title: 'Tu comunidad, con escudo propio',
+    body: 'Crea tu clan o únete a uno, reparte los roles y enfrenta a los tuyos contra otros clanes. Cada victoria sube al equipo en la clasificación global.',
+    tags: ['Crear clan', 'Unirse', 'Roles', 'Elo de clan'],
+    shots: [
+      { img: clanes, alt: 'Pantalla de clanes de la app de Ágora con los clanes del jugador', cap: 'Crear o unirse' },
+    ],
+  },
+  {
+    id: 'perfil',
+    icon: 'star',
+    tab: 'Perfil',
+    title: 'La vitrina de todo lo que has ganado',
+    body: 'Marco, título, emblemas y fondo por un lado; nivel, ranking, logros y estadísticas por otro. Todo lo que consigues se queda aquí y te acompaña entre juegos.',
+    tags: ['Nivel y XP', 'Marcos', 'Títulos', 'Ranking'],
+    shots: [
+      { img: perfil, alt: 'Perfil de Ágora con marco legendario y título equipado', cap: 'Marco y título' },
+      { img: perfilEstadisticas, alt: 'Logros, inventario, ranking y estadísticas del perfil de Ágora', cap: 'Logros y estadísticas' },
+    ],
+  },
+];
+
+const frames = pantallas.flatMap((p) =>
+  p.shots.map((s, si) => ({ ...s, id: p.id, si })),
+);
+---
+
+<section id="pantallas" class="u-shell scroll-mt-24 py-[var(--spacing-section)]">
+  <header class="max-w-2xl" data-reveal>
+    <p class="u-eyebrow">La app</p>
+    <h2 class="mt-4 text-display">Ágora por dentro</h2>
+    <p class="mt-5 text-[1.05rem] text-muted">
+      Capturas reales de la app. Desliza sobre el móvil o toca el apartado que quieras ver.
+    </p>
+    <div class="u-rule mt-8 w-32"></div>
+  </header>
+
+  <!-- Todo en una sola pieza: pestañas arriba, captura y explicación dentro -->
+  <div class="u-card mt-10 overflow-hidden" data-showcase data-reveal>
+    <div
+      class="u-rail flex gap-1.5 overflow-x-auto border-b border-line p-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+      role="tablist"
+      aria-label="Apartados de la app"
+    >
+      {
+        pantallas.map((p, i) => (
+          <button
+            type="button"
+            role="tab"
+            data-tab={p.id}
+            aria-controls={`panel-${p.id}`}
+            tabindex={i === 0 ? 0 : -1}
+            aria-selected={i === 0 ? 'true' : 'false'}
+            class="flex shrink-0 items-center gap-2 rounded-lg px-3.5 py-2.5 font-mono text-[0.64rem] uppercase tracking-[0.14em] text-muted transition-colors duration-300 hover:text-bone aria-selected:bg-neon/10 aria-selected:text-neon"
+          >
+            <Icon name={p.icon} class="h-3.5 w-3.5" />
+            {p.tab}
+          </button>
+        ))
+      }
+    </div>
+
+    <div class="grid gap-8 p-6 sm:p-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center lg:gap-12">
+      <!-- Explicación -->
+      <div class="order-2 min-w-0 lg:order-1">
+        {
+          pantallas.map((p, i) => (
+            <div id={`panel-${p.id}`} role="tabpanel" data-panel={p.id} hidden={i !== 0} class="u-bracket">
+              <h3 class="font-display text-[1.15rem] font-black uppercase leading-tight sm:text-[1.3rem]">
+                {p.title}
+              </h3>
+              <p class="mt-3.5 max-w-lg text-[0.92rem] text-muted">{p.body}</p>
+              <ul class="mt-5 flex flex-wrap gap-2">
+                {p.tags.map((t) => (
+                  <li class="rounded border border-line px-2.5 py-1 font-mono text-[0.56rem] uppercase tracking-[0.12em] text-muted">
+                    {t}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))
+        }
+
+        <!-- Barra de avance -->
+        <div class="mt-7 h-px w-full max-w-[14rem] overflow-hidden bg-line" aria-hidden="true">
+          <span class="block h-full w-0 bg-neon" data-showcase-progress></span>
+        </div>
+      </div>
+
+      <!-- Móvil -->
+      <div class="order-1 mx-auto w-full max-w-[218px] lg:order-2 lg:mx-0">
+        <div class="relative">
+          <div
+            class="absolute -inset-8 -z-10 rounded-[3rem] bg-[radial-gradient(closest-side,rgb(10_255_122/0.18),transparent)] blur-2xl"
+            aria-hidden="true"
+          >
+          </div>
+
+          <div
+            class="relative overflow-hidden rounded-[1.7rem] border border-line bg-ink p-[5px] shadow-[0_28px_60px_-24px_rgb(0_0_0/0.95)]"
+          >
+            <div
+              class="pointer-events-none absolute left-1/2 top-[5px] z-20 h-[15px] w-[72px] -translate-x-1/2 rounded-b-2xl bg-ink"
+              aria-hidden="true"
+            >
+            </div>
+
+            <div
+              class="relative aspect-[720/1558] cursor-grab touch-pan-y overflow-hidden rounded-[1.45rem] active:cursor-grabbing"
+              data-showcase-stage
+            >
+              {
+                frames.map((f, i) => (
+                  <Image
+                    src={f.img}
+                    alt={f.alt}
+                    width={260}
+                    densities={[1, 2]}
+                    loading={i === 0 ? 'eager' : 'lazy'}
+                    fetchpriority={i === 0 ? 'high' : 'auto'}
+                    draggable={false}
+                    data-frame={String(i)}
+                    data-state={i === 0 ? 'on' : 'next'}
+                    class="showcase-shot pointer-events-none absolute inset-0 h-full w-full select-none object-cover object-top"
+                    aria-hidden={i !== 0 ? 'true' : undefined}
+                  />
+                ))
+              }
+
+              <div
+                class="pointer-events-none absolute inset-x-0 bottom-0 z-10 bg-[linear-gradient(to_top,rgb(16_16_22/0.94),transparent)] px-3 pb-3 pt-8 text-center"
+              >
+                <p class="font-mono text-[0.5rem] uppercase tracking-[0.18em] text-neon" data-showcase-caption>
+                  {frames[0].cap}
+                </p>
+              </div>
+            </div>
+
+            <div
+              class="pointer-events-none absolute inset-0 z-10 rounded-[1.7rem] bg-[linear-gradient(115deg,rgb(255_255_255/0.07)_0%,transparent_42%)]"
+              aria-hidden="true"
+            >
+            </div>
+          </div>
+        </div>
+
+        <!-- Puntos: uno por apartado, con una marca por captura -->
+        <div class="mt-5 flex items-center justify-center gap-2.5">
+          {
+            pantallas.map((p, i) => (
+              <button type="button" data-dot={p.id} aria-selected={i === 0 ? 'true' : 'false'} class="flex items-center gap-1 p-1">
+                <span class="sr-only">Ver {p.tab}</span>
+                {p.shots.map((_, si) => (
+                  <span data-dot-shot={String(si)} class="showcase-dot" />
+                ))}
+              </button>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style is:global>
+  .showcase-shot {
+    opacity: 0;
+    transform: translateX(7%);
+    transition:
+      opacity 0.45s ease,
+      transform 0.55s var(--ease-out-expo);
+  }
+  .showcase-shot[data-state='prev'] { transform: translateX(-7%); }
+  .showcase-shot[data-state='on'] { opacity: 1; transform: none; }
+
+  .showcase-dot {
+    display: block;
+    height: 6px;
+    width: 12px;
+    border-radius: 999px;
+    background: var(--color-line);
+    transition:
+      width 0.5s var(--ease-out-expo),
+      background-color 0.4s ease;
+  }
+  [data-dot][aria-selected='true'] .showcase-dot {
+    background: color-mix(in srgb, var(--color-neon) 40%, transparent);
+  }
+  .showcase-dot[data-live] {
+    width: 26px;
+    background: var(--color-neon);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .showcase-shot { transition: opacity 0.2s ease; transform: none !important; }
+  }
+</style>
+
+<script define:vars={{ frames: frames.map((f) => ({ id: f.id, si: f.si, cap: f.cap })) }}>
+  const root = document.querySelector('[data-showcase]');
+  if (root) {
+    const tabs = [...root.querySelectorAll('[data-tab]')];
+    const dots = [...root.querySelectorAll('[data-dot]')];
+    const panels = [...root.querySelectorAll('[data-panel]')];
+    const shots = [...root.querySelectorAll('[data-frame]')];
+    const stage = root.querySelector('[data-showcase-stage]');
+    const caption = root.querySelector('[data-showcase-caption]');
+    const bar = root.querySelector('[data-showcase-progress]');
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const DURATION = 3600;
+    const PAUSE = 9000;
+
+    let current = 0;
+    let timer = null;
+    let resume = null;
+    let visible = false;
+
+    const show = (i) => {
+      current = (i + frames.length) % frames.length;
+      const f = frames[current];
+
+      shots.forEach((s, n) => {
+        const on = n === current;
+        s.dataset.state = on ? 'on' : n < current ? 'prev' : 'next';
+        if (on) s.removeAttribute('aria-hidden');
+        else s.setAttribute('aria-hidden', 'true');
+      });
+
+      if (caption) caption.textContent = f.cap;
+
+      tabs.forEach((t) => {
+        const on = t.dataset.tab === f.id;
+        t.setAttribute('aria-selected', String(on));
+        t.tabIndex = on ? 0 : -1;
+      });
+      panels.forEach((p) => {
+        p.hidden = p.dataset.panel !== f.id;
+      });
+      dots.forEach((d) => {
+        const on = d.dataset.dot === f.id;
+        d.setAttribute('aria-selected', String(on));
+        [...d.querySelectorAll('[data-dot-shot]')].forEach((mark, mi) => {
+          if (on && mi === f.si) mark.dataset.live = 'true';
+          else delete mark.dataset.live;
+        });
+      });
+
+      restart();
+    };
+
+    const restart = () => {
+      if (!bar) return;
+      bar.style.transition = 'none';
+      bar.style.width = '0%';
+      if (!timer || reduced) return;
+      requestAnimationFrame(() => {
+        bar.style.transition = `width ${DURATION}ms linear`;
+        bar.style.width = '100%';
+      });
+    };
+
+    const play = () => {
+      if (reduced || !visible) return;
+      clearInterval(timer);
+      timer = setInterval(() => show(current + 1), DURATION);
+      restart();
+    };
+
+    const stop = () => {
+      clearInterval(timer);
+      timer = null;
+      if (bar) {
+        bar.style.transition = 'none';
+        bar.style.width = '0%';
+      }
+    };
+
+    const hold = () => {
+      stop();
+      clearTimeout(resume);
+      resume = setTimeout(play, PAUSE);
+    };
+
+    const goTo = (id) => {
+      const target = frames.findIndex((f) => f.id === id);
+      if (target >= 0) show(target);
+    };
+
+    tabs.forEach((t) =>
+      t.addEventListener('click', () => {
+        hold();
+        goTo(t.dataset.tab);
+      }),
+    );
+    dots.forEach((d) =>
+      d.addEventListener('click', () => {
+        hold();
+        goTo(d.dataset.dot);
+      }),
+    );
+
+    if (stage) {
+      let x0 = null;
+      let y0 = null;
+      stage.addEventListener(
+        'pointerdown',
+        (e) => {
+          x0 = e.clientX;
+          y0 = e.clientY;
+        },
+        { passive: true },
+      );
+      stage.addEventListener(
+        'pointerup',
+        (e) => {
+          if (x0 === null) return;
+          const dx = e.clientX - x0;
+          const dy = e.clientY - y0;
+          x0 = null;
+          if (Math.abs(dx) < 40 || Math.abs(dx) < Math.abs(dy)) return;
+          hold();
+          show(current + (dx < 0 ? 1 : -1));
+        },
+        { passive: true },
+      );
+      stage.addEventListener('pointercancel', () => (x0 = null), { passive: true });
+    }
+
+    new IntersectionObserver(
+      ([entry]) => {
+        visible = entry.isIntersecting;
+        if (visible) play();
+        else stop();
+      },
+      { threshold: 0.3 },
+    ).observe(root);
+
+    root.addEventListener('keydown', (e) => {
+      if (!['ArrowRight', 'ArrowLeft'].includes(e.key)) return;
+      if (!e.target.dataset?.tab) return;
+      e.preventDefault();
+      hold();
+      const order = tabs.map((t) => t.dataset.tab);
+      const at = order.indexOf(frames[current].id);
+      const next = order[(at + (e.key === 'ArrowRight' ? 1 : -1) + order.length) % order.length];
+      goTo(next);
+      tabs[order.indexOf(next)].focus();
+    });
+  }
+</script>

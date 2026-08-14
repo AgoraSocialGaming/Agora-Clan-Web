@@ -1,0 +1,46 @@
+---
+import BaseHead from '../components/seo/BaseHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { SITE } from '../data/site.js';
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description: string;
+  rawTitle?: boolean;
+  image?: string;
+  noindex?: boolean;
+  schema?: unknown[];
+}
+const { title, description, rawTitle, image, noindex, schema } = Astro.props;
+---
+
+<!doctype html>
+<html lang={SITE.lang}>
+  <head>
+    <BaseHead
+      title={title}
+      description={description}
+      rawTitle={rawTitle}
+      image={image}
+      noindex={noindex}
+      schema={schema}
+    />
+  </head>
+  <body>
+    <a
+      href="#contenido"
+      class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded focus:bg-neon focus:px-4 focus:py-2 focus:font-display focus:text-sm focus:text-ink"
+      >Saltar al contenido</a
+    >
+    <Header />
+    <main id="contenido" class="pt-[70px]">
+      <slot />
+    </main>
+    <Footer />
+    <script>
+      import '../lib/motion.js';
+    </script>
+  </body>
+</html>

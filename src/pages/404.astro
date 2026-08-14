@@ -1,0 +1,36 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/ui/Icon.astro';
+import { Image } from 'astro:assets';
+import ladon from '../assets/mascotas/ladon-lupa.png';
+---
+
+<Base
+  title="Página no encontrada"
+  description="Esta página no existe en Ágora."
+  noindex
+>
+  <section class="u-shell grid min-h-[70vh] place-items-center py-24 text-center">
+    <div>
+      <Image src={ladon} alt="Ladón, mascota de Ágora, buscando con una lupa" width={340} densities={[1, 2]} class="mx-auto h-40 w-auto object-contain" />
+      <p class="u-eyebrow mt-8">Error 404</p>
+      <h1 class="mt-5 text-display">Aquí no hay partida</h1>
+      <p class="mx-auto mt-5 max-w-md text-muted">
+        Ladón ha buscado por todas partes y esta página no aparece. Vuelve a la arena.
+      </p>
+      <div class="mt-9 flex flex-wrap justify-center gap-3">
+        <a href="/" class="u-btn u-btn--primary">Volver al inicio<Icon name="arrow" class="h-4 w-4" /></a>
+        <a href="/torneos" class="u-btn u-btn--ghost">Ver torneos</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- En GitHub Pages no hay redirecciones de servidor: los enlaces de referido
+       /r/CODIGO caen aquí y se resuelven en el navegador. -->
+  <script is:inline>
+    (() => {
+      const m = location.pathname.match(/^\/r\/([A-Za-z0-9_-]{1,32})\/?$/);
+      if (m) location.replace('/descargar?ref=' + encodeURIComponent(m[1]) + '#pre-registro');
+    })();
+  </script>
+</Base>

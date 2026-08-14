@@ -1,0 +1,18 @@
+{
+  "name": "Ágora — La arena digital para gamers",
+  "short_name": "Ágora",
+  "description": "Encuentra con quién jugar, monta tus torneos con brackets y mejora tu perfil. Pronto en iOS y Android.",
+  "start_url": "/?utm_source=pwa",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#101016",
+  "theme_color": "#0AFF7A",
+  "lang": "es-ES",
+  "dir": "ltr",
+  "categories": ["games", "social", "sports"],
+  "icons": [
+    { "src": "/img/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/img/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/img/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

@@ -1,0 +1,290 @@
+---
+import { NAV, APP, SOCIAL } from '../data/site.js';
+import Logo from './ui/Logo.astro';
+import Icon from './ui/Icon.astro';
+import BrandMark from './ui/BrandMark.astro';
+
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWith(href));
+---
+
+<header class="fixed inset-x-0 top-0 z-50" data-header>
+  <div
+    class="border-b border-transparent transition-[background-color,border-color,backdrop-filter] duration-500"
+    data-header-bar
+  >
+    <div class="u-shell flex h-[70px] items-center justify-between gap-4">
+      <a href="/" class="shrink-0 transition-opacity hover:opacity-70" aria-label="Ágora — inicio">
+        <Logo class="h-8 w-auto" width={260} priority />
+      </a>
+
+      <!-- ESCRITORIO -->
+      <nav aria-label="Principal" class="hidden lg:block">
+        <ul class="relative flex items-center gap-1" data-desk-nav>
+          <span
+            class="pointer-events-none absolute inset-y-0 left-0 z-0 rounded-lg border border-neon/35 bg-neon/8 opacity-0 transition-[transform,width,opacity] duration-[450ms] ease-[var(--ease-out-expo)]"
+            data-desk-pill
+            aria-hidden="true"></span>
+          {
+            NAV.map((item) => (
+              <li>
+                <a
+                  href={item.href}
+                  aria-current={isActive(item.href) ? 'page' : undefined}
+                  data-desk-link
+                  data-active={isActive(item.href) ? 'true' : undefined}
+                  class="group relative z-10 flex items-center gap-2 rounded-lg px-3.5 py-2 font-mono text-[0.7rem] uppercase tracking-[0.16em] text-muted transition-colors duration-300 hover:text-bone aria-[current=page]:text-neon"
+                >
+                  <Icon name={item.icon} class="h-3.5 w-3.5 opacity-70 transition-opacity duration-300 group-hover:opacity-100" />
+                  {item.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+
+      <div class="flex items-center gap-2">
+        <a
+          href="/descargar"
+          class="u-btn u-btn--primary hidden sm:inline-flex !px-4 !py-2.5 !text-[0.68rem]"
+        >
+          {APP.live ? 'Descargar' : 'Entrar antes'}
+        </a>
+
+        <button
+          type="button"
+          class="grid h-11 w-11 place-items-center rounded-lg border border-line bg-surface/70 text-bone backdrop-blur transition-colors hover:border-neon hover:text-neon lg:hidden"
+          aria-expanded="false"
+          aria-controls="menu-movil"
+          data-menu-open
+        >
+          <span class="sr-only">Abrir menú</span>
+          <span class="flex flex-col items-end gap-[5px]" aria-hidden="true">
+            <span class="block h-[1.5px] w-5 rounded bg-current"></span>
+            <span class="block h-[1.5px] w-5 rounded bg-current"></span>
+            <span class="block h-[1.5px] w-3 rounded bg-current"></span>
+          </span>
+        </button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ══ MENÚ MÓVIL ══ -->
+<div
+  id="menu-movil"
+  class="fixed inset-0 z-[60] hidden lg:!hidden"
+  data-menu
+  role="dialog"
+  aria-modal="true"
+  aria-label="Menú de navegación"
+>
+  <div
+    class="absolute inset-0 bg-ink/85 opacity-0 backdrop-blur-md transition-opacity duration-300"
+    data-menu-veil
+  >
+  </div>
+
+  <div
+    class="absolute inset-x-0 top-0 max-h-[100dvh] -translate-y-3 overflow-y-auto overscroll-contain border-b border-line bg-ink/95 opacity-0 shadow-[0_30px_80px_-30px_rgb(0_0_0/0.9)] backdrop-blur-xl transition-[transform,opacity] duration-300 ease-[var(--ease-out-expo)]"
+    data-menu-panel
+  >
+    <div class="u-shell flex h-[70px] items-center justify-between gap-4 border-b border-line">
+      <a href="/" class="shrink-0" aria-label="Ágora — inicio">
+        <Logo class="h-8 w-auto" width={260} />
+      </a>
+      <button
+        type="button"
+        class="grid h-11 w-11 place-items-center rounded-lg border border-line text-muted transition-colors hover:border-neon hover:text-neon"
+        data-menu-close
+      >
+        <span class="sr-only">Cerrar menú</span>
+        <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+          <path d="M6 6l12 12M18 6L6 18" stroke-linecap="round"></path>
+        </svg>
+      </button>
+    </div>
+
+    <nav class="u-shell py-5" aria-label="Principal">
+      <ul class="space-y-2.5">
+        {
+          NAV.map((item, i) => {
+            const active = isActive(item.href);
+            return (
+              <li data-menu-item style={`--i:${i}`}>
+                <a
+                  href={item.href}
+                  aria-current={active ? 'page' : undefined}
+                  class:list={[
+                    'flex items-center gap-4 rounded-xl border px-4 py-3.5 transition-colors duration-300',
+                    active ? 'border-neon/60 bg-neon/[0.08]' : 'border-line bg-surface/40 hover:border-neon/45',
+                  ]}
+                >
+                  <span
+                    class:list={[
+                      'grid h-11 w-11 shrink-0 place-items-center rounded-lg border',
+                      active ? 'border-neon/45 bg-neon/10 text-neon' : 'border-line text-muted',
+                    ]}
+                  >
+                    <Icon name={item.icon} class="h-5 w-5" />
+                  </span>
+                  <span class="min-w-0 flex-1">
+                    <span
+                      class:list={[
+                        'block font-display text-[0.86rem] font-black uppercase tracking-wide',
+                        active ? 'text-neon' : 'text-bone',
+                      ]}
+                    >
+                      {item.label}
+                    </span>
+                    <span class="mt-0.5 block truncate text-[0.78rem] text-muted">{item.hint}</span>
+                  </span>
+                  {active ? (
+                    <span class="shrink-0 rounded-full border border-neon/40 bg-neon/10 px-2.5 py-1 font-mono text-[0.52rem] uppercase tracking-[0.16em] text-neon">
+                      Aquí
+                    </span>
+                  ) : (
+                    <Icon name="arrow" class="h-4 w-4 shrink-0 text-muted" />
+                  )}
+                </a>
+              </li>
+            );
+          })
+        }
+      </ul>
+
+      <div class="mt-6" data-menu-item style={`--i:${NAV.length}`}>
+        <a href="/descargar#pre-registro" class="u-btn u-btn--primary w-full">
+          Reservar mi plaza
+          <Icon name="arrow" class="h-4 w-4" />
+        </a>
+      </div>
+
+      <div
+        class="mt-6 flex items-center justify-between gap-4 border-t border-line pt-5"
+        data-menu-item
+        style={`--i:${NAV.length + 1}`}
+      >
+        <p class="font-mono text-[0.58rem] uppercase tracking-[0.18em] text-muted">Síguenos</p>
+        <ul class="flex gap-2.5">
+          {
+            SOCIAL.map((s) => (
+              <li>
+                <a
+                  href={s.url}
+                  target="_blank"
+                  rel="noopener"
+                  class="grid h-10 w-10 place-items-center rounded-lg border border-line text-muted transition-colors hover:border-neon hover:text-neon"
+                  aria-label={`${s.name} de Ágora`}
+                >
+                  <BrandMark mark={s.name.toLowerCase()} class="h-4 w-4" />
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </nav>
+  </div>
+</div>
+
+<style>
+  [data-menu-item] {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  [data-menu].is-open [data-menu-item] {
+    opacity: 1;
+    transform: none;
+    transition:
+      opacity 0.35s ease,
+      transform 0.45s var(--ease-out-expo);
+    transition-delay: calc(var(--i) * 40ms + 80ms);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    [data-menu-item] {
+      opacity: 1;
+      transform: none;
+    }
+  }
+</style>
+
+<script>
+  /* --- Fondo de la cabecera al hacer scroll --- */
+  const bar = document.querySelector('[data-header-bar]');
+  const solid = () => {
+    if (!bar) return;
+    const on = window.scrollY > 20;
+    bar.classList.toggle('bg-ink/80', on);
+    bar.classList.toggle('backdrop-blur-xl', on);
+    bar.classList.toggle('!border-line', on);
+  };
+  window.addEventListener('scroll', solid, { passive: true });
+  solid();
+
+  /* --- Pastilla de preselección en escritorio --- */
+  const nav = document.querySelector('[data-desk-nav]');
+  const pill = document.querySelector('[data-desk-pill]');
+  if (nav && pill) {
+    const links = [...nav.querySelectorAll('[data-desk-link]')];
+    const move = (el) => {
+      if (!el) return;
+      pill.style.width = `${el.offsetWidth}px`;
+      pill.style.transform = `translateX(${el.offsetLeft}px)`;
+      pill.style.opacity = '1';
+    };
+    const home = () => {
+      const active = links.find((l) => l.dataset.active);
+      if (active) move(active);
+      else pill.style.opacity = '0';
+    };
+    links.forEach((l) => l.addEventListener('mouseenter', () => move(l)));
+    nav.addEventListener('mouseleave', home);
+    window.addEventListener('resize', home);
+    home();
+  }
+
+  /* --- Menú móvil --- */
+  const menu = document.querySelector('[data-menu]');
+  const veil = document.querySelector('[data-menu-veil]');
+  const panel = document.querySelector('[data-menu-panel]');
+  const openBtn = document.querySelector('[data-menu-open]');
+  const closeBtn = document.querySelector('[data-menu-close]');
+
+  const open = () => {
+    if (!menu) return;
+    menu.classList.remove('hidden');
+    requestAnimationFrame(() => {
+      menu.classList.add('is-open');
+      veil?.classList.replace('opacity-0', 'opacity-100');
+      panel?.classList.remove('opacity-0', '-translate-y-3');
+    });
+    openBtn?.setAttribute('aria-expanded', 'true');
+    document.documentElement.style.overflow = 'hidden';
+    window.__lenis?.stop();
+    closeBtn?.focus({ preventScroll: true });
+  };
+
+  const close = () => {
+    if (!menu) return;
+    menu.classList.remove('is-open');
+    veil?.classList.replace('opacity-100', 'opacity-0');
+    panel?.classList.add('opacity-0', '-translate-y-3');
+    openBtn?.setAttribute('aria-expanded', 'false');
+    document.documentElement.style.overflow = '';
+    window.__lenis?.start();
+    setTimeout(() => menu.classList.add('hidden'), 300);
+  };
+
+  openBtn?.addEventListener('click', open);
+  closeBtn?.addEventListener('click', close);
+  veil?.addEventListener('click', close);
+  menu?.querySelectorAll('a').forEach((a) => a.addEventListener('click', close));
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && menu?.classList.contains('is-open')) close();
+  });
+  window.matchMedia('(min-width: 1024px)').addEventListener('change', (e) => {
+    if (e.matches && menu?.classList.contains('is-open')) close();
+  });
+</script>

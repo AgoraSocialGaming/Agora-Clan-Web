@@ -1,0 +1,243 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Section from '../components/ui/Section.astro';
+import Preregistro from '../components/sections/Preregistro.astro';
+import Icon from '../components/ui/Icon.astro';
+import BrandMark from '../components/ui/BrandMark.astro';
+import { breadcrumbSchema, faqSchema, gameListSchema } from '../lib/schema.js';
+import { LANZAMIENTO, CATALOGO } from '../data/juegos.js';
+
+import idVerificado from '../assets/app/agora-app-id-verificado.png';
+import ladon from '../assets/mascotas/ladon-senala.png';
+
+import brawl from '../assets/juegos/brawl-stars.jpg';
+import clash from '../assets/juegos/clash-royale.png';
+import valorant from '../assets/juegos/valorant.jpg';
+import lol from '../assets/juegos/league-of-legends.jpg';
+
+const covers: Record<string, ImageMetadata> = {
+  'brawl-stars': brawl,
+  'clash-royale': clash,
+  valorant,
+  'league-of-legends': lol,
+};
+
+const movil = LANZAMIENTO.filter((g) => g.platform === 'Móvil');
+const pc = LANZAMIENTO.filter((g) => g.platform === 'PC');
+
+const faqs = [
+  {
+    q: '¿Qué juegos hay en Ágora al lanzamiento?',
+    a: 'En móvil, Brawl Stars y Clash Royale. En PC, Valorant y League of Legends. El catálogo va rotando por temporadas con más títulos competitivos.',
+  },
+  {
+    q: '¿Tengo que vincular mi cuenta del juego?',
+    a: 'Sí, y no es un adorno: sin la cuenta enlazada por API oficial no se accede a batallas ni torneos de ese juego. Es lo que reduce las cuentas falsas y las suplantaciones.',
+  },
+  {
+    q: '¿Podéis añadir el juego al que yo juego?',
+    a: 'El catálogo crece por temporadas y escuchamos a la comunidad. Escríbenos y lo valoramos para la siguiente rotación.',
+  },
+];
+---
+
+<Base
+  title="Juegos de Ágora: Brawl Stars, Valorant y más"
+  description="Brawl Stars y Clash Royale en móvil, Valorant y League of Legends en PC. Empezamos con estos cuatro y el catálogo rota cada temporada."
+  schema={[
+    breadcrumbSchema([
+      { label: 'Inicio', href: '/' },
+      { label: 'Juegos', href: '/juegos' },
+    ]),
+    gameListSchema(
+      'Juegos disponibles en Ágora al lanzamiento',
+      LANZAMIENTO.map((g) => ({ name: g.name, studio: g.studio })),
+    ),
+    faqSchema(faqs),
+  ]}
+>
+  <!-- HERO -->
+  <section class="u-shell pt-16 lg:pt-24">
+    <div class="max-w-2xl">
+      <p class="u-eyebrow" data-reveal>Catálogo</p>
+      <h1 class="mt-6 text-hero font-black uppercase" data-reveal data-reveal-delay="0.05">
+        Los juegos<br /><span class="text-neon">de la arena</span>
+      </h1>
+      <p class="mt-7 text-[1.05rem] text-muted" data-reveal data-reveal-delay="0.1">
+        Empezamos con cuatro títulos de comunidad hispanohablante enorme y partidas de ciclo corto:
+        dos de móvil y dos de PC. El catálogo rota cada temporada, y tú puedes crear tus propios
+        torneos en cualquier juego que aparezca en la wiki de Ágora.
+      </p>
+    </div>
+  </section>
+
+  <!-- LANZAMIENTO -->
+  <Section eyebrow="Catálogo" title="Juegos en el lanzamiento">
+    {
+      [
+        { label: 'Móvil', list: movil, icon: 'bolt' },
+        { label: 'PC', list: pc, icon: 'bracket' },
+      ].map((group) => (
+        <div class="mt-14 first:mt-12">
+          <div class="flex items-center gap-3" data-reveal>
+            <Icon name={group.icon} class="h-4 w-4 text-neon" />
+            <h3 class="font-mono text-[0.68rem] uppercase tracking-[0.24em] text-neon">{group.label}</h3>
+            <span class="h-px flex-1 bg-line" aria-hidden="true" />
+          </div>
+
+          <div class="mt-6 grid gap-5 sm:grid-cols-2" data-reveal-group>
+            {group.list.map((g) => (
+              <article class="u-card group overflow-hidden" data-reveal-item>
+                <div class="flex gap-5 p-5">
+                  <div class="relative shrink-0 overflow-hidden rounded-xl border border-line">
+                    <Image
+                      src={covers[g.slug]}
+                      alt={`Carátula de ${g.name}, disponible para competir en Ágora`}
+                      width={220}
+                      densities={[1, 2]}
+                      class="h-24 w-24 object-cover transition-transform duration-700 group-hover:scale-110 sm:h-28 sm:w-28"
+                    />
+                  </div>
+                  <div class="min-w-0">
+                    <h4 class="font-display text-[0.95rem] font-black uppercase leading-tight">{g.name}</h4>
+                    <p class="mt-1 flex items-center gap-1.5 font-mono text-[0.58rem] uppercase tracking-[0.16em]" style={`color:${g.color}`}>
+                      {g.mark && <BrandMark mark={g.mark} class="h-3 w-3" />}
+                      {g.studio} · {g.platform}
+                    </p>
+                    <ul class="mt-3 flex flex-wrap gap-1.5">
+                      {g.modes.map((mode) => (
+                        <li class="rounded border border-line px-2 py-0.5 font-mono text-[0.55rem] uppercase tracking-[0.12em] text-muted">
+                          {mode}
+                        </li>
+                      ))}
+                    </ul>
+                    <p class="mt-3 text-[0.8rem] text-muted">{g.note}</p>
+                  </div>
+                </div>
+                <div
+                  class="h-[3px] w-0 transition-[width] duration-500 group-hover:w-full"
+                  style={`background:${g.color}`}
+                  aria-hidden="true"
+                />
+              </article>
+            ))}
+          </div>
+        </div>
+      ))
+    }
+  </Section>
+
+  <!-- VINCULACIÓN -->
+  <Section eyebrow="Requisito" >
+    <div class="grid items-center gap-12 lg:grid-cols-[1fr_1.05fr] lg:gap-16">
+      <div data-reveal>
+        <figure class="mx-auto max-w-[420px] overflow-hidden rounded-xl border border-line bg-surface/40">
+          <Image
+            src={idVerificado}
+            alt="Cuenta de Brawl Stars vinculada en Ágora con el ID, los trofeos, el club y el nivel"
+            width={640}
+            densities={[1, 2]}
+            class="w-full"
+          />
+          <figcaption class="border-t border-line px-4 py-3 font-mono text-[0.56rem] uppercase tracking-[0.16em] text-muted">
+            Cuenta vinculada por API oficial
+          </figcaption>
+        </figure>
+      </div>
+      <div>
+        <h2 class="text-display" data-reveal>Vincula la cuenta<br /><span class="text-neon">y a jugar</span></h2>
+        <p class="mt-5 max-w-lg text-muted" data-reveal>
+          La vinculación se hace con las APIs oficiales de cada juego y con tu permiso. Trae tus
+          estadísticas reales al perfil y, sobre todo, es lo que hace creíble el ranking: sin cuenta
+          enlazada no se entra a las batallas ni a los torneos de ese título.
+        </p>
+        <ul class="mt-8 space-y-3" data-reveal-group>
+          {
+            [
+              'Tus trofeos, nivel y club aparecen en tu perfil de Ágora',
+              'Menos cuentas falsas y menos suplantaciones',
+              'Tu ID visible en la sala para montar la partida sin líos',
+            ].map((t) => (
+              <li class="flex items-start gap-3 text-sm" data-reveal-item>
+                <Icon name="check" class="mt-0.5 h-4 w-4 shrink-0 text-neon" />
+                <span class="text-muted">{t}</span>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </Section>
+
+  <!-- CATÁLOGO ROTATIVO -->
+  <Section
+    eyebrow="Rotación"
+    title="También en el catálogo"
+    intro="Títulos competitivos que se activan por temporadas. Los verás aparecer en la Arena a medida que avancemos."
+  >
+    <div class="mt-12 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5" data-reveal-group>
+      {
+        CATALOGO.map((g) => (
+          <article
+            class="group relative isolate overflow-hidden rounded-xl border border-line bg-surface/40 p-5 transition-all duration-500 hover:-translate-y-1.5 hover:border-neon/45"
+            data-reveal-item
+          >
+            <span
+              class="absolute inset-x-0 top-0 h-[2px] opacity-60 transition-opacity duration-500 group-hover:opacity-100"
+              style={`background:${g.color}`}
+              aria-hidden="true"
+            />
+            <span
+              class="pointer-events-none absolute -bottom-6 -right-5 -z-10 opacity-[0.07] transition-all duration-700 group-hover:scale-110 group-hover:opacity-[0.16]"
+              style={`color:${g.color}`}
+              aria-hidden="true"
+            >
+              {g.mark ? (
+                <BrandMark mark={g.mark} class="h-28 w-28" />
+              ) : (
+                <span class="block font-display text-[6.5rem] font-black leading-none">{g.name.charAt(0)}</span>
+              )}
+            </span>
+
+            <span
+              class="grid h-10 w-10 place-items-center rounded-lg transition-transform duration-500 group-hover:scale-110"
+              style={`background:${g.color}1f; color:${g.color}`}
+              aria-hidden="true"
+            >
+              {g.mark ? (
+                <BrandMark mark={g.mark} class="h-5 w-5" />
+              ) : (
+                <span class="font-display text-sm font-black">{g.name.charAt(0)}</span>
+              )}
+            </span>
+
+            <h3 class="mt-4 font-display text-[0.76rem] font-bold uppercase leading-tight">{g.name}</h3>
+            <p class="mt-1 text-[0.68rem] text-muted">{g.genre}</p>
+            <p class="mt-2.5 font-mono text-[0.52rem] uppercase tracking-[0.14em] text-muted">
+              {g.studio} · {g.platform}
+            </p>
+          </article>
+        ))
+      }
+    </div>
+
+    <div class="mt-10 flex flex-col gap-6 rounded-xl border border-line bg-surface/30 p-7 sm:flex-row sm:items-center sm:justify-between" data-reveal>
+      <div class="flex items-center gap-5">
+        <Image src={ladon} alt="Ladón, mascota de Ágora, señalando el catálogo de juegos" width={200} densities={[1, 2]} class="hidden h-24 w-auto object-contain sm:block" />
+        <div>
+          <h3 class="font-display text-[0.95rem] font-black uppercase tracking-wide">Y más en Ágora</h3>
+          <p class="mt-2 max-w-md text-sm text-muted">
+            El catálogo crece con la comunidad. Si tu juego no está, dínoslo y entra en la
+            valoración de la siguiente temporada.
+          </p>
+        </div>
+      </div>
+      <a href="mailto:support@agoraclan.com?subject=Sugerencia%20de%20juego%20para%20%C3%81gora" class="u-btn u-btn--ghost shrink-0">
+        Sugerir un juego
+      </a>
+    </div>
+  </Section>
+
+  <Preregistro compact />
+</Base>

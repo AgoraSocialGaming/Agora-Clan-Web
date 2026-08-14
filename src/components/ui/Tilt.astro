@@ -1,0 +1,29 @@
+---
+/**
+ * Envoltorio 3D con Atropos (2 KB, pointer events, funciona con dedo y ratón).
+ * Los hijos con data-atropos-offset se separan en profundidad.
+ */
+interface Props {
+  class?: string;
+  rotate?: number;
+  shadow?: boolean;
+  highlight?: boolean;
+}
+const { class: className = '', rotate = 8, shadow = false, highlight = true } = Astro.props;
+---
+
+<div
+  class={`atropos ${className}`}
+  data-tilt
+  data-rotate={rotate}
+  data-shadow={String(shadow)}
+  data-highlight={String(highlight)}
+>
+  <div class="atropos-scale">
+    <div class="atropos-rotate">
+      <div class="atropos-inner">
+        <slot />
+      </div>
+    </div>
+  </div>
+</div>

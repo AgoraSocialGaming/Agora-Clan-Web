@@ -1,0 +1,62 @@
+---
+import { Image } from 'astro:assets';
+
+interface Props {
+  src: ImageMetadata;
+  alt: string;
+  class?: string;
+  width?: number;
+  priority?: boolean;
+  glow?: boolean;
+  /** Profundidad dentro de un grupo Atropos (-10 a 10). */
+  offset?: number;
+}
+const {
+  src,
+  alt,
+  class: className = '',
+  width = 300,
+  priority = false,
+  glow = true,
+  offset,
+} = Astro.props;
+---
+
+<div
+  class={`relative ${className}`}
+  {...offset !== undefined ? { 'data-atropos-offset': String(offset) } : {}}
+>
+  {
+    glow && (
+      <div
+        class="absolute -inset-8 -z-10 rounded-[3rem] bg-[radial-gradient(closest-side,rgb(10_255_122/0.16),transparent)] blur-xl"
+        aria-hidden="true"
+      />
+    )
+  }
+
+  <div
+    class="relative overflow-hidden rounded-[2rem] border border-line bg-ink p-[6px] shadow-[0_28px_70px_-24px_rgb(0_0_0/0.9)]"
+  >
+    <div
+      class="pointer-events-none absolute left-1/2 top-[6px] z-10 h-[18px] w-[86px] -translate-x-1/2 rounded-b-2xl bg-ink"
+      aria-hidden="true"
+    >
+    </div>
+    <Image
+      src={src}
+      alt={alt}
+      width={width}
+      densities={[1, 2]}
+      loading={priority ? 'eager' : 'lazy'}
+      fetchpriority={priority ? 'high' : 'auto'}
+      decoding={priority ? 'sync' : 'async'}
+      class="w-full rounded-[1.7rem]"
+    />
+    <div
+      class="pointer-events-none absolute inset-0 rounded-[2rem] bg-[linear-gradient(115deg,rgb(255_255_255/0.07)_0%,transparent_40%)]"
+      aria-hidden="true"
+    >
+    </div>
+  </div>
+</div>

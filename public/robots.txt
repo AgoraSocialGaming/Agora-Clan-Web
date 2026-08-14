@@ -1,0 +1,16 @@
+# https://agoraclan.com
+User-agent: *
+Allow: /
+Disallow: /404
+
+# Rastreadores de IA: permitidos (queremos aparecer en respuestas de asistentes)
+User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+Sitemap: https://agoraclan.com/sitemap-index.xml

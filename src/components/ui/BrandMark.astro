@@ -1,0 +1,16 @@
+---
+import { MARKS } from '../../data/brand-marks.js';
+
+interface Props { mark?: string; class?: string; title?: string }
+const { mark, class: className = 'h-5 w-5', title } = Astro.props;
+const icon = mark ? (MARKS as Record<string, { t: string; p: string }>)[mark] : null;
+---
+
+{
+  icon && (
+    <svg viewBox="0 0 24 24" class={className} fill="currentColor" role="img" aria-hidden={!title}>
+      {title && <title>{title ?? icon.t}</title>}
+      <path d={icon.p} />
+    </svg>
+  )
+}
