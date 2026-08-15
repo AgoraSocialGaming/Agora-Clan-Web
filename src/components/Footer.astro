@@ -21,12 +21,12 @@ const year = new Date().getFullYear();
       </div>
 
       <div>
-        <h2 class="u-eyebrow !text-muted">Navegación</h2>
+        <p class="u-eyebrow !text-muted">Navegación</p>
         <ul class="mt-4 space-y-2.5">
           {
             NAV.map((l) => (
               <li>
-                <a href={url(l.href)} class="text-sm text-muted transition-colors hover:text-neon">
+                <a href={url(l.href)} title={l.title} class="text-sm text-muted transition-colors hover:text-neon">
                   {l.label}
                 </a>
               </li>
@@ -36,7 +36,7 @@ const year = new Date().getFullYear();
       </div>
 
       <div>
-        <h2 class="u-eyebrow !text-muted">Síguenos</h2>
+        <p class="u-eyebrow !text-muted">Síguenos</p>
         <ul class="mt-4 space-y-2.5">
           {
             SOCIAL.map((s) => (
@@ -45,6 +45,7 @@ const year = new Date().getFullYear();
                   href={s.url}
                   target="_blank"
                   rel="me noopener"
+                  title={s.title}
                   class="group inline-flex items-center gap-2.5 text-sm text-muted transition-colors hover:text-neon"
                 >
                   <BrandMark
@@ -60,6 +61,7 @@ const year = new Date().getFullYear();
           <li class="pt-2">
             <a
               href="mailto:support@agoraclan.com"
+              title="Escribir a soporte de Ágora"
               class="text-sm text-muted transition-colors hover:text-neon">support@agoraclan.com</a
             >
           </li>
@@ -75,7 +77,7 @@ const year = new Date().getFullYear();
         {
           LEGAL.map((l) => (
             <li>
-              <a href={l.href} target="_blank" rel="noopener" class="transition-colors hover:text-neon">
+              <a href={l.href} target="_blank" rel="noopener" title={l.title} class="transition-colors hover:text-neon">
                 {l.label}
               </a>
             </li>

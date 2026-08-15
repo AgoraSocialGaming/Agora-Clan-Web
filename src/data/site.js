@@ -29,18 +29,58 @@ export const FORM = {
 };
 
 export const SOCIAL = [
-  { name: 'Instagram', url: 'https://www.instagram.com/agoraclan_', handle: '@agoraclan_' },
-  { name: 'TikTok', url: 'https://www.tiktok.com/@agoraclan_', handle: '@agoraclan_' },
+  {
+    name: 'Instagram',
+    url: 'https://www.instagram.com/agoraclan_',
+    handle: '@agoraclan_',
+    title: 'Ágora en Instagram: novedades y torneos',
+  },
+  {
+    name: 'TikTok',
+    url: 'https://www.tiktok.com/@agoraclan_',
+    handle: '@agoraclan_',
+    title: 'Ágora en TikTok: jugadas, torneos y comunidad',
+  },
 ];
 
 export const NAV = [
-  { label: 'Inicio', href: '/', icon: 'home', hint: 'La arena, de un vistazo' },
-  { label: 'Torneos', href: '/torneos', icon: 'trophy', hint: 'Descubre la arena y sus posibilidades' },
-  { label: 'Juegos', href: '/juegos', icon: 'pad', hint: 'Nuestro catálogo' },
-  { label: 'Descargar', href: '/descargar', icon: 'download', hint: 'Próximamente en iOS y Android' },
-  { label: 'FAQ', href: '/faq', icon: 'help', hint: 'Todas las dudas resueltas' },
+  {
+    label: 'Inicio',
+    href: '/',
+    icon: 'home',
+    hint: 'La arena, de un vistazo',
+    title: 'Ágora: encuentra jugadores y organiza torneos',
+  },
+  {
+    label: 'Torneos',
+    href: '/torneos',
+    icon: 'trophy',
+    hint: 'Descubre la arena y sus posibilidades',
+    title: 'Torneos, duelos y batallas: cómo se compite en Ágora',
+  },
+  {
+    label: 'Juegos',
+    href: '/juegos',
+    icon: 'pad',
+    hint: 'Nuestro catálogo',
+    title: 'Catálogo de juegos para competir en Ágora',
+  },
+  {
+    label: 'Descargar',
+    href: '/descargar',
+    icon: 'download',
+    hint: 'Próximamente en iOS y Android',
+    title: 'Descargar Ágora en iOS y Android',
+  },
+  {
+    label: 'FAQ',
+    href: '/faq',
+    icon: 'help',
+    hint: 'Todas las dudas resueltas',
+    title: 'Preguntas frecuentes sobre Ágora',
+  },
 ];
 
 export const LEGAL = [
-  { label: 'Términos y privacidad', href: 'https://agoraclan.com/terminos-y-politicas' },
+  { label: 'Términos y privacidad', href: 'https://agoraclan.com/terminos-y-politicas', title: 'Términos de uso y política de privacidad de Ágora' },
 ];

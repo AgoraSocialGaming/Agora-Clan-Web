@@ -297,3 +297,39 @@ Todo respeta `prefers-reduced-motion`.
 6. **Torneos** en el menú: «Descubre la arena y sus posibilidades».
 7. **Hero recolocado**: el h1 vuelve a tres líneas como antes («Tu mundo / gamer / empieza aquí»),
    y los dos párrafos se estrechan en móvil para que no lleguen al borde.
+
+---
+
+# Revisión 12
+
+## Orden del inicio
+El pre-registro sube y **Recompensas queda lo último** de la página.
+
+## SEO de contenido
+- **Title**: «Ágora — Encuentra jugadores y organiza torneos».
+- **H1**: «Encuentra jugadores y organiza tus torneos». El anterior («Tu mundo gamer empieza
+  aquí») sacaba 0 en coherencia H1 porque ninguna de sus palabras aparecía en el resto de la
+  página ni en el title. Ahora las palabras del H1 salen en el cuerpo de forma natural.
+- **Description** de la home reescrita con encontrar jugadores, jugar y organizar torneos, clan
+  y perfil.
+- Refuerzo natural (sin repetir por repetir): «Encuentra jugadores en Busco grupo», «Organiza tu
+  torneo en dos minutos», «Crea tu clan y trae a los tuyos», «Juega torneos abiertos… lo
+  organizas tú». Conteo en la home: torneos 18, clan 19, arena 10, organiza 6, jugadores 5.
+- **«Pack Fundador» pasa de 5 menciones a 1 por página**. El CTA del hero es ahora
+  «Únete y empieza a competir», y los textos del pre-registro hablan de «tus recompensas».
+  De paso se quita el desplegable que duplicaba la lista de recompensas en móvil.
+
+## Los 32 enlaces sin título
+Todos los `<a>` de las seis páginas llevan ya `title` descriptivo, incluidos los del menú, el pie,
+las redes, el correo de soporte, el enlace legal, el «saltar al contenido» y el botón de abrir el
+correo. Comprobado: **0 enlaces sin title**.
+
+## Otros arreglos encontrados de paso
+- El H2 del pre-registro se leía «Entra antesde que abra la arena»: faltaba un espacio antes del
+  salto de línea.
+- «Navegación» y «Síguenos» del pie eran `<h2>` y ensuciaban el esquema de encabezados. Ahora son
+  párrafos con el mismo aspecto.
+
+## Limpieza
+Nueve imágenes que ya no usaba ninguna página (5,5 MB) movidas a `src/assets/_sin-usar/`, fuera
+del build. No se han borrado por si las quieres para redes.

@@ -23,7 +23,7 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWit
       data-progress
       aria-hidden="true"></span>
     <div class="u-shell flex h-[70px] items-center justify-between gap-4">
-      <a href={url('/')} class="shrink-0 transition-opacity hover:opacity-70" aria-label="Ágora — inicio">
+      <a href={url('/')} title="Ágora: encuentra jugadores y organiza torneos" class="shrink-0 transition-opacity hover:opacity-70" aria-label="Ágora — inicio">
         <Logo class="h-8 w-auto" width={260} priority />
       </a>
 
@@ -39,6 +39,7 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWit
               <li>
                 <a
                   href={url(item.href)}
+                  title={item.title}
                   aria-current={isActive(item.href) ? 'page' : undefined}
                   data-desk-link
                   data-active={isActive(item.href) ? 'true' : undefined}
@@ -56,6 +57,7 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWit
       <div class="flex items-center gap-2">
         <a
           href={url('/descargar')}
+          title="Descargar Ágora: pronto en iOS y Android"
           class="u-btn u-btn--primary hidden sm:inline-flex !px-4 !py-2.5 !text-[0.68rem]"
         >
           {APP.live ? 'Descargar' : 'Entrar antes'}
@@ -100,7 +102,7 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWit
     data-menu-panel
   >
     <div class="u-shell flex h-[70px] items-center justify-between gap-4 border-b border-line">
-      <a href={url('/')} class="shrink-0" aria-label="Ágora — inicio">
+      <a href={url('/')} title="Ágora: encuentra jugadores y organiza torneos" class="shrink-0" aria-label="Ágora — inicio">
         <Logo class="h-8 w-auto" width={260} />
       </a>
       <button
@@ -124,6 +126,7 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWit
               <li data-menu-item style={`--i:${i}`}>
                 <a
                   href={url(item.href)}
+                  title={item.title}
                   aria-current={active ? 'page' : undefined}
                   class:list={[
                     'flex items-center gap-4 rounded-xl border px-4 py-3.5 transition-colors duration-300',
@@ -164,7 +167,7 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWit
       </ul>
 
       <div class="mt-6" data-menu-item style={`--i:${NAV.length}`}>
-        <a href={url('/descargar#pre-registro')} class="u-btn u-btn--primary w-full">
+        <a href={url('/descargar#pre-registro')} class="u-btn u-btn--primary w-full" title="Reserva tu plaza en el pre-registro de Ágora">
           Reservar mi plaza
           <Icon name="arrow" class="h-4 w-4" />
         </a>
@@ -184,6 +187,7 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWit
                   href={s.url}
                   target="_blank"
                   rel="noopener"
+                  title={s.title}
                   class="grid h-10 w-10 place-items-center rounded-lg border border-line text-muted transition-colors hover:border-neon hover:text-neon"
                   aria-label={`${s.name} de Ágora`}
                 >

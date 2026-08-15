@@ -17,7 +17,7 @@ const pasos = [
   { n: '01', t: 'Reserva tu plaza', d: 'Nombre de usuario, correo y edad. Diez segundos y listo.' },
   { n: '02', t: 'Confirma el correo', d: 'Te llega un enlace para activar la reserva.' },
   { n: '03', t: 'Descarga el día del lanzamiento', d: 'Te avisamos en cuanto esté en las tiendas.' },
-  { n: '04', t: 'Reclama el Pack Fundador', d: 'Entras con el marco Pionero y 7 días de Rise, con su insignia y su marco.' },
+  { n: '04', t: 'Reclama tus recompensas', d: 'Entras con el marco Pionero y 7 días de Rise, con su insignia y su marco.' },
 ];
 
 const faqs = [
@@ -38,7 +38,7 @@ const faqs = [
 
 <Base
   title="Descargar Ágora — pronto en iOS y Android"
-  description="Ágora llega próximamente a App Store y Google Play. Reserva tu plaza en el pre-registro y entra el día del lanzamiento con el Pack Fundador y 7 días de Rise."
+  description="Ágora llega próximamente a App Store y Google Play. Reserva tu plaza gratis y entra el día del lanzamiento para jugar y organizar torneos desde el móvil."
   schema={[
     appSchema(),
     breadcrumbSchema([
@@ -112,7 +112,7 @@ const faqs = [
         }
       </div>
 
-      <a href="#pre-registro" class="u-btn u-btn--primary mt-6 hidden sm:inline-flex" data-reveal>
+      <a href="#pre-registro" title="Reserva tu plaza en el pre-registro de Ágora" class="u-btn u-btn--primary mt-6 hidden sm:inline-flex" data-reveal>
         Avísame el día del lanzamiento
         <Icon name="arrow" class="h-4 w-4" />
       </a>
@@ -172,7 +172,7 @@ const faqs = [
         {
           SOCIAL.map((s) => (
             <li>
-              <a href={s.url} target="_blank" rel="noopener" class="u-btn u-btn--ghost !px-4 !py-2.5 !text-[0.66rem]">
+              <a href={s.url} target="_blank" rel="noopener" title={s.title} class="u-btn u-btn--ghost !px-4 !py-2.5 !text-[0.66rem]">
                 <BrandMark mark={s.name.toLowerCase()} class="h-3.5 w-3.5" />
                 {s.name}
               </a>

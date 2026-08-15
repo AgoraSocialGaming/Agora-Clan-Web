@@ -45,11 +45,11 @@ const perks = [
         </div>
 
         <h2 class="mt-6 text-display">
-          Entra antes<br /><span class="text-neon">de que abra la arena</span>
+          Entra antes <br /><span class="text-neon">de que abra la arena</span>
         </h2>
         <p class="mt-4 max-w-md text-muted">
-          Reserva tu plaza en menos de diez segundos. El día del lanzamiento recibes el Pack
-          Fundador y 7 días de Ágora Rise, sin tarjeta y sin suscripción.
+          Reserva tu plaza en menos de diez segundos y entra el día del lanzamiento con tus
+          recompensas de fundador y 7 días de Ágora Rise, sin tarjeta y sin suscripción.
         </p>
 
         <ul class="mt-7 grid grid-cols-3 gap-2 sm:gap-3" data-reveal-group>
@@ -61,28 +61,14 @@ const perks = [
                   <p class="font-display text-[0.62rem] font-bold uppercase leading-tight tracking-wide sm:text-[0.7rem]">
                     {p.name}
                   </p>
-                  <p class="mt-0.5 hidden text-[0.7rem] text-muted sm:block">{p.sub}</p>
+                  <p class="mt-0.5 text-[0.62rem] leading-snug text-muted sm:text-[0.7rem]">{p.sub}</p>
                 </div>
               </li>
             ))
           }
         </ul>
 
-        <details class="mt-3 sm:hidden">
-          <summary class="flex cursor-pointer list-none items-center gap-2 font-mono text-[0.58rem] uppercase tracking-[0.16em] text-muted [&::-webkit-details-marker]:hidden">
-            Qué incluye cada cosa
-            <Icon name="arrow" class="h-3 w-3 rotate-90" />
-          </summary>
-          <ul class="mt-2.5 space-y-1.5">
-            {
-              perks.map((p) => (
-                <li class="text-[0.76rem] text-muted">
-                  <span class="text-bone">{p.name}:</span> {p.sub}
-                </li>
-              ))
-            }
-          </ul>
-        </details>
+
 
         {
           !compact && (
@@ -187,7 +173,7 @@ const perks = [
           >
             <input type="checkbox" class="mt-0.5 h-4 w-4 shrink-0 accent-[#0AFF7A]" name="gdpr" required />
             <span class="text-[0.78rem] leading-relaxed text-muted">
-              Acepto los <a href={FORM.legalUrl} target="_blank" rel="noopener" class="text-neon underline underline-offset-2">términos y la política de privacidad</a>, incluido el tratamiento de mis datos para el pre-registro.
+              Acepto los <a href={FORM.legalUrl} target="_blank" rel="noopener" title="Términos de uso y política de privacidad de Ágora" class="text-neon underline underline-offset-2">términos y la política de privacidad</a>, incluido el tratamiento de mis datos para el pre-registro.
             </span>
           </label>
 
@@ -208,10 +194,10 @@ const perks = [
           </div>
           <h3 class="mt-5 font-display text-lg font-black uppercase">Plaza reservada</h3>
           <p class="mx-auto mt-3 max-w-xs text-sm text-muted">
-            Revisa tu correo para confirmar la cuenta. El Pack Fundador y los 7 días de Rise te
+            Revisa tu correo para confirmar la cuenta. Tus recompensas y los 7 días de Rise te
             esperan el día del lanzamiento.
           </p>
-          <a class="u-btn u-btn--ghost mt-6" data-mail-link href="#">Abrir mi correo</a>
+          <a class="u-btn u-btn--ghost mt-6" data-mail-link href="#" title="Abrir tu bandeja de entrada para confirmar el correo">Abrir mi correo</a>
         </div>
       </div>
     </div>

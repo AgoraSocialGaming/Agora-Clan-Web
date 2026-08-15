@@ -37,13 +37,13 @@ const ciclo = [
     n: '01',
     verb: 'Encontrar',
     title: 'Deja de jugar con desconocidos',
-    body: 'Publica en Busco grupo filtrando por juego, idioma y horario, y monta el equipo que llevas meses buscando.',
+    body: 'Encuentra jugadores en Busco grupo filtrando por juego, idioma y horario, y monta el equipo que llevas meses buscando.',
   },
   {
     n: '02',
     verb: 'Competir',
-    title: 'Monta un torneo en dos minutos',
-    body: 'Duelos, emparejamiento rápido o brackets. Ágora coordina la partida, recoge los dos reportes y cierra el marcador solo.',
+    title: 'Organiza tu torneo en dos minutos',
+    body: 'Juega duelos, batallas rápidas o torneos por brackets. Ágora coordina la partida, recoge los dos reportes y cierra el marcador solo.',
   },
   {
     n: '03',
@@ -59,8 +59,8 @@ const ciclo = [
 ---
 
 <Base
-  title="Ágora — La arena digital para gamers"
-  description="Encuentra con quién jugar, monta tu torneo con brackets y gana premios reales y recompensas in-app. Perfil RPG, clanes y ranking. Pronto en iOS y Android."
+  title="Ágora — Encuentra jugadores y organiza torneos"
+  description="La app gamer para encontrar jugadores, jugar y organizar torneos con brackets, crear tu clan y subir de nivel con un perfil propio. Pronto en iOS y Android."
   rawTitle
   schema={[appSchema()]}
 >
@@ -77,35 +77,44 @@ const ciclo = [
         <p class="u-eyebrow" data-reveal>Próximamente · iOS y Android</p>
 
         <h1 class="mt-6 text-hero font-black uppercase" data-reveal data-reveal-delay="0.06">
-          Tu mundo<br />gamer<br />
+          Encuentra jugadores <br />y organiza <br />
           <span
             class="bg-[linear-gradient(110deg,#0AFF7A,#47F59A,#0AFF7A)] bg-[length:220%_100%] bg-clip-text text-transparent [animation:heroFlow_6s_linear_infinite]"
-            >empieza aquí</span
+            >tus torneos</span
           >
         </h1>
 
         <p class="mt-7 max-w-md text-[1.02rem] text-muted sm:max-w-lg sm:text-[1.08rem]" data-reveal data-reveal-delay="0.12">
-          Encuentra jugadores, crea tu clan, compite en torneos, juega con amigos y construye un
-          perfil que demuestra todo lo que has conseguido.
+          Ágora es la arena digital para gamers: encuentra con quién jugar, crea tu clan, compite en
+          torneos y construye un perfil que demuestra todo lo que has conseguido.
         </p>
         <p class="mt-3 max-w-md text-[0.95rem] text-bone sm:max-w-lg sm:text-[1.02rem]" data-reveal data-reveal-delay="0.15">
-          Ágora reúne comunidad, competición y progresión en un solo lugar.
+          Comunidad, competición y progresión en un solo lugar.
         </p>
 
         <div class="mt-8 flex flex-wrap items-center gap-3" data-reveal data-reveal-delay="0.18">
-          <a href="#pre-registro" class="u-btn u-btn--primary max-w-full">
-            Únete y recibe el pack fundador
+          <a
+            href="#pre-registro"
+            class="u-btn u-btn--primary max-w-full"
+            title="Únete a Ágora y reserva tu plaza en el pre-registro"
+          >
+            Únete y empieza a competir
             <Icon name="arrow" class="hidden h-4 w-4 sm:block" />
           </a>
-          <a href={url('/torneos')} class="u-btn u-btn--ghost">Conoce la arena</a>
-        </div>
+          <a
+            href={url('/torneos')}
+            class="u-btn u-btn--ghost"
+            title="Cómo funcionan los torneos y los duelos en Ágora"
+            >Conoce la arena</a
+          >
+                </div>
 
         <dl class="mt-12 grid max-w-lg grid-cols-3 gap-px overflow-hidden rounded-xl border border-line bg-line" data-reveal-group>
           {
             [
-              { k: 'Encuentra', v: 'Amigos y compañeros de juego' },
-              { k: 'Compite', v: 'Duelos, batallas y torneos' },
-              { k: 'Progresa', v: 'XP, rankings, emblemas e identidad' },
+              { k: 'Encuentra', v: 'Jugadores y equipo para tus juegos' },
+              { k: 'Compite', v: 'Duelos, batallas y torneos propios' },
+              { k: 'Progresa', v: 'XP, ranking, emblemas e identidad' },
             ].map((s) => (
               <div class="flex h-full flex-col items-center justify-start bg-ink px-3 py-4 text-center sm:px-4 sm:py-5" data-reveal-item>
                 <dt class="font-mono text-[0.56rem] uppercase tracking-[0.18em] text-neon sm:text-[0.6rem]">
@@ -179,7 +188,7 @@ const ciclo = [
     id="arena"
     eyebrow="Cómo funciona"
     title="Encontrar, competir, progresar"
-    intro="Todo el ciclo dentro de la misma app. Sin hojas de cálculo, sin bracket en otra web, sin alguien haciendo de árbitro a mano."
+    intro="Encontrar jugadores, jugar y organizar torneos: todo el ciclo dentro de la misma app. Sin hojas de cálculo, sin bracket en otra web, sin alguien haciendo de árbitro a mano."
   >
     <Rail label="Cómo funciona Ágora" class="mt-12" wrap>
       {
@@ -201,11 +210,11 @@ const ciclo = [
     </Rail>
 
     <div class="mt-8 flex flex-wrap gap-3" data-reveal>
-      <a href={url('/torneos')} class="u-btn u-btn--primary">
+      <a href={url('/torneos')} title="Torneos, duelos y batallas: cómo se compite en Ágora" class="u-btn u-btn--primary">
         Cómo funcionan los torneos
         <Icon name="arrow" class="h-4 w-4" />
       </a>
-      <a href={url('/torneos#comunidad')} class="u-btn u-btn--ghost">Tengo una comunidad</a>
+      <a href={url('/torneos#comunidad')} title="Trae tu comunidad a Ágora: clan ampliado gratis" class="u-btn u-btn--ghost">Tengo una comunidad</a>
     </div>
   </Section>
 
@@ -213,7 +222,7 @@ const ciclo = [
   <AppShowcase />
 
   <!-- ══════════ CLANES Y COMUNIDAD ══════════ -->
-  <Section eyebrow="Clanes" title="Trae a los tuyos" intro="Crea tu clan con escudo por capas, reparte roles y enfrenta a tu gente contra otros clanes. Ganar sube al clan en la clasificación global.">
+  <Section eyebrow="Clanes" title="Crea tu clan y trae a los tuyos" intro="Monta tu clan con escudo por capas, reparte roles y organiza torneos entre clanes. Ganar sube a tu equipo en la clasificación global.">
     <div class="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4" data-reveal-group>
       {
         [
@@ -239,7 +248,7 @@ const ciclo = [
         audiencia y te damos un clan gratuito con un límite de miembros mucho más amplio, más
         recompensas para todos los que entren contigo.
       </p>
-      <a href={url('/torneos#comunidad')} class="u-btn u-btn--primary shrink-0">
+      <a href={url('/torneos#comunidad')} title="Trae tu comunidad a Ágora: clan ampliado gratis" class="u-btn u-btn--primary shrink-0">
         Traigo mi comunidad
         <Icon name="arrow" class="h-4 w-4" />
       </a>
@@ -255,7 +264,7 @@ const ciclo = [
     <div class="mt-12 grid grid-cols-2 gap-4 lg:grid-cols-4" data-reveal-group>
       {
         LANZAMIENTO.map((g) => (
-          <a href={url('/juegos')} class="group block" data-reveal-item>
+          <a href={url('/juegos')} title="Catálogo de juegos para competir en Ágora" class="group block" data-reveal-item>
             <div class="relative overflow-hidden rounded-xl border border-line transition-all duration-500 group-hover:-translate-y-1.5 group-hover:border-neon/50">
               <Image
                 src={covers[g.slug]}
@@ -281,18 +290,18 @@ const ciclo = [
     </div>
 
     <div class="mt-10" data-reveal>
-      <a href={url('/juegos')} class="u-btn u-btn--ghost">
+      <a href={url('/juegos')} title="Catálogo de juegos para competir en Ágora" class="u-btn u-btn--ghost">
         Ver el catálogo completo
         <Icon name="arrow" class="h-4 w-4" />
       </a>
     </div>
   </Section>
 
-  <!-- ══════════ RECOMPENSAS ══════════ -->
-  <Recompensas />
-
   <!-- ══════════ PRE-REGISTRO ══════════ -->
   <Preregistro />
+
+  <!-- ══════════ RECOMPENSAS ══════════ -->
+  <Recompensas />
 
 </Base>
 
