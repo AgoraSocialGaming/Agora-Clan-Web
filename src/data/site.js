@@ -35,8 +35,8 @@ export const SOCIAL = [
 
 export const NAV = [
   { label: 'Inicio', href: '/', icon: 'home', hint: 'La arena, de un vistazo' },
-  { label: 'Torneos', href: '/torneos', icon: 'trophy', hint: 'Duelos, brackets y crear el tuyo' },
-  { label: 'Juegos', href: '/juegos', icon: 'pad', hint: 'Con qué se compite' },
+  { label: 'Torneos', href: '/torneos', icon: 'trophy', hint: 'Descubre la arena y sus posibilidades' },
+  { label: 'Juegos', href: '/juegos', icon: 'pad', hint: 'Nuestro catálogo' },
   { label: 'Descargar', href: '/descargar', icon: 'download', hint: 'Próximamente en iOS y Android' },
   { label: 'FAQ', href: '/faq', icon: 'help', hint: 'Todas las dudas resueltas' },
 ];

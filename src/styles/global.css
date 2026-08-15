@@ -211,7 +211,11 @@
     border: 1px solid transparent;
     cursor: pointer;
     transition: all 0.35s var(--ease-out-expo);
-    white-space: nowrap;
+    /* Antes era nowrap y los textos largos se salían de la caja en móvil */
+    white-space: normal;
+    text-align: center;
+    text-wrap: balance;
+    max-width: 100%;
   }
   .u-btn--primary {
     background: var(--color-neon);

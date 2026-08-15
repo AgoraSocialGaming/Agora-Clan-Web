@@ -279,3 +279,21 @@ Todo respeta `prefers-reduced-motion`.
 3. **Arena**: eran cuatro modalidades y ponía tres. Corregido el título y la entradilla.
 4. **Trae tu comunidad**: en móvil se pliega tras una pastilla «Ver qué te damos» con punto
    parpadeante y flecha animada; en escritorio sigue desplegado siempre. Descripción actualizada.
+
+---
+
+# Revisión 11
+
+1. **Botón que se salía**: `.u-btn` tenía `white-space: nowrap`, así que cualquier texto largo
+   desbordaba la caja en móvil. Ahora parte en dos líneas, se centra y nunca pasa del ancho
+   disponible. En el CTA del hero la flecha se oculta en móvil para ganar sitio.
+2. **Cajas del hero**: vuelven a estar las tres en fila (también en móvil), con la misma altura y
+   el texto resumido: «Amigos y compañeros de juego», «Duelos, batallas y torneos» y
+   «XP, rankings, emblemas e identidad».
+3. **CTA revertido**: «Únete y recibe el pack fundador» se queda **solo en el hero**. El menú
+   móvil y la sección de comunidad vuelven a «Reservar mi plaza».
+4. **Menú móvil**: el botón recupera su estilo original, centrado y con flecha.
+5. **Juegos** en el menú: «Nuestro catálogo».
+6. **Torneos** en el menú: «Descubre la arena y sus posibilidades».
+7. **Hero recolocado**: el h1 vuelve a tres líneas como antes («Tu mundo / gamer / empieza aquí»),
+   y los dos párrafos se estrechan en móvil para que no lleguen al borde.

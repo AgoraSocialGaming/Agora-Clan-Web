@@ -77,39 +77,41 @@ const ciclo = [
         <p class="u-eyebrow" data-reveal>Próximamente · iOS y Android</p>
 
         <h1 class="mt-6 text-hero font-black uppercase" data-reveal data-reveal-delay="0.06">
-          Tu mundo gamer<br />
+          Tu mundo<br />gamer<br />
           <span
             class="bg-[linear-gradient(110deg,#0AFF7A,#47F59A,#0AFF7A)] bg-[length:220%_100%] bg-clip-text text-transparent [animation:heroFlow_6s_linear_infinite]"
             >empieza aquí</span
           >
         </h1>
 
-        <p class="mt-6 max-w-lg text-[1.08rem] text-muted" data-reveal data-reveal-delay="0.12">
+        <p class="mt-7 max-w-md text-[1.02rem] text-muted sm:max-w-lg sm:text-[1.08rem]" data-reveal data-reveal-delay="0.12">
           Encuentra jugadores, crea tu clan, compite en torneos, juega con amigos y construye un
           perfil que demuestra todo lo que has conseguido.
         </p>
-        <p class="mt-3 max-w-lg text-[1.02rem] text-bone" data-reveal data-reveal-delay="0.15">
+        <p class="mt-3 max-w-md text-[0.95rem] text-bone sm:max-w-lg sm:text-[1.02rem]" data-reveal data-reveal-delay="0.15">
           Ágora reúne comunidad, competición y progresión en un solo lugar.
         </p>
 
         <div class="mt-8 flex flex-wrap items-center gap-3" data-reveal data-reveal-delay="0.18">
-          <a href="#pre-registro" class="u-btn u-btn--primary">
+          <a href="#pre-registro" class="u-btn u-btn--primary max-w-full">
             Únete y recibe el pack fundador
-            <Icon name="arrow" class="h-4 w-4" />
+            <Icon name="arrow" class="hidden h-4 w-4 sm:block" />
           </a>
           <a href={url('/torneos')} class="u-btn u-btn--ghost">Conoce la arena</a>
         </div>
 
-        <dl class="mt-12 grid max-w-xl grid-cols-1 gap-px overflow-hidden rounded-xl border border-line bg-line sm:grid-cols-3" data-reveal-group>
+        <dl class="mt-12 grid max-w-lg grid-cols-3 gap-px overflow-hidden rounded-xl border border-line bg-line" data-reveal-group>
           {
             [
-              { k: 'Encuentra', v: 'Amigos y compañeros para tus juegos.' },
-              { k: 'Compite', v: 'Duelos, batallas y torneos personalizados.' },
-              { k: 'Progresa', v: 'XP, rankings, emblemas y una identidad propia.' },
+              { k: 'Encuentra', v: 'Amigos y compañeros de juego' },
+              { k: 'Compite', v: 'Duelos, batallas y torneos' },
+              { k: 'Progresa', v: 'XP, rankings, emblemas e identidad' },
             ].map((s) => (
-              <div class="bg-ink px-4 py-5 text-center" data-reveal-item>
-                <dt class="font-mono text-[0.6rem] uppercase tracking-[0.2em] text-neon">{s.k}</dt>
-                <dd class="mx-auto mt-2 max-w-[15rem] text-[0.82rem] leading-snug text-muted">{s.v}</dd>
+              <div class="flex h-full flex-col items-center justify-start bg-ink px-3 py-4 text-center sm:px-4 sm:py-5" data-reveal-item>
+                <dt class="font-mono text-[0.56rem] uppercase tracking-[0.18em] text-neon sm:text-[0.6rem]">
+                  {s.k}
+                </dt>
+                <dd class="mt-2 text-[0.72rem] leading-snug text-muted sm:text-[0.8rem]">{s.v}</dd>
               </div>
             ))
           }
