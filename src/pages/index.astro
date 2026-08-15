@@ -193,17 +193,17 @@ const ciclo = [
     <Rail label="Cómo funciona Ágora" class="mt-12" wrap>
       {
         ciclo.map((step) => (
-          <li class="u-card group w-[268px] shrink-0 snap-start p-6 sm:w-[300px] lg:w-[calc((100%-1.5rem)/3)]">
+          <li class="u-card group w-[236px] shrink-0 snap-start p-5 sm:p-6 sm:w-[300px] lg:w-[calc((100%-1.5rem)/3)]">
             <div class="flex items-baseline gap-3">
               <span class="font-display text-2xl font-black text-neon/30 transition-colors duration-500 group-hover:text-neon/70">
                 {step.n}
               </span>
               <p class="font-mono text-[0.62rem] uppercase tracking-[0.24em] text-neon">{step.verb}</p>
             </div>
-            <h3 class="mt-4 font-display text-[0.98rem] font-black uppercase leading-tight">
+            <h3 class="mt-3.5 font-display text-[0.9rem] font-black uppercase leading-tight sm:text-[0.98rem]">
               {step.title}
             </h3>
-            <p class="mt-3 text-[0.88rem] text-muted">{step.body}</p>
+            <p class="mt-2.5 text-[0.82rem] leading-relaxed text-muted sm:text-[0.88rem]">{step.body}</p>
           </li>
         ))
       }
@@ -231,16 +231,16 @@ const ciclo = [
           { i: 'star', t: 'Elo y leaderboard' },
           { i: 'bracket', t: 'Torneos de clan' },
         ].map((c) => (
-          <div class="flex items-center gap-3 rounded-lg border border-line px-4 py-3.5" data-reveal-item>
+          <div class="flex items-center gap-3 rounded-lg border border-line px-3.5 py-3 sm:px-4 sm:py-3.5" data-reveal-item>
             <Icon name={c.i} class="h-4 w-4 shrink-0 text-neon" />
-            <span class="text-[0.86rem]">{c.t}</span>
+            <span class="text-[0.8rem] sm:text-[0.86rem]">{c.t}</span>
           </div>
         ))
       }
     </div>
 
     <div
-      class="mt-8 flex flex-col gap-5 rounded-xl border border-neon/25 bg-neon/[0.04] p-7 sm:flex-row sm:items-center sm:justify-between"
+      class="mt-8 flex flex-col gap-5 rounded-xl border border-neon/25 bg-neon/[0.04] p-5 sm:p-7 sm:flex-row sm:items-center sm:justify-between"
       data-reveal
     >
       <p class="max-w-xl text-[0.95rem] text-muted">
@@ -261,7 +261,7 @@ const ciclo = [
     title="Juegos en el lanzamiento"
     intro="Cuatro títulos de comunidad enorme, dos de móvil y dos de PC. El catálogo rota cada temporada y puedes crear tus torneos en cualquier juego que esté en la wiki de Ágora."
   >
-    <div class="mt-12 grid grid-cols-2 gap-4 lg:grid-cols-4" data-reveal-group>
+    <div class="mx-auto mt-10 grid max-w-[22rem] grid-cols-2 gap-3 sm:max-w-none sm:gap-4 sm:mt-12 lg:grid-cols-4" data-reveal-group>
       {
         LANZAMIENTO.map((g) => (
           <a href={url('/juegos')} title="Catálogo de juegos para competir en Ágora" class="group block" data-reveal-item>
@@ -278,7 +278,7 @@ const ciclo = [
                 aria-hidden="true"
               />
               <div class="absolute inset-x-0 bottom-0 p-3.5">
-                <p class="font-display text-[0.78rem] font-black uppercase leading-tight">{g.name}</p>
+                <p class="font-display text-[0.7rem] font-black uppercase leading-tight sm:text-[0.78rem]">{g.name}</p>
                 <p class="mt-1 font-mono text-[0.55rem] uppercase tracking-[0.16em]" style={`color:${g.color}`}>
                   {g.platform}
                 </p>

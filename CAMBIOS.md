@@ -359,3 +359,29 @@ del build. No se han borrado por si las quieres para redes.
   aparece igualmente en lugar de quedarse invisible.
 - **Prefetch más prudente**: antes se descargaban las cinco páginas al entrar; ahora solo al pasar
   el ratón o tocar un enlace.
+
+---
+
+# Revisión 14 — todo un punto más pequeño en móvil
+
+Solo afecta a móvil (por debajo de 640 px). En escritorio queda exactamente igual.
+
+- **Botones**: menos alto y menos ancho (padding 0,95 → 0,78 rem) y letra de 0,81 a 0,72 rem.
+- **Títulos de sección**: el mínimo del `text-display` baja de 1,8 a 1,6 rem, y el de los títulos
+  de tarjeta de 1,35 a 1,15 rem. En pantallas grandes siguen igual de grandes.
+- **Entradillas de sección**: 0,94 rem en móvil (antes 1,05) con más interlineado, y menos aire
+  entre el título, el texto y la rayita.
+- **Rellenos de tarjeta**: un escalón menos en móvil en toda la web (p-7 → p-5, p-6 → p-5,
+  p-5 → p-4), recuperando el tamaño original a partir de `sm`.
+- **Carátulas de juegos**: en la home la rejilla se centra con un ancho máximo de 22 rem, así que
+  las portadas dejan de ocupar media pantalla. En /juegos, las miniaturas del catálogo pasan de
+  96 a 80 px.
+- **Carruseles**: las tarjetas de «cómo funciona» pasan de 268 a 236 px y las del flujo de partida
+  de 248 a 224 px, con sus textos ajustados.
+- **Explorador de la app**: el móvil de dentro pasa de 218 a 186 px y el título del panel de
+  1,15 a 1 rem.
+- **Recompensas**: las tarjetas de perfil pasan de 212 a 186 px, los marcos de 92 a 80 px y los
+  cofres se reducen (el de oro sigue destacando en el centro).
+
+No se ha quitado contenido ni enlaces: es solo escala y espaciado. Auditoría de las seis páginas
+limpia (encabezados, alt, títulos de enlace, anclas y JSON-LD).

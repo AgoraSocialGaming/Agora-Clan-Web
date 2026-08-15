@@ -64,7 +64,7 @@ const faqs = [
       <h1 class="mt-6 text-hero font-black uppercase">
         Los juegos<br /><span class="text-neon">de la arena</span>
       </h1>
-      <p class="mt-6 text-[1.05rem] text-muted" data-reveal data-reveal-delay="0.1">
+      <p class="mt-5 text-[0.95rem] leading-relaxed text-muted sm:mt-6 sm:text-[1.05rem]" data-reveal data-reveal-delay="0.1">
         Empezamos con cuatro títulos de comunidad hispanohablante enorme y partidas de ciclo corto:
         dos de móvil y dos de PC. El catálogo rota cada temporada, y tú puedes crear tus propios
         torneos en cualquier juego que aparezca en la wiki de Ágora.
@@ -86,7 +86,7 @@ const faqs = [
             <span class="h-px flex-1 bg-line" aria-hidden="true" />
           </div>
 
-          <div class="mt-6 grid gap-5 sm:grid-cols-2" data-reveal-group>
+          <div class="mt-6 grid gap-3 sm:grid-cols-2 sm:gap-5" data-reveal-group>
             {group.list.map((g) => (
               <article class="u-card group overflow-hidden" data-reveal-item>
                 <div class="flex gap-5 p-5">
@@ -96,7 +96,7 @@ const faqs = [
                       alt={`Carátula de ${g.name}, disponible para competir en Ágora`}
                       width={220}
                       densities={[1, 2]}
-                      class="h-24 w-24 object-cover transition-transform duration-700 group-hover:scale-110 sm:h-28 sm:w-28"
+                      class="h-20 w-20 object-cover transition-transform duration-700 group-hover:scale-110 sm:h-28 sm:w-28"
                     />
                   </div>
                   <div class="min-w-0">
@@ -176,11 +176,11 @@ const faqs = [
     title="También en el catálogo"
     intro="Títulos competitivos que se activan por temporadas. Los verás aparecer en la Arena a medida que avancemos."
   >
-    <div class="mt-12 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5" data-reveal-group>
+    <div class="mt-10 grid grid-cols-2 gap-2.5 sm:mt-12 sm:grid-cols-3 sm:gap-3 lg:grid-cols-5" data-reveal-group>
       {
         CATALOGO.map((g) => (
           <article
-            class="group relative isolate overflow-hidden rounded-xl border border-line bg-surface/40 p-5 transition-all duration-500 hover:-translate-y-1.5 hover:border-neon/45"
+            class="group relative isolate overflow-hidden rounded-xl border border-line bg-surface/40 p-4 sm:p-5 transition-all duration-500 hover:-translate-y-1.5 hover:border-neon/45"
             data-reveal-item
           >
             <span

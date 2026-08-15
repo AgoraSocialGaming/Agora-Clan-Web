@@ -30,9 +30,9 @@
   --text-eyebrow--line-height: 1.2;
   --text-hero: clamp(2.25rem, 8.4vw, 6rem);
   --text-hero--line-height: 0.92;
-  --text-display: clamp(1.8rem, 4.6vw, 3.9rem);
+  --text-display: clamp(1.6rem, 4.6vw, 3.9rem);
   --text-display--line-height: 1.02;
-  --text-title: clamp(1.35rem, 2.6vw, 1.9rem);
+  --text-title: clamp(1.15rem, 2.6vw, 1.9rem);
 
   /* Ritmo */
   --spacing-section: clamp(3.25rem, 6vw, 5.5rem);
@@ -217,6 +217,16 @@
     text-wrap: balance;
     max-width: 100%;
   }
+  /* En móvil los botones eran enormes: menos alto, menos ancho y letra algo menor */
+  @media (max-width: 639px) {
+    .u-btn {
+      padding: 0.78rem 1.15rem;
+      font-size: 0.72rem;
+      letter-spacing: 0.09em;
+      gap: 0.45rem;
+    }
+  }
+
   .u-btn--primary {
     background: var(--color-neon);
     color: var(--color-ink);

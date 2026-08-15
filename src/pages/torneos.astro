@@ -134,7 +134,7 @@ const faqs = [
       <h1 class="mt-6 text-hero font-black uppercase">
         Compite<br /><span class="text-neon">a tu ritmo</span>
       </h1>
-      <p class="mt-6 max-w-lg text-[1.05rem] text-muted" data-reveal data-reveal-delay="0.1">
+      <p class="mt-5 max-w-lg text-[0.95rem] leading-relaxed text-muted sm:mt-6 sm:text-[1.05rem]" data-reveal data-reveal-delay="0.1">
         Organizar un torneo entre amigos exigía una hoja de cálculo, un Discord, un bracket en otra
         web y alguien haciendo de árbitro. En Ágora todo eso cabe en un botón.
       </p>
@@ -255,7 +255,7 @@ const faqs = [
                 </span>
 
                 <span class="min-w-0 flex-1">
-                  <span class="block font-display text-[1rem] font-black uppercase tracking-wide">{m.name}</span>
+                  <span class="block font-display text-[0.88rem] font-black uppercase tracking-wide sm:text-[1rem]">{m.name}</span>
                   <span class="mt-0.5 block font-mono text-[0.58rem] uppercase tracking-[0.16em] text-muted">
                     {m.claim}
                   </span>
@@ -269,7 +269,7 @@ const faqs = [
 
               <div class="modo-cuerpo">
                 <div class="grid gap-6 px-6 pb-6 sm:px-7 sm:pb-7 lg:grid-cols-[1.2fr_1fr] lg:items-center lg:gap-10">
-                  <p class="max-w-lg text-[0.92rem] text-muted">{m.body}</p>
+                  <p class="max-w-lg text-[0.85rem] leading-relaxed text-muted sm:text-[0.92rem]">{m.body}</p>
 
                   <dl class="divide-y divide-line overflow-hidden rounded-xl border border-line">
                     {m.rows.map(([k, v]) => (
@@ -298,14 +298,14 @@ const faqs = [
     <Rail label="Cómo se resuelve una partida" class="mt-12" wrap>
       {
         flujo.map((s) => (
-          <li class="u-card w-[248px] shrink-0 snap-start p-6 sm:w-[280px] lg:w-[calc((100%-1.5rem)/3)]">
+          <li class="u-card w-[224px] shrink-0 snap-start p-5 sm:p-6 sm:w-[280px] lg:w-[calc((100%-1.5rem)/3)]">
             <p class="font-mono text-[0.6rem] uppercase tracking-[0.22em] text-neon">{s.n}</p>
             <h3 class="mt-2 font-display text-[0.88rem] font-bold uppercase tracking-wide">{s.t}</h3>
             <p class="mt-2.5 text-[0.85rem] text-muted">{s.d}</p>
           </li>
         ))
       }
-      <li class="w-[248px] shrink-0 snap-start rounded-[var(--radius-card)] border border-dashed border-line p-6 sm:w-[280px] lg:w-[calc((100%-1.5rem)/3)]">
+      <li class="w-[224px] shrink-0 snap-start rounded-[var(--radius-card)] border border-dashed border-line p-5 sm:p-6 sm:w-[280px] lg:w-[calc((100%-1.5rem)/3)]">
         <Icon name="trophy" class="h-5 w-5 text-neon" />
         <p class="mt-3 text-[0.85rem] text-muted">
           Y pase lo que pase, cada partida avanza el contador de cofres: ganes o pierdas, te llevas
