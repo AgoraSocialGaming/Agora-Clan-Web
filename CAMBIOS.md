@@ -245,3 +245,16 @@ Con GSAP + ScrollTrigger, que ya estaban en el proyecto:
 - **Respuesta al toque**: botones y tarjetas se hunden un poco al pulsar, porque en móvil no hay
   hover que valga.
 Todo respeta `prefers-reduced-motion`.
+
+---
+
+# Revisión 8
+
+1. **Recompensas** baja al final del inicio, justo antes del pre-registro. El orden queda: hero,
+   cómo funciona, la app por dentro, clanes y comunidad, juegos, recompensas y pre-registro.
+2. **Edad mínima 14**: cambiado en el único sitio donde vive el dato (`FORM.minAge`), así que se
+   actualiza a la vez la etiqueta del formulario, el desplegable de años, la validación, el
+   mensaje de error y la respuesta de la FAQ. No se ha añadido ninguna mención nueva.
+3. **sitemap.xml**: antes era una copia del índice de Astro, una sola línea apuntando a
+   `sitemap-0.xml`. Ahora `/sitemap.xml` es el listado real con las cinco páginas y sus
+   prioridades. `sitemap-index.xml` y `sitemap-0.xml` siguen ahí por si acaso.

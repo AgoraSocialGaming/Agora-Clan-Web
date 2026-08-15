@@ -24,7 +24,7 @@ export const FORM = {
   // Se puede sobrescribir al compilar con PUBLIC_FORM_ENDPOINT, sin tocar el código.
   endpoint: import.meta.env.PUBLIC_FORM_ENDPOINT || 'https://api.agoraclan.com/api/v1/preregister',
   legalUrl: 'https://agoraclan.com/terminos-y-politicas',
-  minAge: 13,
+  minAge: 14,
   slots: 7000,
 };
 
