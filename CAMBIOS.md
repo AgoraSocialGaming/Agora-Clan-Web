@@ -333,3 +333,29 @@ correo. Comprobado: **0 enlaces sin title**.
 ## Limpieza
 Nueve imágenes que ya no usaba ninguna página (5,5 MB) movidas a `src/assets/_sin-usar/`, fuera
 del build. No se han borrado por si las quieres para redes.
+
+---
+
+# Revisión 13
+
+1. **Huecos entre secciones** (escritorio): el espaciado máximo baja de 8rem a 5,5rem, así que las
+   secciones se juntan bastante. En móvil apenas cambia (3,5 → 3,25rem).
+2. **Títulos de sección más grandes** en pantallas grandes: el máximo pasa de 3,4rem a 3,9rem,
+   manteniendo el tamaño de móvil.
+3. **Hero en móvil**: título un poco más pequeño (2,6 → 2,25rem de mínimo), párrafos a 0,95rem con
+   más interlineado y menos aire entre bloques, para que no se lea como un ladrillo.
+4. **/juegos**: la rayita verde estaba pegada a la captura de «vincula tu cuenta». Añadido el
+   margen que faltaba.
+
+## Velocidad
+- **Tipografías no bloqueantes**: se cargan con `media="print"` y se activan al terminar, con
+  `preload` y `<noscript>` de respaldo. Además se recortan pesos que no se usaban (Orbitron 600 y
+  JetBrains Mono 500).
+- **Animaciones diferidas**: GSAP, Lenis y Atropos (139 KB) ya no están en el camino crítico; se
+  cargan con `requestIdleCallback`. En el arranque solo viajan 1,2 KB de JavaScript.
+- **El texto del hero ya no espera al JavaScript**: los `<h1>` y los párrafos de portada se pintan
+  de inmediato, que es justo lo que mide el LCP.
+- **Red de seguridad**: si el paquete de animaciones tarda más de 1,4 s o falla, el contenido
+  aparece igualmente en lugar de quedarse invisible.
+- **Prefetch más prudente**: antes se descargaban las cinco páginas al entrar; ahora solo al pasar
+  el ratón o tocar un enlace.

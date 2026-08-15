@@ -40,8 +40,21 @@ const { title, description, rawTitle, image, noindex, schema } = Astro.props;
       <slot />
     </main>
     <Footer />
+    <script is:inline>
+      // Si en 1,4 s no han arrancado las animaciones, se muestra todo igualmente.
+      setTimeout(() => {
+        if (!window.__motionListo) document.documentElement.classList.add('sin-motion');
+      }, 1400);
+    </script>
     <script>
-      import '../lib/motion.js';
+      // GSAP, Lenis y Atropos pesan; se cargan cuando el navegador está libre
+      // para no retrasar el primer pintado, sobre todo en móvil.
+      const cargarMovimiento = () => import('../lib/motion.js');
+      if ('requestIdleCallback' in window) {
+        requestIdleCallback(cargarMovimiento, { timeout: 1800 });
+      } else {
+        setTimeout(cargarMovimiento, 400);
+      }
     </script>
   </body>
 </html>

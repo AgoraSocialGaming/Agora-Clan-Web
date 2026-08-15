@@ -15,7 +15,8 @@ export default defineConfig({
   base: BASE_PATH,
   trailingSlash: 'never',
   build: { inlineStylesheets: 'auto', format: 'file' },
-  prefetch: { prefetchAll: true, defaultStrategy: 'viewport' },
+  // 'hover' en vez de 'viewport': no se descargan las cinco páginas nada más entrar
+  prefetch: { prefetchAll: true, defaultStrategy: 'hover' },
   image: {
     // Todas las <Image /> se sirven en AVIF/WebP con fallback y lazy por defecto.
     service: { entrypoint: 'astro/assets/services/sharp' },

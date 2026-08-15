@@ -139,6 +139,8 @@ const flotar = () => {
 
 /* ── Arranque ──────────────────────────────────────────────────────────── */
 const init = () => {
+  window.__motionListo = true;
+  document.documentElement.classList.remove('sin-motion');
   reveal();
   counters();
   tilt();

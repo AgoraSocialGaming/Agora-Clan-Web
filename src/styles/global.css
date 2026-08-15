@@ -28,14 +28,14 @@
   /* Escala tipográfica */
   --text-eyebrow: 0.6875rem;
   --text-eyebrow--line-height: 1.2;
-  --text-hero: clamp(2.6rem, 9vw, 6.5rem);
+  --text-hero: clamp(2.25rem, 8.4vw, 6rem);
   --text-hero--line-height: 0.92;
-  --text-display: clamp(1.9rem, 5.2vw, 3.4rem);
+  --text-display: clamp(1.8rem, 4.6vw, 3.9rem);
   --text-display--line-height: 1.02;
   --text-title: clamp(1.35rem, 2.6vw, 1.9rem);
 
   /* Ritmo */
-  --spacing-section: clamp(3.5rem, 8vw, 8rem);
+  --spacing-section: clamp(3.25rem, 6vw, 5.5rem);
   --radius-card: 14px;
 
   /* Movimiento */
@@ -279,6 +279,14 @@
   opacity: 0;
   transform: translateY(26px);
   will-change: transform, opacity;
+}
+/* Red de seguridad: si el paquete de animaciones tarda o falla, el contenido
+   aparece igualmente en lugar de quedarse invisible. */
+.js.sin-motion [data-reveal],
+.js.sin-motion [data-reveal-item] {
+  opacity: 1 !important;
+  transform: none !important;
+  transition: opacity 0.4s ease;
 }
 
 @media (prefers-reduced-motion: reduce) {
