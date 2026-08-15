@@ -3,8 +3,16 @@ import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 import { SITE } from './src/data/site.js';
 
+// GitHub Pages inyecta estas dos variables desde el workflow (actions/configure-pages):
+//  - SITE_URL:  https://agoraclan.com  o  https://usuario.github.io
+//  - BASE_PATH: "/"  o  "/nombre-del-repo"
+// Así la web funciona igual en el dominio propio y en la URL de proyecto de GitHub.
+const SITE_URL = process.env.SITE_URL || SITE.url;
+const BASE_PATH = process.env.BASE_PATH || '/';
+
 export default defineConfig({
-  site: SITE.url,
+  site: SITE_URL,
+  base: BASE_PATH,
   trailingSlash: 'never',
   build: { inlineStylesheets: 'auto', format: 'file' },
   prefetch: { prefetchAll: true, defaultStrategy: 'viewport' },
@@ -21,7 +29,8 @@ export default defineConfig({
       priority: 0.7,
       lastmod: new Date(),
       serialize: (item) => {
-        const path = new URL(item.url).pathname.replace(/\/$/, '');
+        const base = BASE_PATH.replace(/\/$/, '');
+        const path = new URL(item.url).pathname.replace(/\/$/, '').replace(base, '');
         if (path === '') return { ...item, priority: 1.0, changefreq: 'weekly' };
         if (path === '/torneos' || path === '/descargar') return { ...item, priority: 0.9 };
         if (path === '/juegos') return { ...item, priority: 0.8 };

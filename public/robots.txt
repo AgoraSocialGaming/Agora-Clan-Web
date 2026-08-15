@@ -13,4 +13,5 @@ Allow: /
 User-agent: PerplexityBot
 Allow: /
 
+Sitemap: https://agoraclan.com/sitemap.xml
 Sitemap: https://agoraclan.com/sitemap-index.xml

@@ -1,4 +1,5 @@
 ---
+import { url } from '../lib/url.js';
 import Base from '../layouts/Base.astro';
 import Icon from '../components/ui/Icon.astro';
 import { Image } from 'astro:assets';
@@ -19,18 +20,19 @@ import ladon from '../assets/mascotas/ladon-lupa.png';
         Ladón ha buscado por todas partes y esta página no aparece. Vuelve a la arena.
       </p>
       <div class="mt-9 flex flex-wrap justify-center gap-3">
-        <a href="/" class="u-btn u-btn--primary">Volver al inicio<Icon name="arrow" class="h-4 w-4" /></a>
-        <a href="/torneos" class="u-btn u-btn--ghost">Ver torneos</a>
+        <a href={url('/')} class="u-btn u-btn--primary">Volver al inicio<Icon name="arrow" class="h-4 w-4" /></a>
+        <a href={url('/torneos')} class="u-btn u-btn--ghost">Ver torneos</a>
       </div>
     </div>
   </section>
 
   <!-- En GitHub Pages no hay redirecciones de servidor: los enlaces de referido
        /r/CODIGO caen aquí y se resuelven en el navegador. -->
-  <script is:inline>
+  <script is:inline define:vars={{ base: url('/'), destino: url('/descargar') }}>
     (() => {
-      const m = location.pathname.match(/^\/r\/([A-Za-z0-9_-]{1,32})\/?$/);
-      if (m) location.replace('/descargar?ref=' + encodeURIComponent(m[1]) + '#pre-registro');
+      const ruta = location.pathname.slice(base.replace(/\/$/, '').length);
+      const m = ruta.match(/^\/r\/([A-Za-z0-9_-]{1,32})\/?$/);
+      if (m) location.replace(destino + '?ref=' + encodeURIComponent(m[1]) + '#pre-registro');
     })();
   </script>
 </Base>

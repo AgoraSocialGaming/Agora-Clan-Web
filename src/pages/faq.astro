@@ -143,7 +143,7 @@ const todas = grupos.flatMap((g) => g.items);
 
   <Section>
     <!-- Filtros -->
-    <div class="flex flex-wrap gap-2" data-faq-filters data-reveal>
+    <div class="flex max-w-4xl flex-wrap gap-2" data-faq-filters data-reveal>
       <button type="button" class="u-btn u-btn--primary !px-4 !py-2.5 !text-[0.64rem]" data-filter="todas">
         Todas
       </button>
@@ -156,7 +156,7 @@ const todas = grupos.flatMap((g) => g.items);
       }
     </div>
 
-    <div class="mt-10 space-y-12">
+    <div class="mt-10 max-w-4xl space-y-12">
       {
         grupos.map((g) => (
           <div data-faq-group={g.id}>

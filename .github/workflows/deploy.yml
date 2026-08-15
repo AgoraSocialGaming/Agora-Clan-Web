@@ -1,4 +1,8 @@
-# Publica la web en GitHub Pages con dominio propio (agoraclan.com).
+# Publica la web en GitHub Pages.
+# Funciona tal cual en los dos escenarios:
+#   · dominio propio agoraclan.com  → base "/"
+#   · usuario.github.io/repositorio → base "/repositorio"
+# actions/configure-pages detecta cuál toca y lo pasa a Astro.
 name: Desplegar en GitHub Pages
 
 on:
@@ -11,7 +15,6 @@ permissions:
   pages: write
   id-token: write
 
-# Si se empujan dos commits seguidos, solo se publica el último.
 concurrency:
   group: pages
   cancel-in-progress: true
@@ -22,6 +25,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Configurar Pages
+        id: pages
+        uses: actions/configure-pages@v5
+
       - uses: actions/setup-node@v4
         with:
           node-version: 22
@@ -29,9 +36,13 @@ jobs:
 
       - run: npm ci
 
-      - run: npm run build
+      - name: Compilar
+        run: npm run build
+        env:
+          SITE_URL: ${{ steps.pages.outputs.origin }}
+          BASE_PATH: ${{ steps.pages.outputs.base_path }}
 
-      # Evita que GitHub trate la carpeta /_astro como contenido de Jekyll
+      # Sin esto, Pages ignora la carpeta /_astro por empezar con guion bajo
       - run: touch dist/.nojekyll
 
       - uses: actions/upload-pages-artifact@v3

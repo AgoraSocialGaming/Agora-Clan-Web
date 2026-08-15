@@ -1,4 +1,5 @@
 ---
+import { url } from '../lib/url.js';
 import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import Section from '../components/ui/Section.astro';
@@ -125,7 +126,7 @@ const marcos = [
             Reservar mi plaza
             <Icon name="arrow" class="h-4 w-4" />
           </a>
-          <a href="/torneos" class="u-btn u-btn--ghost">Ver los torneos</a>
+          <a href={url('/torneos')} class="u-btn u-btn--ghost">Ver los torneos</a>
         </div>
 
         <dl class="mt-12 grid max-w-lg grid-cols-3 gap-px overflow-hidden rounded-xl border border-line bg-line" data-reveal-group>
@@ -205,10 +206,10 @@ const marcos = [
     title="Encontrar, competir, progresar"
     intro="Todo el ciclo dentro de la misma app. Sin hojas de cálculo, sin bracket en otra web, sin alguien haciendo de árbitro a mano."
   >
-    <Rail label="Cómo funciona Ágora" class="mt-10">
+    <Rail label="Cómo funciona Ágora" class="mt-10" wrap>
       {
         ciclo.map((step) => (
-          <li class="u-card group w-[268px] shrink-0 snap-start p-6 sm:w-[300px]">
+          <li class="u-card group w-[268px] shrink-0 snap-start p-6 sm:w-[300px] lg:w-[calc((100%-1.5rem)/3)]">
             <div class="flex items-baseline gap-3">
               <span class="font-display text-2xl font-black text-neon/30 transition-colors duration-500 group-hover:text-neon/70">
                 {step.n}
@@ -225,11 +226,11 @@ const marcos = [
     </Rail>
 
     <div class="mt-6 flex flex-wrap gap-3" data-reveal>
-      <a href="/torneos" class="u-btn u-btn--primary">
+      <a href={url('/torneos')} class="u-btn u-btn--primary">
         Cómo funcionan los torneos
         <Icon name="arrow" class="h-4 w-4" />
       </a>
-      <a href="/torneos#comunidad" class="u-btn u-btn--ghost">Tengo una comunidad</a>
+      <a href={url('/torneos#comunidad')} class="u-btn u-btn--ghost">Tengo una comunidad</a>
     </div>
   </Section>
 
@@ -242,10 +243,10 @@ const marcos = [
     title="Un perfil que no se parece a ningún otro"
     intro="Marco, título, emblemas y fondo. La combinación hace que dos perfiles nunca sean iguales, y nada de eso toca el equilibrio: es apariencia, no ventaja."
   >
-    <Rail label="Ejemplos de perfil personalizado" class="mt-10">
+    <Rail label="Ejemplos de perfil personalizado" class="mt-10" wrap>
       {
         perfiles.map((p) => (
-          <li class="group w-[212px] shrink-0 snap-start sm:w-[240px]">
+          <li class="group w-[212px] shrink-0 snap-start sm:w-[240px] lg:w-[calc((100%-2.25rem)/4)]">
             <div class="overflow-hidden rounded-xl border border-line transition-all duration-500 group-hover:-translate-y-1.5 group-hover:border-neon/50">
               <Image
                 src={p.img}
@@ -295,10 +296,10 @@ const marcos = [
     <!-- Recompensas en carrusel -->
     <div class="mt-10">
       <p class="u-eyebrow !text-muted" data-reveal>Lo que sale de los cofres</p>
-      <Rail label="Marcos de avatar y recompensas" class="mt-4">
+      <Rail label="Marcos de avatar y recompensas" class="mt-4" wrap>
         {
           marcos.map((m) => (
-            <li class="group w-[92px] shrink-0 snap-start">
+            <li class="group w-[92px] shrink-0 snap-start lg:w-[calc((100%-3.75rem)/6)]">
               <div class="grid aspect-square place-items-center rounded-xl border border-line bg-surface/60 p-2 transition-all duration-500 group-hover:-translate-y-1.5 group-hover:border-neon/50">
                 <Image
                   src={m.img}
@@ -348,7 +349,7 @@ const marcos = [
         audiencia y te damos un clan gratuito con un límite de miembros mucho más amplio, más
         recompensas para todos los que entren contigo.
       </p>
-      <a href="/torneos#comunidad" class="u-btn u-btn--primary shrink-0">
+      <a href={url('/torneos#comunidad')} class="u-btn u-btn--primary shrink-0">
         Traigo mi comunidad
         <Icon name="arrow" class="h-4 w-4" />
       </a>
@@ -364,7 +365,7 @@ const marcos = [
     <div class="mt-10 grid grid-cols-2 gap-4 lg:grid-cols-4" data-reveal-group>
       {
         LANZAMIENTO.map((g) => (
-          <a href="/juegos" class="group block" data-reveal-item>
+          <a href={url('/juegos')} class="group block" data-reveal-item>
             <div class="relative overflow-hidden rounded-xl border border-line transition-all duration-500 group-hover:-translate-y-1.5 group-hover:border-neon/50">
               <Image
                 src={covers[g.slug]}
@@ -390,7 +391,7 @@ const marcos = [
     </div>
 
     <div class="mt-8" data-reveal>
-      <a href="/juegos" class="u-btn u-btn--ghost">
+      <a href={url('/juegos')} class="u-btn u-btn--ghost">
         Ver el catálogo completo
         <Icon name="arrow" class="h-4 w-4" />
       </a>

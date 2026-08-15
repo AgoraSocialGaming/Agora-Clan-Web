@@ -4,27 +4,32 @@ import Icon from './Icon.astro';
 interface Props {
   label: string;
   class?: string;
+  /** En escritorio deja de ser carrusel y las tarjetas ocupan el ancho completo */
+  wrap?: boolean;
 }
-const { label, class: className = '' } = Astro.props;
+const { label, class: className = '', wrap = false } = Astro.props;
 ---
 
 <div class={`u-rail relative ${className}`} data-rail>
   <!-- Degradados de borde -->
   <div
-    class="pointer-events-none absolute inset-y-0 left-0 z-10 w-10 bg-gradient-to-r from-ink to-transparent opacity-0 transition-opacity duration-300"
+    class:list={['pointer-events-none absolute inset-y-0 left-0 z-10 w-10 bg-gradient-to-r from-ink to-transparent opacity-0 transition-opacity duration-300', wrap && 'lg:hidden']}
     data-rail-fade="start"
     aria-hidden="true"
   >
   </div>
   <div
-    class="pointer-events-none absolute inset-y-0 right-0 z-10 w-10 bg-gradient-to-l from-ink to-transparent transition-opacity duration-300"
+    class:list={['pointer-events-none absolute inset-y-0 right-0 z-10 w-10 bg-gradient-to-l from-ink to-transparent transition-opacity duration-300', wrap && 'lg:hidden']}
     data-rail-fade="end"
     aria-hidden="true"
   >
   </div>
 
   <ul
-    class="-mx-1 flex snap-x snap-mandatory gap-3 overflow-x-auto scroll-smooth px-1 pb-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+    class:list={[
+      '-mx-1 flex snap-x snap-mandatory gap-3 overflow-x-auto scroll-smooth px-1 pb-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden',
+      wrap && 'lg:flex-wrap lg:overflow-x-visible lg:snap-none',
+    ]}
     data-rail-track
     tabindex="0"
     aria-label={label}
@@ -32,7 +37,7 @@ const { label, class: className = '' } = Astro.props;
     <slot />
   </ul>
 
-  <div class="mt-3 flex justify-end gap-2">
+  <div class:list={['mt-3 flex justify-end gap-2', wrap && 'lg:hidden']}>
     <button
       type="button"
       class="grid h-9 w-9 place-items-center rounded-full border border-line text-muted transition-all duration-300 hover:border-neon hover:text-neon disabled:opacity-30 disabled:hover:border-line disabled:hover:text-muted"

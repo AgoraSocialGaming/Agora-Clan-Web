@@ -1,4 +1,5 @@
 ---
+import { url } from '../../lib/url.js';
 import { SITE } from '../../data/site.js';
 import { graph, organizationSchema, websiteSchema } from '../../lib/schema.js';
 
@@ -22,8 +23,11 @@ const {
   schema = [],
 } = Astro.props;
 
-const canonical = new URL(Astro.url.pathname.replace(/\/$/, '') || '/', SITE.url).toString();
-const ogImage = new URL(image, SITE.url).toString();
+// Astro.site cambia según dónde se publique (dominio propio o URL de proyecto de GitHub);
+// Astro.url.pathname ya incluye la base, así que la URL canónica sale bien en ambos casos.
+const origin = Astro.site ?? new URL(SITE.url);
+const canonical = new URL(Astro.url.pathname.replace(/\/$/, '') || '/', origin).toString();
+const ogImage = new URL(url(image), origin).toString();
 const fullTitle = rawTitle ? title : `${title} · ${SITE.name}`;
 
 const jsonLd = graph([organizationSchema(), websiteSchema(), ...schema]);
@@ -67,13 +71,13 @@ const jsonLd = graph([organizationSchema(), websiteSchema(), ...schema]);
 <link rel="alternate" hreflang="x-default" href={canonical} />
 
 <!-- Iconos -->
-<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-<link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32.png" />
-<link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16.png" />
-<link rel="icon" href="/favicon.ico" sizes="48x48" />
-<link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png" />
-<link rel="manifest" href="/site.webmanifest" />
-<link rel="sitemap" type="application/xml" href="/sitemap-index.xml" />
+<link rel="icon" type="image/svg+xml" href={url('/favicon.svg')} />
+<link rel="icon" type="image/png" sizes="32x32" href={url('/img/favicon-32.png')} />
+<link rel="icon" type="image/png" sizes="16x16" href={url('/img/favicon-16.png')} />
+<link rel="icon" href={url('/favicon.ico')} sizes="48x48" />
+<link rel="apple-touch-icon" sizes="180x180" href={url('/img/apple-touch-icon.png')} />
+<link rel="manifest" href={url('/site.webmanifest')} />
+<link rel="sitemap" type="application/xml" href={url('/sitemap.xml')} />
 
 <!-- Tipografías: se precargan solo los pesos que usamos -->
 <link rel="preconnect" href="https://fonts.googleapis.com" />

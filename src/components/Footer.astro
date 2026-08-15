@@ -1,5 +1,6 @@
 ---
 import { NAV, SOCIAL, LEGAL, SITE } from '../data/site.js';
+import { url } from '../lib/url.js';
 import Logo from './ui/Logo.astro';
 import BrandMark from './ui/BrandMark.astro';
 const year = new Date().getFullYear();
@@ -25,7 +26,7 @@ const year = new Date().getFullYear();
           {
             NAV.map((l) => (
               <li>
-                <a href={l.href} class="text-sm text-muted transition-colors hover:text-neon">
+                <a href={url(l.href)} class="text-sm text-muted transition-colors hover:text-neon">
                   {l.label}
                 </a>
               </li>

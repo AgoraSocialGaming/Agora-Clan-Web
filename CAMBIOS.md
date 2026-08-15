@@ -130,3 +130,45 @@
 4. **Juegos**: «Con estos cuatro se empieza» → **«Juegos en el lanzamiento»** (también en la
    home). Fuera «arrancamos»: ahora es «empezamos». Y se añade que el catálogo rota cada
    temporada y que puedes crear tus torneos en cualquier juego que esté en la wiki de Ágora.
+
+---
+
+# Revisión 5 — el fallo de GitHub Pages y repaso completo
+
+## El fallo que viste
+La web estaba publicada en `usuario.github.io/Agora-Clan-Web/`, o sea dentro de una **carpeta**,
+pero todos los enlaces a CSS, JS e imágenes apuntaban a la raíz del dominio. Resultado: 404 en
+todos los recursos y el HTML sin estilos (eso morado era el logo SVG sin CSS).
+
+Arreglado de raíz y para los dos escenarios:
+- `astro.config.mjs` lee `SITE_URL` y `BASE_PATH` del entorno.
+- El workflow usa `actions/configure-pages`, que detecta si hay dominio propio configurado y
+  pasa la base correcta. Con dominio → `/`; sin dominio → `/Agora-Clan-Web`.
+- Nuevo ayudante `src/lib/url.js` y **todos** los enlaces internos pasan por él (páginas,
+  cabecera, pie, menú móvil, favicons, manifest, sitemap y el fallback de `/r/CODIGO`).
+- La URL canónica y el `og:image` se calculan desde `Astro.site`, así que nunca apuntan a una
+  URL que no existe.
+- Probado compilando de las dos formas: con base `/` y con base `/Agora-Clan-Web/`.
+
+## Sitemap
+No está en el repositorio porque **se genera al compilar**. Además del `sitemap-index.xml` de
+Astro, ahora `scripts/postbuild.mjs` deja también un `sitemap.xml` clásico, que es el que busca
+todo el mundo. Los dos aparecen en `robots.txt`.
+
+## Escritorio
+- Los carruseles (cómo funciona, perfiles, marcos, cómo se resuelve una partida) dejaban las
+  tarjetas con ancho de móvil en pantallas grandes. Ahora, a partir de `lg`, el carrusel se
+  convierte en rejilla: las tarjetas reparten el ancho completo y desaparecen flechas y
+  degradados. En móvil se sigue deslizando igual.
+- La FAQ ocupaba los 1.250 px de ancho y las preguntas quedaban lejísimos del icono; ahora va a
+  un máximo de 4xl.
+
+## Auditoría (sin un solo aviso pendiente)
+- 6 páginas: un `<h1>` por página, jerarquía de encabezados sin saltos, canonical, `og:image`,
+  `lang="es"` y JSON-LD válido en todas.
+- Todas las imágenes con `alt` y con `width`/`height` (nada de saltos de maquetación al cargar).
+- Cero enlaces rotos y cero anclas inexistentes.
+- Títulos ≤ 60 caracteres y descripciones entre 70 y 160.
+- Accesibilidad: ningún botón o enlace sin nombre accesible, `target="_blank"` siempre con `rel`,
+  y añadidas etiquetas a los desplegables de mes y año del pre-registro.
+- JavaScript del cliente comprobado sintácticamente tras el build.
