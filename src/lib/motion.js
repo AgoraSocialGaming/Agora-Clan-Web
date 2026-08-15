@@ -92,11 +92,59 @@ const tilt = () => {
   });
 };
 
+/* ── Barra de progreso de lectura (se ve también en móvil) ─────────────── */
+const progreso = () => {
+  const barra = document.querySelector('[data-progress]');
+  if (!barra) return;
+  gsap.to(barra, {
+    scaleX: 1,
+    ease: 'none',
+    scrollTrigger: { start: 0, end: 'max', scrub: 0.25 },
+  });
+};
+
+/* ── Parallax al hacer scroll ──────────────────────────────────────────
+   Con scrub funciona igual con el dedo que con la rueda, así que en móvil
+   por fin hay algo de profundidad.                                        */
+const parallax = () => {
+  if (reduced) return;
+  document.querySelectorAll('[data-parallax]').forEach((el) => {
+    const dist = parseFloat(el.dataset.parallax) || 40;
+    gsap.fromTo(
+      el,
+      { y: dist },
+      {
+        y: -dist,
+        ease: 'none',
+        scrollTrigger: { trigger: el, start: 'top bottom', end: 'bottom top', scrub: 0.6 },
+      },
+    );
+  });
+};
+
+/* ── Flotación en bucle (mascotas y móviles del hero) ──────────────────── */
+const flotar = () => {
+  if (reduced) return;
+  document.querySelectorAll('[data-float]').forEach((el, i) => {
+    gsap.to(el, {
+      y: -(parseFloat(el.dataset.float) || 10),
+      duration: 2.6 + i * 0.35,
+      ease: 'sine.inOut',
+      repeat: -1,
+      yoyo: true,
+      delay: i * 0.2,
+    });
+  });
+};
+
 /* ── Arranque ──────────────────────────────────────────────────────────── */
 const init = () => {
   reveal();
   counters();
   tilt();
+  progreso();
+  parallax();
+  flotar();
   ScrollTrigger.refresh();
 };
 

@@ -64,7 +64,7 @@ const faqs = [
       <h1 class="mt-6 text-hero font-black uppercase" data-reveal data-reveal-delay="0.05">
         Los juegos<br /><span class="text-neon">de la arena</span>
       </h1>
-      <p class="mt-7 text-[1.05rem] text-muted" data-reveal data-reveal-delay="0.1">
+      <p class="mt-6 text-[1.05rem] text-muted" data-reveal data-reveal-delay="0.1">
         Empezamos con cuatro títulos de comunidad hispanohablante enorme y partidas de ciclo corto:
         dos de móvil y dos de PC. El catálogo rota cada temporada, y tú puedes crear tus propios
         torneos en cualquier juego que aparezca en la wiki de Ágora.
@@ -79,7 +79,7 @@ const faqs = [
         { label: 'Móvil', list: movil, icon: 'bolt' },
         { label: 'PC', list: pc, icon: 'bracket' },
       ].map((group) => (
-        <div class="mt-14 first:mt-12">
+        <div class="mt-12 first:mt-12">
           <div class="flex items-center gap-3" data-reveal>
             <Icon name={group.icon} class="h-4 w-4 text-neon" />
             <h3 class="font-mono text-[0.68rem] uppercase tracking-[0.24em] text-neon">{group.label}</h3>
@@ -222,9 +222,9 @@ const faqs = [
       }
     </div>
 
-    <div class="mt-10 flex flex-col gap-6 rounded-xl border border-line bg-surface/30 p-7 sm:flex-row sm:items-center sm:justify-between" data-reveal>
+    <div class="mt-10 flex flex-col gap-6 rounded-xl border border-line bg-surface/30 p-6 sm:p-7 sm:flex-row sm:items-center sm:justify-between" data-reveal>
       <div class="flex items-center gap-5">
-        <Image src={styxxCofre} alt="Styxx, mascota de Ágora, abriendo un cofre de recompensas" width={260} densities={[1, 2]} class="hidden h-28 w-auto object-contain sm:block" />
+        <Image src={styxxCofre} alt="Styxx, mascota de Ágora, abriendo un cofre de recompensas" width={260} densities={[1, 2]} class="hidden h-28 w-auto object-contain sm:block" data-float="7" />
         <div>
           <h3 class="font-display text-[0.95rem] font-black uppercase tracking-wide">Y más en Ágora</h3>
           <p class="mt-2 max-w-md text-sm text-muted">

@@ -21,7 +21,8 @@ export const APP = { live: false, ios: '', android: '' };
 
 // --- Pre-registro -----------------------------------------------------------
 export const FORM = {
-  endpoint: 'https://api.agoraclan.com/api/v1/preregister',
+  // Se puede sobrescribir al compilar con PUBLIC_FORM_ENDPOINT, sin tocar el código.
+  endpoint: import.meta.env.PUBLIC_FORM_ENDPOINT || 'https://api.agoraclan.com/api/v1/preregister',
   legalUrl: 'https://agoraclan.com/terminos-y-politicas',
   minAge: 13,
   slots: 7000,

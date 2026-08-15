@@ -10,6 +10,8 @@ interface Props {
   glow?: boolean;
   /** Profundidad dentro de un grupo Atropos (-10 a 10). */
   offset?: number;
+  /** Amplitud en píxeles de la flotación en bucle (también en móvil). */
+  float?: number;
 }
 const {
   src,
@@ -19,12 +21,14 @@ const {
   priority = false,
   glow = true,
   offset,
+  float,
 } = Astro.props;
 ---
 
 <div
   class={`relative ${className}`}
   {...offset !== undefined ? { 'data-atropos-offset': String(offset) } : {}}
+  {...float !== undefined ? { 'data-float': String(float) } : {}}
 >
   {
     glow && (

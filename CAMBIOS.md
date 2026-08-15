@@ -196,3 +196,52 @@ todo el mundo. Los dos aparecen en `robots.txt`.
    Nota: la portada de los dos reyes es la de **Clash Royale** (la de Clash of Clans es el
    bárbaro), así que esa se ha dejado como estaba.
 6. **Flechas de los carruseles**: de la derecha a la izquierda, en todos.
+
+---
+
+# Revisión 7
+
+## 1 · El formulario
+El mensaje «No hemos podido conectar» sale cuando la llamada a
+`https://api.agoraclan.com/api/v1/preregister` **ni siquiera llega al servidor**. Con el dominio
+todavía sin apuntar, `api.agoraclan.com` no resuelve, así que el navegador corta antes de pedir
+nada. La otra causa posible, si la API ya existe, es CORS: tiene que responder
+`Access-Control-Allow-Origin` con el origen desde el que se abre la web
+(`https://agorasocialgaming.github.io` ahora, `https://agoraclan.com` después) y aceptar el
+preflight `OPTIONS`.
+
+Mientras tanto:
+- El endpoint se puede cambiar sin tocar código: variable `PUBLIC_FORM_ENDPOINT` al compilar.
+- La llamada corta a los 12 s en vez de dejar el botón bloqueado.
+- Los errores se distinguen: 409 usuario cogido, 400/422 datos mal, otros muestran el código real.
+- El fallo de red se escribe en la consola con la URL exacta, y al usuario se le ofrece escribir
+  a support@agoraclan.com para que no se pierda la reserva.
+
+## 2 · Orden y proporciones
+Todas las páginas comparten ahora el mismo ritmo: cabecera de sección → contenido `mt-12`,
+bloques internos `mt-12`, hero → párrafo `mt-6` → botones `mt-8`. Y los paddings de tarjeta se
+unifican en `p-6 sm:p-7`.
+
+## 3 · Modalidades desplegables
+Las tres tarjetas de /torneos se pliegan: se ve el icono, el nombre y el gancho, con una pastilla
+«Ver más» y una flecha con un latido suave que invita a tocarla. Al abrir, el cuerpo crece con una
+transición de altura real. Añadida una cuarta: **Torneos personalizados**, con individual, por
+equipos o entre clanes, generación y actualización automática del bracket, reglas, invitación por
+enlace y arbitraje desde el mismo panel.
+
+## 4 · Fuera la tarjeta «Regla inviolable».
+
+## 5 · Pre-registro y comunidad más compactos
+Las tres recompensas pasan a una fila de tres tarjetas finas (en móvil solo icono y nombre, con un
+desplegable «Qué incluye cada cosa»). El formulario pierde textos de ayuda redundantes y aprieta
+paddings. En «Trae tu comunidad», las ventajas y los pasos se convierten en filas finas en móvil y
+recuperan formato tarjeta en escritorio.
+
+## 6 · Efectos también en móvil
+Con GSAP + ScrollTrigger, que ya estaban en el proyecto:
+- **Barra de progreso** de lectura en la cabecera.
+- **Parallax** con scrub, que funciona igual con el dedo que con la rueda.
+- **Flotación en bucle** de los móviles del hero y de las mascotas.
+- **Respuesta al toque**: botones y tarjetas se hunden un poco al pulsar, porque en móvil no hay
+  hover que valga.
+Todo respeta `prefers-reduced-motion`.

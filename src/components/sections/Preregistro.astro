@@ -29,7 +29,7 @@ const perks = [
     >
     </div>
 
-    <div class="relative grid gap-10 p-6 sm:p-10 lg:grid-cols-[1.05fr_1fr] lg:gap-14 lg:p-14">
+    <div class="relative grid gap-8 p-6 sm:p-9 lg:grid-cols-[1.05fr_1fr] lg:gap-12 lg:p-12">
       <!-- Argumento -->
       <div>
         <div
@@ -47,24 +47,42 @@ const perks = [
         <h2 class="mt-6 text-display">
           Entra antes<br /><span class="text-neon">de que abra la arena</span>
         </h2>
-        <p class="mt-5 max-w-md text-muted">
+        <p class="mt-4 max-w-md text-muted">
           Reserva tu plaza en menos de diez segundos. El día del lanzamiento recibes el Pack
           Fundador y 7 días de Ágora Rise, sin tarjeta y sin suscripción.
         </p>
 
-        <ul class="mt-8 grid gap-3 sm:grid-cols-3" data-reveal-group>
+        <ul class="mt-7 grid grid-cols-3 gap-2 sm:gap-3" data-reveal-group>
           {
             perks.map((p) => (
-              <li class="u-card flex items-center gap-3 p-3" data-reveal-item>
-                <Image src={p.img} alt={p.alt} width={72} densities={[1, 2]} class="h-12 w-12 shrink-0 object-contain" />
+              <li class="u-card flex flex-col items-center gap-2 p-3 text-center sm:flex-row sm:gap-3 sm:p-3.5 sm:text-left" data-reveal-item>
+                <Image src={p.img} alt={p.alt} width={72} densities={[1, 2]} class="h-9 w-9 shrink-0 object-contain sm:h-11 sm:w-11" />
                 <div class="min-w-0">
-                  <p class="font-display text-[0.72rem] font-bold uppercase tracking-wide">{p.name}</p>
-                  <p class="mt-0.5 text-[0.72rem] text-muted">{p.sub}</p>
+                  <p class="font-display text-[0.62rem] font-bold uppercase leading-tight tracking-wide sm:text-[0.7rem]">
+                    {p.name}
+                  </p>
+                  <p class="mt-0.5 hidden text-[0.7rem] text-muted sm:block">{p.sub}</p>
                 </div>
               </li>
             ))
           }
         </ul>
+
+        <details class="mt-3 sm:hidden">
+          <summary class="flex cursor-pointer list-none items-center gap-2 font-mono text-[0.58rem] uppercase tracking-[0.16em] text-muted [&::-webkit-details-marker]:hidden">
+            Qué incluye cada cosa
+            <Icon name="arrow" class="h-3 w-3 rotate-90" />
+          </summary>
+          <ul class="mt-2.5 space-y-1.5">
+            {
+              perks.map((p) => (
+                <li class="text-[0.76rem] text-muted">
+                  <span class="text-bone">{p.name}:</span> {p.sub}
+                </li>
+              ))
+            }
+          </ul>
+        </details>
 
         {
           !compact && (
@@ -85,7 +103,7 @@ const perks = [
       </div>
 
       <!-- Formulario -->
-      <div class="u-card !bg-surface/85 p-6 sm:p-8">
+      <div class="u-card !bg-surface/85 p-5 sm:p-7">
         <div class="flex items-baseline justify-between gap-4">
           <h3 class="font-display text-lg font-black uppercase tracking-wide">Reserva tu plaza</h3>
           <p class="text-right">
@@ -99,7 +117,7 @@ const perks = [
           </p>
         </div>
 
-        <form class="mt-6 space-y-4" data-prereg novalidate>
+        <form class="mt-5 space-y-3.5" data-prereg novalidate>
           <div>
             <label class="mb-1.5 block font-mono text-[0.64rem] uppercase tracking-[0.16em] text-muted" for="pr-user">
               Nombre de usuario
@@ -113,12 +131,9 @@ const perks = [
               autocomplete="username"
               autocapitalize="off"
               spellcheck="false"
-              placeholder="Tu nombre en la arena"
+              placeholder="Así te verán en el feed y el ranking"
               required
             />
-            <p class="mt-1.5 text-[0.72rem] text-muted">
-              Así te verán en el feed, en el ranking y en los torneos.
-            </p>
             <p class="mt-1 hidden text-[0.72rem] text-danger" data-err="username" role="alert"></p>
           </div>
 
@@ -139,8 +154,9 @@ const perks = [
           </div>
 
           <div>
-            <label class="mb-1.5 block font-mono text-[0.64rem] uppercase tracking-[0.16em] text-muted" for="pr-month">
+            <label class="mb-1.5 flex items-baseline justify-between gap-3 font-mono text-[0.64rem] uppercase tracking-[0.16em] text-muted" for="pr-month">
               Fecha de nacimiento
+              <span class="font-mono text-[0.56rem] normal-case tracking-normal">+{FORM.minAge} años</span>
             </label>
             <div class="flex gap-2.5">
               <select class="u-input" id="pr-month" name="birth_month" aria-label="Mes de nacimiento" required>
@@ -162,14 +178,11 @@ const perks = [
                 <option value="">Año</option>
               </select>
             </div>
-            <p class="mt-1.5 text-[0.72rem] text-muted">
-              Ágora es para mayores de {FORM.minAge} años.
-            </p>
             <p class="mt-1 hidden text-[0.72rem] text-danger" data-err="birth" role="alert"></p>
           </div>
 
           <label
-            class="flex cursor-pointer items-start gap-3 rounded-lg border border-line bg-ink/40 p-3.5 transition-colors hover:border-neon/50"
+            class="flex cursor-pointer items-start gap-3 rounded-lg border border-line bg-ink/40 p-3 transition-colors hover:border-neon/50"
             data-gdpr-box
           >
             <input type="checkbox" class="mt-0.5 h-4 w-4 shrink-0 accent-[#0AFF7A]" name="gdpr" required />
@@ -178,7 +191,7 @@ const perks = [
             </span>
           </label>
 
-          <button type="submit" class="u-btn u-btn--primary w-full !py-4" data-submit>
+          <button type="submit" class="u-btn u-btn--primary w-full !py-3.5" data-submit>
             <span data-submit-text>Reservar mi plaza</span>
             <Icon name="arrow" class="h-4 w-4" />
           </button>
@@ -275,10 +288,13 @@ const perks = [
       txt.textContent = 'Reservando…';
 
       try {
+        // Corte a los 12 s: si la API no responde, no dejamos el botón colgado
+        const corte = AbortSignal.timeout ? AbortSignal.timeout(12000) : undefined;
         const res = await fetch(endpoint, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ username, email, birth_date: `${by}-${bm}` }),
+          signal: corte,
         });
         if (res.ok) {
           const link = form.parentElement.querySelector('[data-mail-link]');
@@ -288,9 +304,15 @@ const perks = [
           return;
         }
         const body = await res.json().catch(() => ({}));
-        err('username', body?.error?.message || body?.detail || 'Ese usuario o correo ya está cogido.');
-      } catch {
-        err('email', 'No hemos podido conectar. Inténtalo de nuevo en un momento.');
+        const msg = body?.error?.message || body?.detail || body?.message;
+        if (res.status === 409) err('username', msg || 'Ese usuario o correo ya está cogido.');
+        else if (res.status === 422 || res.status === 400) err('username', msg || 'Revisa los datos, algo no cuadra.');
+        else err('email', msg || `El servidor ha respondido ${res.status}. Inténtalo en un momento.`);
+        console.error('[pre-registro] respuesta', res.status, body);
+      } catch (e) {
+        // Aquí caen los fallos de red: dominio que no resuelve, CORS o certificado.
+        console.error('[pre-registro] no se pudo llamar a', endpoint, e);
+        err('email', 'No hemos podido conectar con el servidor. Escríbenos a support@agoraclan.com y te reservamos la plaza.');
       }
       btn.disabled = false;
       txt.textContent = prev;

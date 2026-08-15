@@ -84,12 +84,12 @@ const ciclo = [
           ><br />para gamers
         </h1>
 
-        <p class="mt-7 max-w-lg text-[1.08rem] text-muted" data-reveal data-reveal-delay="0.12">
+        <p class="mt-6 max-w-lg text-[1.08rem] text-muted" data-reveal data-reveal-delay="0.12">
           Encuentra con quién jugar, compite cuando quieras y contra quien quieras, y mejora tu
           perfil con cada partida. Todo esto y más en una app.
         </p>
 
-        <div class="mt-9 flex flex-wrap items-center gap-3" data-reveal data-reveal-delay="0.18">
+        <div class="mt-8 flex flex-wrap items-center gap-3" data-reveal data-reveal-delay="0.18">
           <a href="#pre-registro" class="u-btn u-btn--primary">
             Reservar mi plaza
             <Icon name="arrow" class="h-4 w-4" />
@@ -122,6 +122,7 @@ const ciclo = [
               alt="Misiones diarias y racha en la app de Ágora"
               width={210}
               class="w-[36%] -mr-[7%] -rotate-[7deg] translate-y-7"
+              float={9}
               offset={-5}
               glow={false}
             />
@@ -138,6 +139,7 @@ const ciclo = [
               alt="Juegos favoritos y estadísticas verificadas en la app de Ágora"
               width={210}
               class="w-[36%] -ml-[7%] rotate-[7deg] translate-y-7"
+              float={13}
               offset={-5}
               glow={false}
             />
@@ -174,7 +176,7 @@ const ciclo = [
     title="Encontrar, competir, progresar"
     intro="Todo el ciclo dentro de la misma app. Sin hojas de cálculo, sin bracket en otra web, sin alguien haciendo de árbitro a mano."
   >
-    <Rail label="Cómo funciona Ágora" class="mt-10" wrap>
+    <Rail label="Cómo funciona Ágora" class="mt-12" wrap>
       {
         ciclo.map((step) => (
           <li class="u-card group w-[268px] shrink-0 snap-start p-6 sm:w-[300px] lg:w-[calc((100%-1.5rem)/3)]">
@@ -193,7 +195,7 @@ const ciclo = [
       }
     </Rail>
 
-    <div class="mt-6 flex flex-wrap gap-3" data-reveal>
+    <div class="mt-8 flex flex-wrap gap-3" data-reveal>
       <a href={url('/torneos')} class="u-btn u-btn--primary">
         Cómo funcionan los torneos
         <Icon name="arrow" class="h-4 w-4" />
@@ -210,7 +212,7 @@ const ciclo = [
 
   <!-- ══════════ CLANES Y COMUNIDAD ══════════ -->
   <Section eyebrow="Clanes" title="Trae a los tuyos" intro="Crea tu clan con escudo por capas, reparte roles y enfrenta a tu gente contra otros clanes. Ganar sube al clan en la clasificación global.">
-    <div class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4" data-reveal-group>
+    <div class="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4" data-reveal-group>
       {
         [
           { i: 'shield', t: 'Escudo por capas' },
@@ -248,7 +250,7 @@ const ciclo = [
     title="Juegos en el lanzamiento"
     intro="Cuatro títulos de comunidad enorme, dos de móvil y dos de PC. El catálogo rota cada temporada y puedes crear tus torneos en cualquier juego que esté en la wiki de Ágora."
   >
-    <div class="mt-10 grid grid-cols-2 gap-4 lg:grid-cols-4" data-reveal-group>
+    <div class="mt-12 grid grid-cols-2 gap-4 lg:grid-cols-4" data-reveal-group>
       {
         LANZAMIENTO.map((g) => (
           <a href={url('/juegos')} class="group block" data-reveal-item>
@@ -276,7 +278,7 @@ const ciclo = [
       }
     </div>
 
-    <div class="mt-8" data-reveal>
+    <div class="mt-10" data-reveal>
       <a href={url('/juegos')} class="u-btn u-btn--ghost">
         Ver el catálogo completo
         <Icon name="arrow" class="h-4 w-4" />

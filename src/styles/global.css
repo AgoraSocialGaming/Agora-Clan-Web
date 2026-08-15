@@ -91,6 +91,21 @@
 
   img, svg, video { display: block; max-width: 100%; height: auto; }
 
+  /* Respuesta al toque: en móvil no hay hover, así que el feedback es al pulsar */
+  @media (hover: none) {
+    .u-btn:active,
+    .u-card:active,
+    summary:active {
+      transform: scale(0.985);
+    }
+  }
+  .u-btn,
+  .u-card,
+  summary {
+    transition-property: transform, background-color, border-color, box-shadow, color;
+    transition-duration: 0.25s;
+  }
+
   /* Scrollbar coherente con la marca */
   * { scrollbar-color: var(--color-line) transparent; scrollbar-width: thin; }
 }
