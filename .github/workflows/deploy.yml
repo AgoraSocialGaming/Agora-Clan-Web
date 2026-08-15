@@ -1,8 +1,11 @@
 # Publica la web en GitHub Pages.
-# Funciona tal cual en los dos escenarios:
-#   · dominio propio agoraclan.com  → base "/"
-#   · usuario.github.io/repositorio → base "/repositorio"
-# actions/configure-pages detecta cuál toca y lo pasa a Astro.
+#
+# La carpeta base la decide actions/configure-pages leyendo la configuración real
+# del repositorio, así que funciona igual publicada en:
+#   · usuario.github.io/Agora-Clan-Web  → base "/Agora-Clan-Web"
+#   · agoraclan.com (dominio propio)    → base "/"
+# Si algún día hiciera falta forzarla, basta con crear la variable de repositorio
+# BASE_PATH (Settings → Secrets and variables → Actions → Variables).
 name: Desplegar en GitHub Pages
 
 on:
@@ -28,6 +31,8 @@ jobs:
       - name: Configurar Pages
         id: pages
         uses: actions/configure-pages@v5
+        with:
+          enablement: true
 
       - uses: actions/setup-node@v4
         with:
@@ -40,9 +45,22 @@ jobs:
         run: npm run build
         env:
           SITE_URL: ${{ steps.pages.outputs.origin }}
-          BASE_PATH: ${{ steps.pages.outputs.base_path }}
+          BASE_PATH: ${{ vars.BASE_PATH || steps.pages.outputs.base_path }}
 
-      # Sin esto, Pages ignora la carpeta /_astro por empezar con guion bajo
+      - name: Comprobar que las rutas apuntan a la base correcta
+        env:
+          BASE_PATH: ${{ vars.BASE_PATH || steps.pages.outputs.base_path }}
+        run: |
+          BASE="${BASE_PATH%/}"
+          echo "Base usada: '${BASE:-/}'"
+          if ! grep -q "href=\"${BASE}/_astro/" dist/index.html; then
+            echo "::error::Las rutas del HTML no coinciden con la base '${BASE:-/}'. El CSS daría 404."
+            grep -o 'href="[^"]*_astro[^"]*"' dist/index.html | head -3
+            exit 1
+          fi
+          echo "OK: el CSS y el JS apuntan a ${BASE:-}/_astro/"
+
+      # Sin esto, Pages ignora /_astro por empezar con guion bajo
       - run: touch dist/.nojekyll
 
       - uses: actions/upload-pages-artifact@v3
