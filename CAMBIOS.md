@@ -172,3 +172,27 @@ todo el mundo. Los dos aparecen en `robots.txt`.
 - Accesibilidad: ningún botón o enlace sin nombre accesible, `target="_blank"` siempre con `rel`,
   y añadidas etiquetas a los desplegables de mes y año del pre-registro.
 - JavaScript del cliente comprobado sintácticamente tras el build.
+
+---
+
+# Revisión 6
+
+1. **/juegos · «Y más en Ágora»**: ahí salía un marco de pájaros porque el archivo
+   `ladon-senala.png` contenía en realidad ese marco, no la mascota. Archivo eliminado y
+   sustituido por Styxx con el cofre.
+2. **Recompensas (inicio)**: la antigua «Tu vitrina» pasa a ser una sección ordenada en tres
+   pasos numerados —01 tu perfil, 02 los cofres, 03 qué puedes conseguir— con el bloque 03 en
+   pestañas (Marcos · Emblemas · Títulos · Relics) para que ocupe poco en móvil y en PC.
+   - **Emblemas**: los tres tiers (madera, plata, oro) con la lista de misiones del PDF
+     (La Voz, El Juez, Gladiador, Campeón, Racha, Duelista, Publicador, Reclutador).
+   - **Títulos**: agrupados por rareza (básicos, épicos, legendarios).
+   - **Relics**: la moneda, con su imagen, para qué sirve y de dónde sale.
+3. **Cofres**: fuera el titular «se ganan, no se compran». Ahora los tres en fila con el de Oro
+   en el centro, más grande y resaltado en dorado. Fuera también «lo que sale de los cofres».
+4. **Menú móvil**: vuelve a marcarse en verde la página actual. Se había roto al publicar en una
+   subcarpeta: la ruta llevaba delante `/Agora-Clan-Web` y no coincidía con `/torneos`. Ahora se
+   descuenta la base antes de comparar.
+5. **Carátulas de juegos**: estaban intercambiadas Brawl Stars y League of Legends. Corregido.
+   Nota: la portada de los dos reyes es la de **Clash Royale** (la de Clash of Clans es el
+   bárbaro), así que esa se ha dejado como estaba.
+6. **Flechas de los carruseles**: de la derecha a la izquierda, en todos.

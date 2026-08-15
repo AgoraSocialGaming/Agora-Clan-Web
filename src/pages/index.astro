@@ -4,9 +4,10 @@ import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import Section from '../components/ui/Section.astro';
 import PhoneMockup from '../components/ui/PhoneMockup.astro';
-import Tilt from '../components/ui/Tilt.astro';
 import Rail from '../components/ui/Rail.astro';
+import Tilt from '../components/ui/Tilt.astro';
 import AppShowcase from '../components/sections/AppShowcase.astro';
+import Recompensas from '../components/sections/Recompensas.astro';
 import Preregistro from '../components/sections/Preregistro.astro';
 import Icon from '../components/ui/Icon.astro';
 import { appSchema } from '../lib/schema.js';
@@ -16,21 +17,8 @@ import misionesRacha from '../assets/app/agora-app-misiones-racha.png';
 import perfilJugador from '../assets/app/agora-app-perfil-jugador.png';
 import juegosVinculados from '../assets/app/agora-app-juegos-vinculados.png';
 
-import perfilOro from '../assets/personalizacion/agora-perfil-rey-de-la-arena.png';
-import perfilOlimpo from '../assets/personalizacion/agora-perfil-habitante-del-olimpo.png';
-import perfilBerserker from '../assets/personalizacion/agora-perfil-berserker.png';
-import perfilSenorGuerra from '../assets/personalizacion/agora-perfil-senor-de-la-guerra.png';
 
-import cofreMadera from '../assets/cofres/cofre-madera.png';
-import cofrePlata from '../assets/cofres/cofre-plata.png';
-import cofreOro from '../assets/cofres/cofre-oro.png';
 
-import marcoRise from '../assets/marcos/marco-rise.png';
-import marcoPionero from '../assets/marcos/marco-pionero.png';
-import marcoDragon from '../assets/marcos/marco-dragon.png';
-import marcoSegador from '../assets/marcos/marco-segador.png';
-import marcoHeraldo from '../assets/marcos/marco-heraldo.png';
-import marcoElfico from '../assets/marcos/marco-elfico.png';
 
 import brawl from '../assets/juegos/brawl-stars.jpg';
 import clash from '../assets/juegos/clash-royale.png';
@@ -65,28 +53,8 @@ const ciclo = [
   },
 ];
 
-// Mismo perfil, pieles distintas: es lo que engancha de la personalización.
-const perfiles = [
-  { img: perfilOro, name: 'Rey de la Arena', sub: 'Marco legendario · fondo dorado' },
-  { img: perfilOlimpo, name: 'Habitante del Olimpo', sub: 'Marco épico · fondo carmesí' },
-  { img: perfilBerserker, name: 'Berserker', sub: 'Marco legendario · fondo glaciar' },
-  { img: perfilSenorGuerra, name: 'Señor de la Guerra', sub: 'Marco raro · fondo violeta' },
-];
 
-const cofres = [
-  { img: cofreMadera, name: 'Madera', tone: 'Común' },
-  { img: cofrePlata, name: 'Plata', tone: 'Raro' },
-  { img: cofreOro, name: 'Oro', tone: 'Épico' },
-];
 
-const marcos = [
-  { img: marcoPionero, name: 'Pionero', tone: 'Irrepetible' },
-  { img: marcoRise, name: 'Rise', tone: 'Suscripción' },
-  { img: marcoDragon, name: 'Dragón', tone: 'Legendario' },
-  { img: marcoSegador, name: 'Segador', tone: 'Épico' },
-  { img: marcoHeraldo, name: 'Heraldo', tone: 'Legendario' },
-  { img: marcoElfico, name: 'Bosque', tone: 'Raro' },
-];
 
 ---
 
@@ -237,90 +205,8 @@ const marcos = [
   <!-- ══════════ EXPLORADOR DE PANTALLAS ══════════ -->
   <AppShowcase />
 
-  <!-- ══════════ PERFIL Y RECOMPENSAS ══════════ -->
-  <Section
-    eyebrow="Tu vitrina"
-    title="Un perfil que no se parece a ningún otro"
-    intro="Marco, título, emblemas y fondo. La combinación hace que dos perfiles nunca sean iguales, y nada de eso toca el equilibrio: es apariencia, no ventaja."
-  >
-    <Rail label="Ejemplos de perfil personalizado" class="mt-10" wrap>
-      {
-        perfiles.map((p) => (
-          <li class="group w-[212px] shrink-0 snap-start sm:w-[240px] lg:w-[calc((100%-2.25rem)/4)]">
-            <div class="overflow-hidden rounded-xl border border-line transition-all duration-500 group-hover:-translate-y-1.5 group-hover:border-neon/50">
-              <Image
-                src={p.img}
-                alt={`Perfil de Ágora personalizado con el título ${p.name}`}
-                width={480}
-                densities={[1, 2]}
-                class="w-full"
-              />
-            </div>
-            <p class="mt-2.5 font-display text-[0.7rem] font-bold uppercase tracking-wide">{p.name}</p>
-            <p class="font-mono text-[0.53rem] uppercase tracking-[0.14em] text-muted">{p.sub}</p>
-          </li>
-        ))
-      }
-    </Rail>
-
-    <!-- Cofres: pequeños y al grano -->
-    <div class="mt-12" data-reveal>
-      <h3 class="font-display text-[0.92rem] font-black uppercase tracking-wide">
-        Los cofres se ganan, no se compran
-      </h3>
-      <p class="mt-2 max-w-2xl text-[0.88rem] text-muted">
-        Caen jugando, con la racha diaria, viendo un anuncio o como premio de torneo. Dentro hay
-        marcos, títulos y cosméticos. Nunca están a la venta.
-      </p>
-      <ul class="mt-5 grid grid-cols-3 gap-3 sm:max-w-md">
-        {
-          cofres.map((c) => (
-            <li class="flex items-center gap-3 rounded-xl border border-line bg-surface/50 px-3 py-2.5 transition-colors duration-500 hover:border-neon/45">
-              <Image
-                src={c.img}
-                alt={`Cofre de ${c.name} de Ágora`}
-                width={120}
-                densities={[1, 2]}
-                class="h-9 w-9 shrink-0 object-contain"
-              />
-              <span class="min-w-0">
-                <span class="block font-display text-[0.68rem] font-bold uppercase tracking-wide">{c.name}</span>
-                <span class="block font-mono text-[0.5rem] uppercase tracking-[0.14em] text-neon">{c.tone}</span>
-              </span>
-            </li>
-          ))
-        }
-      </ul>
-    </div>
-
-    <!-- Recompensas en carrusel -->
-    <div class="mt-10">
-      <p class="u-eyebrow !text-muted" data-reveal>Lo que sale de los cofres</p>
-      <Rail label="Marcos de avatar y recompensas" class="mt-4" wrap>
-        {
-          marcos.map((m) => (
-            <li class="group w-[92px] shrink-0 snap-start lg:w-[calc((100%-3.75rem)/6)]">
-              <div class="grid aspect-square place-items-center rounded-xl border border-line bg-surface/60 p-2 transition-all duration-500 group-hover:-translate-y-1.5 group-hover:border-neon/50">
-                <Image
-                  src={m.img}
-                  alt={`Marco de avatar ${m.name}`}
-                  width={170}
-                  densities={[1, 2]}
-                  class="h-full w-full object-contain transition-transform duration-500 group-hover:scale-110"
-                />
-              </div>
-              <p class="mt-2 text-center font-display text-[0.6rem] font-bold uppercase tracking-wide">
-                {m.name}
-              </p>
-              <p class="text-center font-mono text-[0.48rem] uppercase tracking-[0.14em] text-muted">
-                {m.tone}
-              </p>
-            </li>
-          ))
-        }
-      </Rail>
-    </div>
-  </Section>
+  <!-- ══════════ RECOMPENSAS ══════════ -->
+  <Recompensas />
 
   <!-- ══════════ CLANES Y COMUNIDAD ══════════ -->
   <Section eyebrow="Clanes" title="Trae a los tuyos" intro="Crea tu clan con escudo por capas, reparte roles y enfrenta a tu gente contra otros clanes. Ganar sube al clan en la clasificación global.">

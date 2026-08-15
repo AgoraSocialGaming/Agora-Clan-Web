@@ -1,0 +1,335 @@
+---
+import { Image } from 'astro:assets';
+import Rail from '../ui/Rail.astro';
+import Icon from '../ui/Icon.astro';
+
+import perfilOro from '../../assets/personalizacion/agora-perfil-rey-de-la-arena.png';
+import perfilOlimpo from '../../assets/personalizacion/agora-perfil-habitante-del-olimpo.png';
+import perfilBerserker from '../../assets/personalizacion/agora-perfil-berserker.png';
+import perfilSenorGuerra from '../../assets/personalizacion/agora-perfil-senor-de-la-guerra.png';
+
+import cofreMadera from '../../assets/cofres/cofre-madera.png';
+import cofrePlata from '../../assets/cofres/cofre-plata.png';
+import cofreOro from '../../assets/cofres/cofre-oro.png';
+
+import marcoRise from '../../assets/marcos/marco-rise.png';
+import marcoPionero from '../../assets/marcos/marco-pionero.png';
+import marcoDragon from '../../assets/marcos/marco-dragon.png';
+import marcoSegador from '../../assets/marcos/marco-segador.png';
+import marcoHeraldo from '../../assets/marcos/marco-heraldo.png';
+import marcoElfico from '../../assets/marcos/marco-elfico.png';
+
+import emblemaMadera from '../../assets/emblemas/emblema-madera.png';
+import emblemaPlata from '../../assets/emblemas/emblema-plata.png';
+import emblemaOro from '../../assets/emblemas/emblema-oro.png';
+
+import relic from '../../assets/economia/agora-relic.png';
+
+const perfiles = [
+  { img: perfilOro, name: 'Rey de la Arena', sub: 'Marco legendario · fondo dorado' },
+  { img: perfilOlimpo, name: 'Habitante del Olimpo', sub: 'Marco épico · fondo carmesí' },
+  { img: perfilBerserker, name: 'Berserker', sub: 'Marco legendario · fondo glaciar' },
+  { img: perfilSenorGuerra, name: 'Señor de la Guerra', sub: 'Marco raro · fondo violeta' },
+];
+
+// El de oro va en el centro: es el que todos quieren.
+const cofres = [
+  { img: cofrePlata, name: 'Plata', tone: 'Raro', desc: 'Rachas largas y misiones semanales.', destacado: false },
+  { img: cofreOro, name: 'Oro', tone: 'Épico', desc: 'Premio de torneos y eventos.', destacado: true },
+  { img: cofreMadera, name: 'Madera', tone: 'Común', desc: 'Cae jugando y con la racha diaria.', destacado: false },
+];
+
+const marcos = [
+  { img: marcoPionero, name: 'Pionero', tone: 'Irrepetible' },
+  { img: marcoRise, name: 'Rise', tone: 'Suscripción' },
+  { img: marcoDragon, name: 'Dragón', tone: 'Legendario' },
+  { img: marcoSegador, name: 'Segador', tone: 'Épico' },
+  { img: marcoHeraldo, name: 'Heraldo', tone: 'Legendario' },
+  { img: marcoElfico, name: 'Bosque', tone: 'Raro' },
+];
+
+const emblemas = [
+  { n: 'La Voz', d: 'Comentar 30, 300 y 3.000 veces' },
+  { n: 'El Juez', d: 'Dar 10, 100 y 1.000 likes' },
+  { n: 'Gladiador', d: 'Apuntarte a 1, 10 y 50 torneos' },
+  { n: 'Campeón', d: 'Ganar 1, 10 y 100 torneos' },
+  { n: 'Racha', d: 'Entrar 10, 30 y 60 días seguidos' },
+  { n: 'Duelista', d: 'Retar a amigos en 5, 50 y 500 amistosas' },
+  { n: 'Publicador', d: 'Publicar 1, 10 y 50 veces en el feed' },
+  { n: 'Reclutador', d: 'Invitar a 1, 5 y 20 amigos' },
+];
+
+const titulos = [
+  { rango: 'Básicos', tono: 'text-muted', items: ['Escudero', 'Batallador', 'Centinela', 'Recluta', '¡Que empiece la fiesta!'] },
+  { rango: 'Épicos', tono: 'text-[#8B7BF0]', items: ['Berserker', 'Veterano', 'Vanguardia', 'Maestre de Armas', 'Samurái', 'Dominador'] },
+  { rango: 'Legendarios', tono: 'text-gold', items: ['Señor de la Guerra', 'Invictus', 'Puño de Hierro', 'Soberano', 'Rey de la Arena', 'Habitante del Olimpo', 'The G.O.A.T'] },
+];
+
+const tabs = [
+  { id: 'marcos', label: 'Marcos', icon: 'star' },
+  { id: 'emblemas', label: 'Emblemas', icon: 'shield' },
+  { id: 'titulos', label: 'Títulos', icon: 'trophy' },
+  { id: 'relics', label: 'Relics', icon: 'bolt' },
+];
+---
+
+<section id="recompensas" class="u-shell scroll-mt-24 py-[var(--spacing-section)]">
+  <header class="max-w-2xl" data-reveal>
+    <p class="u-eyebrow">Recompensas</p>
+    <h2 class="mt-4 text-display">Todo lo que se gana jugando</h2>
+    <p class="mt-5 text-[1.05rem] text-muted">
+      Marcos, emblemas, títulos y cofres. Se consiguen compitiendo y cumpliendo misiones, y nada
+      de eso toca el equilibrio: es apariencia, no ventaja.
+    </p>
+    <div class="u-rule mt-8 w-32"></div>
+  </header>
+
+  <!-- 1 · Cómo se ve tu perfil -->
+  <div class="mt-12">
+    <div class="flex items-baseline gap-3" data-reveal>
+      <span class="font-mono text-[0.6rem] uppercase tracking-[0.22em] text-neon">01</span>
+      <h3 class="font-display text-[0.95rem] font-black uppercase tracking-wide">Tu perfil, tu marca</h3>
+    </div>
+    <p class="mt-2 max-w-xl text-[0.88rem] text-muted" data-reveal>
+      Marco, título, emblemas y fondo. Cuatro piezas que hacen que dos perfiles nunca sean iguales.
+    </p>
+
+    <Rail label="Ejemplos de perfil personalizado" class="mt-5" wrap>
+      {
+        perfiles.map((p) => (
+          <li class="group w-[212px] shrink-0 snap-start sm:w-[240px] lg:w-[calc((100%-2.25rem)/4)]">
+            <div class="overflow-hidden rounded-xl border border-line transition-all duration-500 group-hover:-translate-y-1.5 group-hover:border-neon/50">
+              <Image src={p.img} alt={`Perfil de Ágora con el título ${p.name}`} width={480} densities={[1, 2]} class="w-full" />
+            </div>
+            <p class="mt-2.5 font-display text-[0.7rem] font-bold uppercase tracking-wide">{p.name}</p>
+            <p class="font-mono text-[0.53rem] uppercase tracking-[0.14em] text-muted">{p.sub}</p>
+          </li>
+        ))
+      }
+    </Rail>
+  </div>
+
+  <!-- 2 · Cofres -->
+  <div class="mt-14">
+    <div class="flex items-baseline gap-3" data-reveal>
+      <span class="font-mono text-[0.6rem] uppercase tracking-[0.22em] text-neon">02</span>
+      <h3 class="font-display text-[0.95rem] font-black uppercase tracking-wide">Los cofres</h3>
+    </div>
+    <p class="mt-2 max-w-xl text-[0.88rem] text-muted" data-reveal>
+      Caen jugando, con la racha diaria y como premio de torneo. Dentro hay marcos, títulos,
+      emblemas y Relics; cuanto mejor el cofre, mejor lo que sale.
+    </p>
+
+    <ul class="mt-6 grid grid-cols-3 items-end gap-3 sm:gap-5" data-reveal-group>
+      {
+        cofres.map((c) => (
+          <li
+            class:list={[
+              'rounded-xl border bg-surface/40 p-4 text-center transition-all duration-500 hover:-translate-y-1',
+              c.destacado ? 'border-gold/45 bg-gold/[0.06] sm:p-6' : 'border-line',
+            ]}
+            data-reveal-item
+          >
+            <Image
+              src={c.img}
+              alt={`Cofre de ${c.name} de Ágora`}
+              width={220}
+              densities={[1, 2]}
+              class:list={['mx-auto w-auto object-contain', c.destacado ? 'h-20 sm:h-28' : 'h-14 sm:h-20']}
+            />
+            <p class="mt-3 font-display text-[0.76rem] font-black uppercase tracking-wide">{c.name}</p>
+            <p class:list={['font-mono text-[0.52rem] uppercase tracking-[0.14em]', c.destacado ? 'text-gold' : 'text-neon']}>
+              {c.tone}
+            </p>
+            <p class="mt-2 hidden text-[0.76rem] leading-snug text-muted sm:block">{c.desc}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+
+  <!-- 3 · Qué hay dentro -->
+  <div class="mt-14" data-recompensas>
+    <div class="flex items-baseline gap-3" data-reveal>
+      <span class="font-mono text-[0.6rem] uppercase tracking-[0.22em] text-neon">03</span>
+      <h3 class="font-display text-[0.95rem] font-black uppercase tracking-wide">Qué puedes conseguir</h3>
+    </div>
+
+    <div class="u-card mt-5 overflow-hidden" data-reveal>
+      <div
+        class="u-rail flex gap-1.5 overflow-x-auto border-b border-line p-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        role="tablist"
+        aria-label="Tipos de recompensa"
+      >
+        {
+          tabs.map((t, i) => (
+            <button
+              type="button"
+              role="tab"
+              data-rec-tab={t.id}
+              aria-controls={`rec-${t.id}`}
+              tabindex={i === 0 ? 0 : -1}
+              aria-selected={i === 0 ? 'true' : 'false'}
+              class="flex shrink-0 items-center gap-2 rounded-lg px-3.5 py-2.5 font-mono text-[0.64rem] uppercase tracking-[0.14em] text-muted transition-colors duration-300 hover:text-bone aria-selected:bg-neon/10 aria-selected:text-neon"
+            >
+              <Icon name={t.icon} class="h-3.5 w-3.5" />
+              {t.label}
+            </button>
+          ))
+        }
+      </div>
+
+      <div class="p-6 sm:p-8">
+        <!-- Marcos -->
+        <div id="rec-marcos" role="tabpanel" data-rec-panel="marcos">
+          <p class="max-w-2xl text-[0.88rem] text-muted">
+            El anillo que rodea tu foto. Salen de los cofres, de misiones o de la tienda; el
+            Pionero del pre-registro no se reparte dos veces.
+          </p>
+          <Rail label="Marcos de avatar" class="mt-5" wrap>
+            {
+              marcos.map((m) => (
+                <li class="group w-[92px] shrink-0 snap-start lg:w-[calc((100%-3.75rem)/6)]">
+                  <div class="grid aspect-square place-items-center rounded-xl border border-line bg-ink/50 p-2 transition-all duration-500 group-hover:-translate-y-1.5 group-hover:border-neon/50">
+                    <Image src={m.img} alt={`Marco de avatar ${m.name}`} width={170} densities={[1, 2]} class="h-full w-full object-contain transition-transform duration-500 group-hover:scale-110" />
+                  </div>
+                  <p class="mt-2 text-center font-display text-[0.6rem] font-bold uppercase tracking-wide">{m.name}</p>
+                  <p class="text-center font-mono text-[0.48rem] uppercase tracking-[0.14em] text-muted">{m.tone}</p>
+                </li>
+              ))
+            }
+          </Rail>
+        </div>
+
+        <!-- Emblemas -->
+        <div id="rec-emblemas" role="tabpanel" data-rec-panel="emblemas" hidden>
+          <div class="grid gap-8 lg:grid-cols-[auto_minmax(0,1fr)] lg:gap-12">
+            <div class="flex items-end justify-center gap-4">
+              {
+                [
+                  { img: emblemaMadera, t: 'Madera', n: 'I' },
+                  { img: emblemaPlata, t: 'Plata', n: 'II' },
+                  { img: emblemaOro, t: 'Oro', n: 'III' },
+                ].map((e) => (
+                  <div class="text-center">
+                    <Image src={e.img} alt={`Emblema de ${e.t}, nivel ${e.n}`} width={220} densities={[1, 2]} class="mx-auto h-16 w-auto object-contain sm:h-20" />
+                    <p class="mt-2 font-display text-[0.62rem] font-bold uppercase tracking-wide">{e.t}</p>
+                    <p class="font-mono text-[0.5rem] uppercase tracking-[0.14em] text-muted">Nivel {e.n}</p>
+                  </div>
+                ))
+              }
+            </div>
+
+            <div class="min-w-0">
+              <p class="text-[0.88rem] text-muted">
+                Se ganan cumpliendo misiones y cada uno tiene tres niveles: madera, plata y oro.
+                Van bajo tu nombre y no se compran con nada.
+              </p>
+              <ul class="mt-5 grid gap-x-8 gap-y-2.5 sm:grid-cols-2">
+                {
+                  emblemas.map((e) => (
+                    <li class="flex items-baseline justify-between gap-3 border-b border-line pb-2">
+                      <span class="font-display text-[0.74rem] font-bold uppercase tracking-wide">{e.n}</span>
+                      <span class="text-right text-[0.74rem] text-muted">{e.d}</span>
+                    </li>
+                  ))
+                }
+              </ul>
+              <p class="mt-4 text-[0.78rem] text-muted">
+                Y otros por hitos sueltos: Creador de Clan, Capitán de equipo o Rise Member.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Títulos -->
+        <div id="rec-titulos" role="tabpanel" data-rec-panel="titulos" hidden>
+          <p class="max-w-2xl text-[0.88rem] text-muted">
+            La línea que aparece bajo tu nombre. Salen de los cofres según su rareza, y algunos
+            solo se consiguen en la tienda.
+          </p>
+          <div class="mt-6 space-y-5">
+            {
+              titulos.map((g) => (
+                <div>
+                  <p class:list={['font-mono text-[0.58rem] uppercase tracking-[0.2em]', g.tono]}>{g.rango}</p>
+                  <ul class="mt-2.5 flex flex-wrap gap-2">
+                    {g.items.map((t) => (
+                      <li class="rounded border border-line px-3 py-1.5 font-display text-[0.7rem] font-bold uppercase tracking-wide">
+                        {t}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))
+            }
+          </div>
+        </div>
+
+        <!-- Relics -->
+        <div id="rec-relics" role="tabpanel" data-rec-panel="relics" hidden>
+          <div class="flex flex-col items-center gap-7 sm:flex-row sm:items-start sm:gap-10">
+            <Image
+              src={relic}
+              alt="Ágora Relic, la moneda de la app"
+              width={240}
+              densities={[1, 2]}
+              class="h-24 w-auto shrink-0 object-contain drop-shadow-[0_0_28px_rgb(10_255_122/0.35)] sm:h-28"
+            />
+            <div class="min-w-0 text-center sm:text-left">
+              <p class="font-display text-[0.86rem] font-black uppercase tracking-wide">
+                Ágora Relics <span class="text-neon">· AR</span>
+              </p>
+              <p class="mt-2.5 max-w-lg text-[0.88rem] text-muted">
+                La moneda de la app. Se gana jugando, con misiones y en los cofres, y se gasta en la
+                tienda en marcos y títulos. No da ninguna ventaja en una partida: solo cambia cómo
+                se ve tu perfil.
+              </p>
+              <ul class="mt-4 flex flex-wrap justify-center gap-2 sm:justify-start">
+                {
+                  ['Marcos desde 5 AR', 'Títulos desde 5 AR', 'También caen en cofres'].map((t) => (
+                    <li class="rounded border border-line px-2.5 py-1 font-mono text-[0.56rem] uppercase tracking-[0.12em] text-muted">
+                      {t}
+                    </li>
+                  ))
+                }
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const bloque = document.querySelector('[data-recompensas]');
+  if (bloque) {
+    const tabs = [...bloque.querySelectorAll('[data-rec-tab]')];
+    const paneles = [...bloque.querySelectorAll('[data-rec-panel]')];
+
+    const abrir = (id) => {
+      tabs.forEach((t) => {
+        const on = t.dataset.recTab === id;
+        t.setAttribute('aria-selected', String(on));
+        t.tabIndex = on ? 0 : -1;
+      });
+      paneles.forEach((p) => {
+        p.hidden = p.dataset.recPanel !== id;
+      });
+      // los carruseles ocultos no saben su ancho hasta que se muestran
+      window.dispatchEvent(new Event('resize'));
+    };
+
+    tabs.forEach((t) => t.addEventListener('click', () => abrir(t.dataset.recTab)));
+    bloque.addEventListener('keydown', (e) => {
+      if (!['ArrowRight', 'ArrowLeft'].includes(e.key) || !e.target.dataset?.recTab) return;
+      e.preventDefault();
+      const orden = tabs.map((t) => t.dataset.recTab);
+      const at = orden.indexOf(e.target.dataset.recTab);
+      const next = orden[(at + (e.key === 'ArrowRight' ? 1 : -1) + orden.length) % orden.length];
+      abrir(next);
+      tabs[orden.indexOf(next)].focus();
+    });
+  }
+</script>

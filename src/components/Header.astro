@@ -5,7 +5,10 @@ import Logo from './ui/Logo.astro';
 import Icon from './ui/Icon.astro';
 import BrandMark from './ui/BrandMark.astro';
 
-const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+// Astro.url.pathname incluye la carpeta base (p. ej. /Agora-Clan-Web), así que se
+// descuenta antes de comparar. Sin esto, en GitHub Pages no se marcaba la página actual.
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const path = Astro.url.pathname.slice(base.length).replace(/\/$/, '') || '/';
 const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWith(href));
 ---
 
