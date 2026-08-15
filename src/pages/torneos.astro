@@ -234,7 +234,7 @@ const faqs = [
   </section>
 
   <!-- MODOS -->
-  <Section id="modos" eyebrow="Modalidades" title="Tres maneras de entrar" intro="Cada una responde a un momento distinto: un pique con un amigo, diez minutos sueltos o un fin de semana de competición. Toca una para ver los detalles.">
+  <Section id="modos" eyebrow="Modalidades" title="Cuatro maneras de entrar" intro="Cada una responde a un momento distinto: un pique con un amigo, diez minutos sueltos, un fin de semana de competición o el torneo que montas tú. Toca una para ver los detalles.">
     <div class="mt-12 space-y-4" data-reveal-group>
       {
         modos.map((m) => (
@@ -332,12 +332,32 @@ const faqs = [
             Trae tu comunidad<br /><span class="text-neon">y te lo ponemos fácil</span>
           </h2>
           <p class="mt-5 max-w-xl text-muted">
-            Si ya tienes clan, servidor de Discord o audiencia, no empiezas de cero: clan gratuito
+            Si ya tienes grupo, servidor de Discord o audiencia, no empiezas de cero: clan gratuito
             con un límite de miembros mucho más amplio, recompensas para los tuyos y las
-            herramientas para montar vuestros torneos dentro de la app.
+            herramientas para montar vuestros torneos dentro de la app totalmente gratis.
           </p>
 
-          <ul class="mt-8 grid gap-2.5 sm:grid-cols-2 sm:gap-4" data-reveal-group>
+          <details class="comunidad mt-7" data-comunidad>
+            <summary class="flex cursor-pointer list-none items-center gap-3 rounded-xl border border-neon/35 bg-neon/[0.06] px-4 py-3.5 lg:hidden [&::-webkit-details-marker]:hidden">
+              <span class="relative flex h-2.5 w-2.5 shrink-0">
+                <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-neon opacity-70"></span>
+                <span class="relative inline-flex h-2.5 w-2.5 rounded-full bg-neon"></span>
+              </span>
+              <span class="min-w-0 flex-1">
+                <span class="block font-display text-[0.78rem] font-black uppercase tracking-wide text-neon">
+                  Ver qué te damos
+                </span>
+                <span class="mt-0.5 block font-mono text-[0.55rem] uppercase tracking-[0.14em] text-muted">
+                  Cuatro ventajas y cómo se pide
+                </span>
+              </span>
+              <Icon name="arrow" class="comunidad-chevron h-4 w-4 shrink-0 rotate-90 text-neon transition-transform duration-500" />
+            </summary>
+
+            <div class="comunidad-cuerpo">
+              <div>
+
+          <ul class="mt-6 grid gap-2.5 sm:grid-cols-2 sm:gap-4 lg:mt-0" data-reveal-group>
             {
               comunidad.map((c) => (
                 <li class="u-card flex items-start gap-3 p-4 sm:block sm:p-5" data-reveal-item>
@@ -374,8 +394,12 @@ const faqs = [
               Traigo mi comunidad
               <Icon name="arrow" class="h-4 w-4" />
             </a>
-            <a href={url('/descargar#pre-registro')} class="u-btn u-btn--ghost">Reservar mi plaza</a>
+            <a href={url('/descargar#pre-registro')} class="u-btn u-btn--ghost">Únete y recibe el pack fundador</a>
           </div>
+
+              </div>
+            </div>
+          </details>
         </div>
 
         <div class="relative hidden justify-center lg:flex">
@@ -396,6 +420,23 @@ const faqs = [
 </Base>
 
 <style>
+  /* Bloque de comunidad: plegado en móvil, siempre abierto en escritorio */
+  .comunidad-cuerpo {
+    display: grid;
+    grid-template-rows: 0fr;
+    opacity: 0;
+    transition:
+      grid-template-rows 0.55s var(--ease-out-expo),
+      opacity 0.45s ease;
+  }
+  .comunidad-cuerpo > div { overflow: hidden; }
+  .comunidad[open] .comunidad-cuerpo { grid-template-rows: 1fr; opacity: 1; }
+  .comunidad[open] .comunidad-chevron { transform: rotate(-90deg); }
+  @media (min-width: 1024px) {
+    .comunidad { margin-top: 0; }
+    .comunidad-cuerpo { grid-template-rows: 1fr; opacity: 1; transition: none; }
+  }
+
   /* Modalidades desplegables */
   .modo-cuerpo {
     display: grid;
@@ -449,3 +490,16 @@ const faqs = [
     }
   }
 </style>
+
+<script>
+  // En escritorio el bloque de comunidad va siempre desplegado; en móvil arranca plegado.
+  const comunidad = document.querySelector('[data-comunidad]');
+  if (comunidad) {
+    const ancho = window.matchMedia('(min-width: 1024px)');
+    const sincronizar = () => {
+      if (ancho.matches) comunidad.open = true;
+    };
+    ancho.addEventListener('change', sincronizar);
+    sincronizar();
+  }
+</script>

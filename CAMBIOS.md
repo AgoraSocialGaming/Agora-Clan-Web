@@ -258,3 +258,24 @@ Todo respeta `prefers-reduced-motion`.
 3. **sitemap.xml**: antes era una copia del índice de Astro, una sola línea apuntando a
    `sitemap-0.xml`. Ahora `/sitemap.xml` es el listado real con las cinco páginas y sus
    prioridades. `sitemap-index.xml` y `sitemap-0.xml` siguen ahí por si acaso.
+
+---
+
+# Revisión 9
+
+- **hreflang duplicado**: la cabecera declaraba dos veces `x-default`, y eso sí es un error real
+  (un `x-default` por página). Ahora hay uno solo, junto a `es-ES`.
+
+---
+
+# Revisión 10
+
+1. **Hero nuevo**: «Tu mundo gamer empieza aquí», con el párrafo largo y la línea de cierre
+   («Ágora reúne comunidad, competición y progresión en un solo lugar»). Las tres cajas pasan a
+   texto centrado con su descripción: Encuentra · Compite · Progresa.
+2. **CTAs**: «Reservar mi plaza» → **«Únete y recibe el pack fundador»** en el hero, en el menú
+   móvil y en la sección de comunidad. «Ver los torneos» → **«Conoce la arena»**. El botón de
+   enviar del formulario sigue diciendo «Reservar mi plaza», porque ahí describe la acción.
+3. **Arena**: eran cuatro modalidades y ponía tres. Corregido el título y la entradilla.
+4. **Trae tu comunidad**: en móvil se pliega tras una pastilla «Ver qué te damos» con punto
+   parpadeante y flecha animada; en escritorio sigue desplegado siempre. Descripción actualizada.
