@@ -1,0 +1,248 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Icon from '../components/ui/Icon.astro';
+import { breadcrumbSchema } from '../lib/schema.js';
+import { url } from '../lib/url.js';
+import gorgo from '../assets/mascotas/gorgo-senala.png';
+
+// Formulario alojado en Formspree: la web es estática y no puede recibir envíos.
+const ENDPOINT = 'https://formspree.io/f/xrpzaoro';
+
+const campos = [
+  { id: 'clan', name: 'Nombre del clan en Ágora', ph: 'Demon Angels', required: true },
+  { id: 'usuario', name: 'Nombre de usuario en Ágora', ph: '@tuusuario', required: true },
+  { id: 'real', name: 'Nombre real', ph: 'Cómo te llamamos', required: true },
+  {
+    id: 'comunidad',
+    name: 'Comunidad o enlace a tus redes',
+    ph: 'Discord, Twitch, Instagram, TikTok…',
+    required: true,
+  },
+];
+
+const numeros = [
+  { id: 'huecos', name: '¿Cuántos huecos necesitáis?', ph: '50', min: 1, max: 5000 },
+  { id: 'admins', name: '¿Cuántos administran el grupo?', ph: '3', min: 1, max: 200 },
+];
+---
+
+<Base
+  title="Trae tu comunidad a Ágora"
+  description="¿Tienes clan, Discord o audiencia? Pide tu clan ampliado gratis en Ágora, con recompensas para los tuyos y herramientas para organizar vuestros torneos."
+  schema={[
+    breadcrumbSchema([
+      { label: 'Inicio', href: '/' },
+      { label: 'Torneos', href: '/torneos' },
+      { label: 'Trae tu comunidad', href: '/comunidad' },
+    ]),
+  ]}
+>
+  <section class="u-shell relative pb-[var(--spacing-section)] pt-12 sm:pt-16">
+    <div
+      class="pointer-events-none absolute inset-x-0 top-0 h-[420px] bg-[radial-gradient(ellipse_60%_100%_at_50%_0%,rgb(10_255_122/0.1),transparent)]"
+      aria-hidden="true"
+    >
+    </div>
+
+    <header class="relative mx-auto max-w-2xl text-center">
+      <p class="u-eyebrow">Para clanes, streamers y comunidades</p>
+      <h1 class="mt-3 text-display font-black uppercase sm:mt-4">
+        Trae tu comunidad<br /><span class="text-neon">y te lo ponemos fácil</span>
+      </h1>
+      <p class="mt-4 text-[0.94rem] leading-relaxed text-muted sm:mt-5 sm:text-[1.02rem]">
+        Rellena esto y te montamos un clan gratuito con un límite de miembros mucho más amplio,
+        recompensas para los tuyos y las herramientas para organizar vuestros torneos.
+      </p>
+
+      <ul class="mt-6 flex flex-wrap justify-center gap-2">
+        {
+          ['Clan ampliado gratis', 'Recompensas para los tuyos', 'Torneos con tu marca'].map((t) => (
+            <li class="rounded-full border border-line px-3 py-1.5 font-mono text-[0.52rem] uppercase tracking-[0.14em] text-muted sm:text-[0.56rem]">
+              {t}
+            </li>
+          ))
+        }
+      </ul>
+    </header>
+
+    <!-- Gorgo asoma por encima de la tarjeta y señala el formulario -->
+    <div class="relative mx-auto mt-16 max-w-xl sm:mt-20">
+      <Image
+        src={gorgo}
+        alt="Gorgo, mascota de Ágora, señalando el formulario"
+        width={420}
+        densities={[1, 2]}
+        class="pointer-events-none absolute -top-[76px] left-1 z-10 w-[120px] -scale-x-100 drop-shadow-[0_16px_30px_rgb(0_0_0/0.6)] sm:-top-[104px] sm:left-4 sm:w-[164px]"
+        data-float="7"
+      />
+
+      <form
+        class="u-card relative !bg-surface/85 p-5 sm:p-7"
+        action={ENDPOINT}
+        method="POST"
+        data-comunidad-form
+        novalidate
+      >
+        <!-- Asunto del correo y trampa antispam -->
+        <input type="hidden" name="_subject" value="Nueva comunidad quiere entrar en Ágora" />
+        <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true" />
+
+        <div class="grid gap-3.5 sm:grid-cols-2">
+          {
+            campos.map((c) => (
+              <label class="block" class:list={[c.id === 'comunidad' && 'sm:col-span-2']}>
+                <span class="mb-1.5 block font-mono text-[0.6rem] uppercase tracking-[0.16em] text-muted sm:text-[0.64rem]">
+                  {c.name}
+                </span>
+                <input
+                  class="u-input"
+                  type="text"
+                  id={`cm-${c.id}`}
+                  name={c.name}
+                  placeholder={c.ph}
+                  required={c.required}
+                  autocomplete="off"
+                />
+              </label>
+            ))
+          }
+
+          <label class="block sm:col-span-2">
+            <span class="mb-1.5 block font-mono text-[0.6rem] uppercase tracking-[0.16em] text-muted sm:text-[0.64rem]">
+              Correo de contacto
+            </span>
+            <input
+              class="u-input"
+              type="email"
+              id="cm-email"
+              name="email"
+              placeholder="donde te respondemos"
+              required
+              autocomplete="email"
+            />
+          </label>
+
+          {
+            numeros.map((n) => (
+              <label class="block">
+                <span class="mb-1.5 block font-mono text-[0.6rem] uppercase tracking-[0.16em] text-muted sm:text-[0.64rem]">
+                  {n.name}
+                </span>
+                <input
+                  class="u-input"
+                  type="number"
+                  inputmode="numeric"
+                  id={`cm-${n.id}`}
+                  name={n.name}
+                  placeholder={n.ph}
+                  min={n.min}
+                  max={n.max}
+                  required
+                />
+              </label>
+            ))
+          }
+
+          <label class="block sm:col-span-2">
+            <span class="mb-1.5 block font-mono text-[0.6rem] uppercase tracking-[0.16em] text-muted sm:text-[0.64rem]">
+              Algo más que contarnos <span class="normal-case tracking-normal">(opcional)</span>
+            </span>
+            <textarea
+              class="u-input min-h-[104px] resize-y"
+              id="cm-mensaje"
+              name="Mensaje"
+              placeholder="Qué juegos jugáis, qué torneo tenéis en mente…"></textarea>
+          </label>
+        </div>
+
+        <p class="mt-3 hidden text-[0.78rem] text-danger" data-comunidad-error role="alert"></p>
+
+        <button type="submit" class="u-btn u-btn--primary mt-5 w-full" data-comunidad-submit>
+          <span data-comunidad-texto>Enviar solicitud</span>
+          <Icon name="arrow" class="hidden h-4 w-4 sm:block" />
+        </button>
+
+        <p class="mt-3 text-center text-[0.72rem] leading-relaxed text-muted">
+          Te contestamos al correo que nos dejes. Nada de spam, solo lo de tu comunidad.
+        </p>
+      </form>
+
+      <!-- Confirmación -->
+      <div class="u-card hidden p-6 text-center sm:p-8" data-comunidad-ok>
+        <div class="mx-auto grid h-12 w-12 place-items-center rounded-full border border-neon/40 bg-neon/10">
+          <Icon name="check" class="h-5 w-5 text-neon" />
+        </div>
+        <h2 class="mt-4 font-display text-[1.05rem] font-black uppercase tracking-wide">
+          Solicitud enviada
+        </h2>
+        <p class="mx-auto mt-3 max-w-md text-[0.88rem] text-muted">
+          Lo revisamos y te escribimos con el clan ampliado y las recompensas para los tuyos.
+          Mientras tanto, reserva tu plaza en el pre-registro.
+        </p>
+        <a
+          href={url('/descargar#pre-registro')}
+          title="Reserva tu plaza en el pre-registro de Ágora"
+          class="u-btn u-btn--ghost mt-6">Reservar mi plaza</a
+        >
+      </div>
+    </div>
+  </section>
+</Base>
+
+<script>
+  const form = document.querySelector('[data-comunidad-form]');
+  if (form) {
+    const boton = form.querySelector('[data-comunidad-submit]');
+    const texto = form.querySelector('[data-comunidad-texto]');
+    const aviso = form.querySelector('[data-comunidad-error]');
+    const exito = document.querySelector('[data-comunidad-ok]');
+
+    const error = (msg) => {
+      if (!aviso) return;
+      aviso.textContent = msg;
+      aviso.classList.remove('hidden');
+    };
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      aviso?.classList.add('hidden');
+
+      // Validación del navegador, con foco en el primer campo que falle
+      const invalido = [...form.querySelectorAll('input, textarea')].find((c) => !c.checkValidity());
+      if (invalido) {
+        invalido.setAttribute('aria-invalid', 'true');
+        invalido.focus();
+        error('Revisa los campos marcados: falta algo por rellenar.');
+        return;
+      }
+      form.querySelectorAll('[aria-invalid]').forEach((c) => c.removeAttribute('aria-invalid'));
+
+      boton.disabled = true;
+      if (texto) texto.textContent = 'Enviando…';
+
+      try {
+        const res = await fetch(form.action, {
+          method: 'POST',
+          headers: { Accept: 'application/json' },
+          body: new FormData(form),
+          signal: AbortSignal.timeout ? AbortSignal.timeout(15000) : undefined,
+        });
+        if (res.ok) {
+          form.classList.add('hidden');
+          exito?.classList.remove('hidden');
+          exito?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          return;
+        }
+        const datos = await res.json().catch(() => ({}));
+        error(datos?.errors?.[0]?.message || 'No hemos podido enviarlo. Inténtalo en un momento.');
+      } catch (err) {
+        console.error('[comunidad] envío fallido', err);
+        error('No hemos podido conectar. Escríbenos a support@agoraclan.com y lo vemos.');
+      } finally {
+        boton.disabled = false;
+        if (texto) texto.textContent = 'Enviar solicitud';
+      }
+    });
+  }
+</script>

@@ -34,6 +34,7 @@ export default defineConfig({
         const path = new URL(item.url).pathname.replace(/\/$/, '').replace(base, '');
         if (path === '') return { ...item, priority: 1.0, changefreq: 'weekly' };
         if (path === '/torneos' || path === '/descargar') return { ...item, priority: 0.9 };
+        if (path === '/comunidad') return { ...item, priority: 0.8 };
         if (path === '/juegos') return { ...item, priority: 0.8 };
         return { ...item, priority: 0.6, changefreq: 'monthly' };
       },

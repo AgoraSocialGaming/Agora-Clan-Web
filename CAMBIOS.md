@@ -385,3 +385,30 @@ Solo afecta a móvil (por debajo de 640 px). En escritorio queda exactamente igu
 
 No se ha quitado contenido ni enlaces: es solo escala y espaciado. Auditoría de las seis páginas
 limpia (encabezados, alt, títulos de enlace, anclas y JSON-LD).
+
+---
+
+# Revisión 15 — página /comunidad
+
+Nueva página **agoraclan.com/comunidad** con el formulario dentro de la web. Ya no se abre el
+correo: los envíos van a Formspree (`https://formspree.io/f/xrpzaoro`) por AJAX, sin salir de la
+página y sin instalar ninguna librería nueva.
+
+**Campos**, en el orden que pediste: nombre del clan en Ágora, nombre de usuario en Ágora, nombre
+real, comunidad o enlace a redes, correo de contacto, cuántos huecos necesitáis, cuántos
+administran el grupo y un campo opcional para contar lo que quieran.
+
+Detalles:
+- El **correo de contacto** es imprescindible: es el que Formspree usa como «responder a», así
+  que puedes contestar directamente desde tu bandeja.
+- **Antispam**: campo trampa oculto (`_gotcha`) que rellenan los bots y descarta Formspree.
+- Asunto del correo fijado: «Nueva comunidad quiere entrar en Ágora».
+- Validación en el navegador con foco en el primer campo incompleto, botón bloqueado mientras
+  envía, corte a los 15 s y mensaje de error si algo falla, con el correo de soporte como salida.
+- Al enviar, el formulario se sustituye por una confirmación con enlace al pre-registro.
+- **Gorgo asoma por encima** de la tarjeta, señalando el formulario y sin tapar ningún campo, con
+  la flotación suave del resto de mascotas.
+- Página corta: cabecera, tres etiquetas de lo que se llevan y el formulario. Nada más.
+
+**Enlaces actualizados**: el botón «Traigo mi comunidad» de /torneos y el del inicio llevan aquí.
+La FAQ ya no manda a escribir un correo, apunta a la página. Añadida al sitemap con prioridad 0.8.
