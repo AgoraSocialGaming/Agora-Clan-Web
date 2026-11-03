@@ -16,14 +16,25 @@ export const SITE = {
 };
 
 // --- Estado de las tiendas --------------------------------------------------
-// Cuando estéis publicados: pon las URLs y `live: true`.
-export const APP = { live: false, ios: '', android: '' };
+// Las URLs reales viven aquí, pero la web solo las expone cuando
+// GET /api/v1/config confirma `signup_enabled && !invite_required`. `live`
+// es el estado estático (sin afirmar disponibilidad) y no se toca a mano.
+export const APP = {
+  live: false,
+  ios: 'https://apps.apple.com/app/id6790832454',
+  android: 'https://play.google.com/store/apps/details?id=com.agoraclan.app',
+};
+
+// --- Config pública en runtime ---------------------------------------------
+// Una sola URL para que la fase se calcule igual en toda la web.
+export const CONFIG_ENDPOINT =
+  import.meta.env.PUBLIC_CONFIG_ENDPOINT || 'https://api.agoraclan.com/api/v1/config';
 
 // --- Pre-registro -----------------------------------------------------------
 export const FORM = {
   // Se puede sobrescribir al compilar con PUBLIC_FORM_ENDPOINT, sin tocar el código.
   endpoint: import.meta.env.PUBLIC_FORM_ENDPOINT || 'https://api.agoraclan.com/api/v1/preregister',
-  legalUrl: 'https://agoraclan.com/terminos-y-politicas',
+  legalUrl: `${SITE.url}/privacy`,
   minAge: 14,
   slots: 7000,
 };
@@ -69,7 +80,7 @@ export const NAV = [
     label: 'Descargar',
     href: '/descargar',
     icon: 'download',
-    hint: 'Próximamente en iOS y Android',
+    hint: 'Cómo descargar Ágora',
     title: 'Descargar Ágora en iOS y Android',
   },
   {
@@ -82,5 +93,11 @@ export const NAV = [
 ];
 
 export const LEGAL = [
-  { label: 'Términos y privacidad', href: 'https://agoraclan.com/terminos-y-politicas', title: 'Términos de uso y política de privacidad de Ágora' },
+  { label: 'Política de privacidad', href: `${SITE.url}/privacy`, title: 'Política de privacidad de Ágora' },
+  { label: 'Soporte', href: `${SITE.url}/soporte`, title: 'Soporte de Ágora' },
+  {
+    label: 'Eliminar cuenta',
+    href: `${SITE.url}/assets/legal/account-deletion.html`,
+    title: 'Cómo solicitar la eliminación de cuenta o datos',
+  },
 ];

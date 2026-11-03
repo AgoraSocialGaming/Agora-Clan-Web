@@ -395,7 +395,7 @@ const faqs = [
               Traigo mi comunidad
               <Icon name="arrow" class="h-4 w-4" />
             </a>
-            <a href={url('/descargar#pre-registro')} title="Reserva tu plaza en el pre-registro de Ágora" class="u-btn u-btn--ghost">Reservar mi plaza</a>
+            <a href={url('/descargar')} title="Cómo entrar en Ágora" class="u-btn u-btn--ghost">Ver opciones de acceso</a>
           </div>
 
               </div>
@@ -494,7 +494,7 @@ const faqs = [
 
 <script>
   // En escritorio el bloque de comunidad va siempre desplegado; en móvil arranca plegado.
-  const comunidad = document.querySelector('[data-comunidad]');
+  const comunidad = document.querySelector<HTMLDetailsElement>('[data-comunidad]');
   if (comunidad) {
     const ancho = window.matchMedia('(min-width: 1024px)');
     const sincronizar = () => {
