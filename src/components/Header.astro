@@ -23,7 +23,7 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWit
       data-progress
       aria-hidden="true"></span>
     <div class="u-shell flex h-[70px] items-center justify-between gap-4">
-      <a href={url('/')} title="Ágora: encuentra jugadores y organiza torneos" class="shrink-0 transition-opacity hover:opacity-70" aria-label="Ágora — inicio">
+      <a href={url('/')} title="Ágora: torneos para tu comunidad con premios reales" class="shrink-0 transition-opacity hover:opacity-70" aria-label="Ágora — inicio">
         <Logo class="h-8 w-auto" width={260} priority />
       </a>
 
@@ -57,10 +57,10 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWit
       <div class="flex items-center gap-2">
         <a
           href={url('/descargar')}
-          title="Cómo descargar y entrar en Ágora"
+          title="Descargar Ágora para iOS y Android"
           class="u-btn u-btn--primary hidden sm:inline-flex !px-4 !py-2.5 !text-[0.68rem]"
         >
-          <span data-app-cta>Ver disponibilidad</span>
+          <span data-app-cta>Descargar</span>
         </a>
 
         <button
@@ -102,7 +102,7 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWit
     data-menu-panel
   >
     <div class="u-shell flex h-[70px] items-center justify-between gap-4 border-b border-line">
-      <a href={url('/')} title="Ágora: encuentra jugadores y organiza torneos" class="shrink-0" aria-label="Ágora — inicio">
+      <a href={url('/')} title="Ágora: torneos para tu comunidad con premios reales" class="shrink-0" aria-label="Ágora — inicio">
         <Logo class="h-8 w-auto" width={260} />
       </a>
       <button
@@ -167,8 +167,8 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWit
       </ul>
 
       <div class="mt-6" data-menu-item style={`--i:${NAV.length}`}>
-        <a href={url('/descargar')} class="u-btn u-btn--primary w-full" title="Cómo descargar y entrar en Ágora">
-          <span data-app-cta>Ver disponibilidad</span>
+        <a href={url('/descargar')} class="u-btn u-btn--primary w-full" title="Descargar Ágora para iOS y Android">
+          <span data-app-cta>Descargar</span>
           <Icon name="arrow" class="h-4 w-4" />
         </a>
       </div>

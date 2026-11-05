@@ -214,14 +214,16 @@ test('applying a phase only reveals that phase and clears stale store links', as
   assert.equal(view.ios.hidden, true);
   assert.equal(view.ios.attr('href'), null);
   assert.equal(view.pending.hidden, false);
-  assert.equal(view.cta.textContent, 'Ver disponibilidad');
+  assert.equal(view.cta.textContent, 'Descargar');
 
   phase.apply(view.document, phase.unknownState(true));
   assert.equal(view.blocks.unknown.hidden, false);
   assert.equal(view.blocks.upcoming.hidden, true);
   assert.equal(view.ios.hidden, true);
-  assert.equal(view.pending.hidden, true);
-  assert.match(view.status.textContent, /No hemos podido comprobar el estado/);
+  // Sin config se siguen viendo los botones «Próximamente», sin enlaces activos.
+  assert.equal(view.pending.hidden, false);
+  assert.match(view.status.textContent, /Ágora llega a iOS y Android/);
+  assert.equal(view.cta.textContent, 'Descargar');
 });
 
 test('without configured store links live mode never fabricates hrefs', async () => {
@@ -311,7 +313,7 @@ test('built pages start neutral, hide founder preregistration, and keep store UR
   ]);
 
   for (const page of [index, descargar, referral, tournament]) {
-    assert.match(page, /data-app-cta[^>]*>Ver disponibilidad/);
+    assert.match(page, /data-app-cta[^>]*>Descargar/);
     // Las URLs viajan en el módulo de datos para inyectarlas en runtime, pero
     // el marcado estático no debe exponer ningún enlace de tienda.
     const markup = page.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, '');
@@ -337,9 +339,11 @@ test('built pages start neutral, hide founder preregistration, and keep store UR
   // Un fallo de red no promete una reserva manual: solo reintento y el
   // contacto aprobado, que nunca se salta el corte.
   assert.doesNotMatch(index, /te reservamos la plaza/);
-  assert.match(index, /agoragaming99@gmail\.com/);
+  assert.match(index, /support@agoraclan\.com/);
 
-  assert.match(descargar, /data-store-pending[^>]*hidden/);
+  // Los botones «Próximamente» se ven desde el primer pintado.
+  assert.match(descargar, /data-store-pending/);
+  assert.doesNotMatch(descargar, /data-store-pending[^>]*hidden/);
   assert.match(descargar, /data-store-link="ios"[^>]*hidden/);
   assert.match(descargar, /data-store-link="android"[^>]*hidden/);
   assert.match(descargar, /Comprobando el estado del pre-registro y de las tiendas/);
@@ -430,9 +434,11 @@ test('the footer exposes the support page with the approved contact', async () =
   const footer = /<footer[\s\S]*?<\/footer>/.exec(index);
   assert.ok(footer, 'the built page must include the footer');
 
+  // El pie publica el buzón de atención al público (decisión del propietario,
+  // nov. 2026). Los documentos legales conservan su contacto propio.
   assert.match(footer[0], /href="\/soporte"/);
-  assert.match(footer[0], /agoragaming99@gmail\.com/);
-  assert.doesNotMatch(footer[0], /mailto:support@agoraclan\.com/);
+  assert.match(footer[0], /mailto:support@agoraclan\.com/);
+  assert.doesNotMatch(footer[0], /agoragaming99@gmail\.com/);
 });
 
 test('support page publishes the approved contact and the account-deletion path', async () => {
@@ -474,4 +480,32 @@ test('the built runtime module is served as a public asset', async () => {
   const built = await read('dist/assets/public-phase.js');
   const source = await read('public/assets/public-phase.js');
   assert.equal(built, source);
+});
+
+test('init retries a failed config load before settling on unknown', async () => {
+  const phase = await loadPhaseRuntime();
+  let calls = 0;
+  const flaky = () => {
+    calls += 1;
+    if (calls < 3) return Promise.reject(new Error('offline'));
+    return Promise.resolve({
+      ok: true,
+      json: () =>
+        Promise.resolve({ signup_enabled: false, invite_required: false, preregistration_open: true }),
+    });
+  };
+  const view = fixture();
+  const state = await phase.init(view.document, 'https://example.test/config', flaky, [0, 0]);
+  assert.equal(calls, 3);
+  assert.equal(state.phase, 'preregister');
+  assert.equal(view.blocks.preregister.hidden, false);
+
+  let attempts = 0;
+  const down = () => {
+    attempts += 1;
+    return Promise.reject(new Error('offline'));
+  };
+  const failed = await phase.init(fixture().document, 'https://example.test/config', down, [0, 0]);
+  assert.equal(attempts, 3);
+  assert.equal(failed.phase, 'unknown');
 });

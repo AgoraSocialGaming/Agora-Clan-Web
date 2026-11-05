@@ -1,0 +1,65 @@
+---
+/**
+ * Botones de App Store y Google Play.
+ * - Sin enlaces publicados: botón desactivado «Próximamente» (data-store-pending).
+ * - Con la app publicada: public-phase.js rellena el href y muestra el botón real
+ *   (data-store-link). Las URLs nunca van en el HTML estático.
+ */
+import BrandMark from './BrandMark.astro';
+
+interface Props {
+  size?: 'lg' | 'sm';
+  class?: string;
+}
+const { size = 'lg', class: className = '' } = Astro.props;
+const lg = size === 'lg';
+
+const stores = [
+  { key: 'ios', store: 'App Store', mark: 'appstore', sub: 'iOS' },
+  { key: 'android', store: 'Google Play', mark: 'googleplay', sub: 'Android' },
+];
+---
+
+<div class:list={['flex flex-wrap gap-2.5', className]}>
+  {
+    stores.map((s) => (
+      <div>
+        <a
+          data-store-link={s.key}
+          hidden
+          target="_blank"
+          rel="noopener"
+          class:list={[
+            'group inline-flex items-center gap-3 rounded-xl border border-neon bg-neon text-ink transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_0_32px_-6px_rgb(10_255_122/0.7)]',
+            lg ? 'px-5 py-3' : 'px-3.5 py-2',
+          ]}
+          title={`Descargar Ágora en ${s.store}`}
+        >
+          <BrandMark mark={s.mark} class={lg ? 'h-6 w-6' : 'h-4 w-4'} title={s.store} />
+          <span class="text-left leading-tight">
+            <span class="block font-mono text-[0.52rem] uppercase tracking-[0.16em] opacity-70">Descargar en</span>
+            <span class:list={['block font-display font-black uppercase tracking-wide', lg ? 'text-[0.82rem]' : 'text-[0.68rem]']}>
+              {s.store}
+            </span>
+          </span>
+        </a>
+        <span
+          data-store-pending
+          aria-disabled="true"
+          class:list={[
+            'inline-flex cursor-not-allowed select-none items-center gap-3 rounded-xl border border-line bg-surface/50 opacity-80',
+            lg ? 'px-5 py-3' : 'px-3.5 py-2',
+          ]}
+        >
+          <BrandMark mark={s.mark} class:list={['text-muted', lg ? 'h-6 w-6' : 'h-4 w-4']} title={s.store} />
+          <span class="text-left leading-tight">
+            <span class="block font-mono text-[0.52rem] uppercase tracking-[0.16em] text-gold">Próximamente</span>
+            <span class:list={['block font-display font-bold uppercase tracking-wide text-bone/80', lg ? 'text-[0.82rem]' : 'text-[0.68rem]']}>
+              {s.store}
+            </span>
+          </span>
+        </span>
+      </div>
+    ))
+  }
+</div>

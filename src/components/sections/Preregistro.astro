@@ -1,21 +1,27 @@
 ---
 import { Image } from 'astro:assets';
-import { FORM } from '../../data/site.js';
+import { FORM, SOCIAL } from '../../data/site.js';
 import { url } from '../../lib/url.js';
 import Icon from '../ui/Icon.astro';
 import BrandMark from '../ui/BrandMark.astro';
+import StoreButtons from '../ui/StoreButtons.astro';
 import marcoPionero from '../../assets/marcos/marco-pionero.png';
 import badgeRise from '../../assets/marcos/badge-rise.png';
 import cofreOro from '../../assets/cofres/cofre-oro.png';
 import styxx from '../../assets/mascotas/styxx-estandarte.png';
 
-interface Props { compact?: boolean; id?: string }
-const { compact = false, id = 'pre-registro' } = Astro.props;
+interface Props {
+  compact?: boolean;
+  id?: string;
+  /** Solo el formulario de fundadores (p. ej. en /descargar, donde la cabecera ya da el estado). */
+  onlyPreregister?: boolean;
+}
+const { compact = false, id = 'pre-registro', onlyPreregister = false } = Astro.props;
 
 const perks = [
-  { img: marcoPionero, name: 'Marco Pionero', sub: 'Solo para los primeros', alt: 'Marco de avatar Pionero' },
-  { img: badgeRise, name: '7 días de Rise', sub: 'Con insignia y marco exclusivos', alt: 'Insignia de Ágora Rise' },
-  { img: cofreOro, name: 'Pack Fundador', sub: 'Cofres, AR y cosméticos', alt: 'Cofre de oro de Ágora' },
+  { img: marcoPionero, name: 'Marco Pionero', sub: 'No se volverá a repartir', alt: 'Marco de avatar Pionero' },
+  { img: badgeRise, name: '7 días de Rise', sub: 'Insignia y marco exclusivos', alt: 'Insignia de Ágora Rise' },
+  { img: cofreOro, name: 'Pack Fundador', sub: 'Cofres, Relics y cosméticos', alt: 'Cofre de oro de Ágora' },
 ];
 
 const stores = [
@@ -24,7 +30,11 @@ const stores = [
 ];
 ---
 
-<section id={id} class="u-shell scroll-mt-24 py-[var(--spacing-section)]">
+<section
+  id={id}
+  class="u-shell scroll-mt-24 py-[var(--spacing-section)]"
+  {...onlyPreregister ? { 'data-phase': 'preregister', hidden: true } : {}}
+>
   <div
     class="relative overflow-hidden rounded-[22px] border border-neon/25 bg-[linear-gradient(160deg,rgb(10_255_122/0.09),transparent_55%)]"
     data-reveal
@@ -53,12 +63,12 @@ const stores = [
             >
           </div>
 
-          <h2 class="mt-6 text-display">
-            Entra antes <br /><span class="text-neon">de que abra la arena</span>
+          <h2 class="u-h2 mt-6">
+            Entra el primero <br /><span class="text-neon">en la arena</span>
           </h2>
-          <p class="mt-4 max-w-md text-muted">
-            Reserva tu plaza en menos de diez segundos y entra el día del lanzamiento con tus
-            recompensas de fundador y 7 días de Ágora Rise, sin tarjeta y sin suscripción.
+          <p class="u-lead mt-4 max-w-md">
+            Reserva tu nombre de usuario en diez segundos. El día del lanzamiento entrarás como
+            fundador, con recompensas que nadie más podrá conseguir.
           </p>
 
           <ul class="mt-7 grid grid-cols-3 gap-2 sm:gap-3" data-reveal-group>
@@ -85,108 +95,70 @@ const stores = [
                   alt="Styxx, mascota de Ágora, sosteniendo el estandarte"
                   width={230}
                   densities={[1, 2]}
-                  class="w-[190px] drop-shadow-[0_18px_36px_rgb(0_0_0/0.6)]"
+                  class="u-mascot w-[190px]"
                 />
                 <p class="mb-6 max-w-[15rem] border-l border-neon/40 pl-4 text-sm italic text-muted">
-                  «Los primeros que entren se llevan un marco que ya no volverá a repartirse.»
+                  «El marco Pionero solo lo llevarán quienes estuvieron aquí desde el principio.»
                 </p>
               </div>
             )
           }
         </div>
 
-        <!-- Ya disponible: solo con signup abierto y sin invitación. -->
-        <div data-phase="live" hidden>
-          <div
-            class="inline-flex items-center gap-2 rounded-full border border-neon/30 bg-neon/10 px-3.5 py-1.5"
-          >
-            <Icon name="check" class="h-3.5 w-3.5 text-neon" />
-            <span class="font-mono text-[0.64rem] uppercase tracking-[0.2em] text-neon"
-              >Ya disponible</span
-            >
-          </div>
-          <h2 class="mt-6 text-display">
-            La arena <br /><span class="text-neon">ya está abierta</span>
-          </h2>
-          <p class="mt-4 max-w-md text-muted">
-            Ágora ya está publicada en App Store y Google Play. Descárgala, entra con tu cuenta y
-            empieza a competir hoy.
-          </p>
-          <div class="mt-7 flex flex-wrap gap-2.5">
-            {
-              stores.map((s) => (
-                <a
-                  data-store-link={s.key}
-                  class="u-btn u-btn--ghost"
-                  title={`Descargar Ágora en ${s.store}`}
-                >
-                  <BrandMark mark={s.mark} class="h-4 w-4" />
-                  {s.store}
-                  <span class="font-mono text-[0.56rem] uppercase tracking-[0.12em] text-muted">{s.sub}</span>
-                </a>
-              ))
-            }
-          </div>
-        </div>
+        {
+          !onlyPreregister && (
+            <Fragment>
+              {/* Ya disponible: solo con signup abierto y sin invitación. */}
+              <div data-phase="live" hidden>
+                <div class="inline-flex items-center gap-2 rounded-full border border-neon/30 bg-neon/10 px-3.5 py-1.5">
+                  <Icon name="check" class="h-3.5 w-3.5 text-neon" />
+                  <span class="font-mono text-[0.64rem] uppercase tracking-[0.2em] text-neon">Ya disponible</span>
+                </div>
+                <h2 class="u-h2 mt-6">
+                  La arena <br /><span class="text-neon">está abierta</span>
+                </h2>
+                <p class="u-lead mt-4 max-w-md">
+                  Descarga Ágora gratis en App Store o Google Play y juega tu primer torneo hoy.
+                </p>
+              </div>
 
-        <!-- Próximamente: config cargada y acceso todavía cerrado. -->
-        <div data-phase="upcoming" hidden>
-          <div
-            class="inline-flex items-center gap-2 rounded-full border border-gold/30 bg-gold/10 px-3.5 py-1.5"
-          >
-            <Icon name="clock" class="h-3.5 w-3.5 text-gold" />
-            <span class="font-mono text-[0.64rem] uppercase tracking-[0.2em] text-gold"
-              >Próximamente</span
-            >
-          </div>
-          <h2 class="mt-6 text-display">
-            La arena abre <br /><span class="text-neon">muy pronto</span>
-          </h2>
-          <p class="mt-4 max-w-md text-muted">
-            El pre-registro con recompensas de fundador ya no está disponible. La app llegará a
-            App Store y Google Play; aquí publicaremos el enlace en cuanto esté disponible.
-          </p>
-          <p class="mt-4 max-w-md rounded-lg border border-gold/35 bg-gold/[0.08] p-3 text-[0.86rem] leading-relaxed text-bone" data-prereg-closed hidden>
-            El pre-registro ha cerrado mientras enviabas el formulario, así que no se ha creado
-            ninguna cuenta. No se ha aplicado ninguna reserva ni recompensa.
-          </p>
-          <div class="mt-7 flex flex-wrap gap-2.5">
-            <a href={url('/descargar')} class="u-btn u-btn--ghost" title="Estado de la descarga de Ágora">
-              Ver estado de la descarga
-              <Icon name="download" class="h-4 w-4" />
-            </a>
-            <a href={url('/soporte')} class="u-btn u-btn--ghost" title="Soporte de Ágora">
-              Hablar con soporte
-            </a>
-          </div>
-        </div>
+              {/* Próximamente: config cargada y acceso todavía cerrado. */}
+              <div data-phase="upcoming" hidden>
+                <div class="inline-flex items-center gap-2 rounded-full border border-gold/30 bg-gold/10 px-3.5 py-1.5">
+                  <Icon name="clock" class="h-3.5 w-3.5 text-gold" />
+                  <span class="font-mono text-[0.64rem] uppercase tracking-[0.2em] text-gold">Próximamente</span>
+                </div>
+                <h2 class="u-h2 mt-6">
+                  La arena abre <br /><span class="text-neon">muy pronto</span>
+                </h2>
+                <p class="u-lead mt-4 max-w-md">
+                  El pre-registro de fundadores ha cerrado. En cuanto Ágora esté en las tiendas, tendrás
+                  aquí los enlaces de descarga.
+                </p>
+                <p class="mt-4 max-w-md rounded-lg border border-gold/35 bg-gold/[0.08] p-3 text-[0.86rem] leading-relaxed text-bone" data-prereg-closed hidden>
+                  El pre-registro ha cerrado mientras enviabas el formulario, así que no se ha creado
+                  ninguna cuenta. No se ha aplicado ninguna reserva ni recompensa.
+                </p>
+                <StoreButtons class="mt-7" />
+              </div>
 
-        <!-- Sin datos todavía: no se afirma apertura ni disponibilidad. -->
-        <div data-phase="unknown">
-          <div
-            class="inline-flex items-center gap-2 rounded-full border border-line bg-surface/60 px-3.5 py-1.5"
-          >
-            <Icon name="clock" class="h-3.5 w-3.5 text-muted" />
-            <span class="font-mono text-[0.64rem] uppercase tracking-[0.2em] text-muted"
-              >Estado de la arena</span
-            >
-          </div>
-          <h2 class="mt-6 text-display">
-            Ágora, <br /><span class="text-neon">en camino</span>
-          </h2>
-          <p class="mt-4 max-w-md text-muted" data-phase-status>
-            Comprobando si el pre-registro o la descarga ya están disponibles…
-          </p>
-          <div class="mt-7 flex flex-wrap gap-2.5">
-            <a href={url('/descargar')} class="u-btn u-btn--ghost" title="Estado de la descarga de Ágora">
-              Ver estado de la descarga
-              <Icon name="download" class="h-4 w-4" />
-            </a>
-            <a href={url('/soporte')} class="u-btn u-btn--ghost" title="Soporte de Ágora">
-              Hablar con soporte
-            </a>
-          </div>
-        </div>
+              {/* Sin datos todavía: no se afirma apertura ni disponibilidad. */}
+              <div data-phase="unknown">
+                <div class="inline-flex items-center gap-2 rounded-full border border-line bg-surface/60 px-3.5 py-1.5">
+                  <Icon name="download" class="h-3.5 w-3.5 text-muted" />
+                  <span class="font-mono text-[0.64rem] uppercase tracking-[0.2em] text-muted">iOS y Android</span>
+                </div>
+                <h2 class="u-h2 mt-6">
+                  Ágora, <br /><span class="text-neon">en camino</span>
+                </h2>
+                <p class="u-lead mt-4 max-w-md" data-phase-status>
+                  Comprobando si el pre-registro o la descarga ya están disponibles…
+                </p>
+                <StoreButtons class="mt-7" />
+              </div>
+            </Fragment>
+          )
+        }
       </div>
 
       <!-- Formulario / estado -->
@@ -318,67 +290,76 @@ const stores = [
             </div>
             <h3 class="mt-5 font-display text-lg font-black uppercase">Plaza reservada</h3>
             <p class="mx-auto mt-3 max-w-xs text-sm text-muted">
-              Revisa tu correo para confirmar la cuenta. Tus recompensas y los 7 días de Rise te
+              Revisa tu correo para confirmar la cuenta. Tu pack de fundador y los 7 días de Rise te
               esperan el día del lanzamiento.
             </p>
             <a class="u-btn u-btn--ghost mt-6" data-mail-link href="#" title="Abrir tu bandeja de entrada para confirmar el correo">Abrir mi correo</a>
           </div>
         </div>
 
-        <!-- Ya disponible -->
-        <div class="u-card !bg-surface/85 p-5 sm:p-7" data-phase="live" hidden>
-          <h3 class="font-display text-lg font-black uppercase tracking-wide">Descarga Ágora</h3>
-          <p class="mt-3 text-sm text-muted">
-            Elige tu tienda. La descarga y el registro son gratuitos.
-          </p>
-          <div class="mt-5 grid gap-2.5">
-            {
-              stores.map((s) => (
-                <a
-                  data-store-link={s.key}
-                  class="flex items-center gap-3 rounded-lg border border-line bg-surface/40 px-4 py-3 transition-colors hover:border-neon/50"
-                  title={`Descargar Ágora en ${s.store}`}
-                >
-                  <BrandMark mark={s.mark} class="h-5 w-5" title={s.store} />
-                  <span class="text-left">
-                    <span class="block font-display text-[0.82rem] font-bold uppercase tracking-wide">{s.store}</span>
-                    <span class="block font-mono text-[0.55rem] uppercase tracking-[0.16em] text-muted">{s.sub}</span>
-                  </span>
+        {
+          !onlyPreregister && (
+            <Fragment>
+              {/* Ya disponible */}
+              <div class="u-card !bg-surface/85 p-5 sm:p-7" data-phase="live" hidden>
+                <h3 class="font-display text-lg font-black uppercase tracking-wide">Descarga Ágora</h3>
+                <p class="mt-3 text-sm text-muted">Elige tu tienda. La descarga y el registro son gratis.</p>
+                <div class="mt-5 grid gap-2.5">
+                  {stores.map((s) => (
+                    <a
+                      data-store-link={s.key}
+                      class="flex items-center gap-3 rounded-lg border border-line bg-surface/40 px-4 py-3 transition-colors hover:border-neon/50"
+                      title={`Descargar Ágora en ${s.store}`}
+                    >
+                      <BrandMark mark={s.mark} class="h-5 w-5" title={s.store} />
+                      <span class="text-left">
+                        <span class="block font-display text-[0.82rem] font-bold uppercase tracking-wide">{s.store}</span>
+                        <span class="block font-mono text-[0.55rem] uppercase tracking-[0.16em] text-muted">{s.sub}</span>
+                      </span>
+                    </a>
+                  ))}
+                </div>
+                <a href={url('/soporte')} class="mt-5 inline-flex text-[0.8rem] text-neon underline underline-offset-2" title="Soporte de Ágora">
+                  ¿Problemas para entrar? Escríbenos
                 </a>
-              ))
-            }
-          </div>
-          <a href={url('/soporte')} class="mt-5 inline-flex text-[0.8rem] text-neon underline underline-offset-2" title="Soporte de Ágora">
-            ¿Problemas para entrar? Escríbenos
-          </a>
-        </div>
+              </div>
 
-        <!-- Próximamente -->
-        <div class="u-card !bg-surface/85 p-5 sm:p-7" data-phase="upcoming" hidden>
-          <h3 class="font-display text-lg font-black uppercase tracking-wide">Muy pronto en las tiendas</h3>
-          <p class="mt-3 text-sm text-muted">
-            Todavía no hay descarga disponible. Cuando la app se publique, el enlace aparecerá en
-            esta web y en la página de descarga.
-          </p>
-          <a href={url('/descargar')} class="u-btn u-btn--ghost mt-5 w-full" title="Estado de la descarga de Ágora">
-            Ver estado de la descarga
-          </a>
-          <p class="mt-4 text-center font-mono text-[0.6rem] uppercase tracking-[0.16em] text-muted">
-            Sin tarjeta · Sin suscripción
-          </p>
-        </div>
-
-        <!-- Sin datos todavía -->
-        <div class="u-card !bg-surface/85 p-5 sm:p-7" data-phase="unknown">
-          <h3 class="font-display text-lg font-black uppercase tracking-wide">Comprobando disponibilidad</h3>
-          <p class="mt-3 text-sm text-muted">
-            Estamos consultando el estado del pre-registro y de las tiendas. No mostramos ofertas ni
-            enlaces de descarga hasta confirmarlo.
-          </p>
-          <a href={url('/soporte')} class="u-btn u-btn--ghost mt-5 w-full" title="Soporte de Ágora">
-            Hablar con soporte
-          </a>
-        </div>
+              {/* Próximamente y sin datos: lo útil es seguir el lanzamiento */}
+              {['upcoming', 'unknown'].map((phase) => (
+                <div
+                  class="u-card !bg-surface/85 p-5 sm:p-7"
+                  data-phase={phase}
+                  {...(phase === 'upcoming' ? { hidden: true } : {})}
+                >
+                  <h3 class="font-display text-lg font-black uppercase tracking-wide">Sigue el lanzamiento</h3>
+                  <p class="mt-3 text-sm leading-relaxed text-muted">
+                    Fechas, primeros torneos oficiales y novedades, antes que nadie en nuestras redes.
+                  </p>
+                  <div class="mt-5 grid gap-2.5">
+                    {SOCIAL.map((s) => (
+                      <a
+                        href={s.url}
+                        target="_blank"
+                        rel="noopener"
+                        title={s.title}
+                        class="flex items-center gap-3 rounded-lg border border-line bg-surface/40 px-4 py-3 transition-colors hover:border-neon/50"
+                      >
+                        <BrandMark mark={s.name.toLowerCase()} class="h-5 w-5" />
+                        <span class="text-left">
+                          <span class="block font-display text-[0.82rem] font-bold uppercase tracking-wide">{s.name}</span>
+                          <span class="block font-mono text-[0.6rem] text-muted">{s.handle}</span>
+                        </span>
+                      </a>
+                    ))}
+                  </div>
+                  <a href={url('/soporte')} class="mt-5 inline-flex text-[0.8rem] text-neon underline underline-offset-2" title="Soporte de Ágora">
+                    ¿Tienes alguna duda? Escríbenos
+                  </a>
+                </div>
+              ))}
+            </Fragment>
+          )
+        }
       </div>
     </div>
   </div>
@@ -520,7 +501,7 @@ const stores = [
       } catch (e) {
         // Aquí caen los fallos de red: dominio que no resuelve, CORS o certificado.
         console.error('[pre-registro] no se pudo llamar a', endpoint, e);
-        err('email', 'No hemos podido conectar con el servidor. Inténtalo de nuevo en unos minutos o escríbenos a agoragaming99@gmail.com.');
+        err('email', 'No hemos podido conectar con el servidor. Inténtalo de nuevo en unos minutos o escríbenos a support@agoraclan.com.');
       }
       btn.disabled = false;
       txt.textContent = prev;

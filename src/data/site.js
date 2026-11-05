@@ -10,7 +10,7 @@ export const SITE = {
   locale: 'es-ES',
   lang: 'es',
   description:
-    'La arena digital para gamers. Encuentra con quién jugar, monta tu propio torneo con brackets y haz crecer un perfil que demuestra lo que has conseguido.',
+    'La app de torneos para comunidades y clanes. Organiza los tuyos, juega torneos oficiales con premios reales y sube en el ranking de cada temporada.',
   themeColor: '#0AFF7A',
   twitterHandle: '@agoraclan_',
 };
@@ -59,22 +59,22 @@ export const NAV = [
     label: 'Inicio',
     href: '/',
     icon: 'home',
-    hint: 'La arena, de un vistazo',
-    title: 'Ágora: encuentra jugadores y organiza torneos',
+    hint: 'Qué es Ágora, de un vistazo',
+    title: 'Ágora: torneos para tu comunidad con premios reales',
   },
   {
     label: 'Torneos',
     href: '/torneos',
     icon: 'trophy',
-    hint: 'Descubre la arena y sus posibilidades',
-    title: 'Torneos, duelos y batallas: cómo se compite en Ágora',
+    hint: 'Oficiales, personalizados, batallas y ranking',
+    title: 'Torneos oficiales y personalizados en Ágora',
   },
   {
-    label: 'Juegos',
-    href: '/juegos',
-    icon: 'pad',
-    hint: 'Nuestro catálogo',
-    title: 'Catálogo de juegos para competir en Ágora',
+    label: 'Comunidades',
+    href: '/comunidad',
+    icon: 'users',
+    hint: 'Trae a tu comunidad a Ágora',
+    title: 'Trae tu comunidad a Ágora: programa para creadores',
   },
   {
     label: 'Descargar',
@@ -91,6 +91,9 @@ export const NAV = [
     title: 'Preguntas frecuentes sobre Ágora',
   },
 ];
+
+// Correo al que escribe la gente desde la web.
+export const CONTACT = { email: 'support@agoraclan.com' };
 
 export const LEGAL = [
   { label: 'Política de privacidad', href: `${SITE.url}/privacy`, title: 'Política de privacidad de Ágora' },

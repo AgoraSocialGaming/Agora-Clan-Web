@@ -1,0 +1,199 @@
+---
+import { Image } from 'astro:assets';
+import Icon from '../ui/Icon.astro';
+import Heading from '../ui/Heading.astro';
+
+import ladon from '../../assets/mascotas/ladon-ggez.png';
+import marcoDragon from '../../assets/marcos/marco-dragon.png';
+import emblemaOro from '../../assets/emblemas/emblema-oro.png';
+import cofreOro from '../../assets/cofres/cofre-oro.png';
+
+// Datos de ejemplo: nombres inventados para enseñar cómo se ve la tabla.
+const tablas = {
+  jugadores: [
+    { n: 'kaiser_bs', s: 'Brawl Stars', p: 4820, up: true },
+    { n: 'lunaticRx', s: 'Clash Royale', p: 4655, up: true },
+    { n: 'Nyx.gg', s: 'Valorant', p: 4410, up: false },
+    { n: 'tomahawk', s: 'Brawl Stars', p: 4302, up: true },
+    { n: 'pandaflash', s: 'League of Legends', p: 4188, up: false },
+  ],
+  clanes: [
+    { n: 'Demon Angels', s: '48 miembros', p: 12840, up: true },
+    { n: 'Kraken FC', s: '36 miembros', p: 12215, up: true },
+    { n: 'Orden Nórdica', s: '52 miembros', p: 11930, up: false },
+    { n: 'Bajo Cero', s: '29 miembros', p: 11402, up: true },
+    { n: 'Los Ilotas', s: '41 miembros', p: 10987, up: false },
+  ],
+};
+const medal = ['#F5C451', '#C9CCD6', '#C08A55'];
+---
+
+<section id="ranking" class="u-shell scroll-mt-24 py-[var(--spacing-section)]">
+  <div class="grid items-center gap-12 lg:grid-cols-[1fr_1fr] lg:gap-16">
+    <div>
+      <Heading
+        tag="Ranking de temporada"
+        tone="var(--color-ladon)"
+        title='Al final de cada temporada, <span style="color:var(--color-ladon)">alguien manda</span>'
+        intro="Cada temporada tiene dos clasificaciones: la tuya y la de tu clan. Al cerrarla, los primeros se llevan recompensas exclusivas que no vuelven a salir."
+      />
+
+      <ul class="mt-8 space-y-4" data-reveal-group>
+        <li class="flex gap-3.5" data-reveal-item>
+          <Icon name="target" class="mt-0.5 h-5 w-5 shrink-0 text-ladon" />
+          <p class="text-[0.92rem] leading-relaxed text-muted">
+            <strong class="text-bone">Individual.</strong> Suman los torneos oficiales y las batallas con
+            amigos y aleatorias.
+          </p>
+        </li>
+        <li class="flex gap-3.5" data-reveal-item>
+          <Icon name="shield" class="mt-0.5 h-5 w-5 shrink-0 text-ladon" />
+          <p class="text-[0.92rem] leading-relaxed text-muted">
+            <strong class="text-bone">Clanes.</strong> Suman las batallas de clan. Al final de temporada,
+            la recompensa llega a cada miembro.
+          </p>
+        </li>
+      </ul>
+
+      <div class="mt-8 flex items-center gap-4 rounded-2xl border border-line bg-surface/40 p-4" data-reveal>
+        <div class="flex shrink-0 -space-x-3">
+          <Image src={marcoDragon} alt="Marco Dragón" width={96} densities={[1, 2]} class="h-12 w-12 object-contain" />
+          <Image src={emblemaOro} alt="Emblema de oro" width={96} densities={[1, 2]} class="h-12 w-12 object-contain" />
+          <Image src={cofreOro} alt="Cofre de oro" width={96} densities={[1, 2]} class="h-12 w-12 object-contain" />
+        </div>
+        <p class="text-[0.82rem] leading-snug text-muted">
+          <span class="block font-display text-[0.72rem] font-bold uppercase tracking-wide text-bone">Recompensas de fin de temporada</span>
+          Marcos, emblemas y cofres que solo existen esa temporada.
+        </p>
+      </div>
+    </div>
+
+    <!-- Tabla + Ladón asomando -->
+    <div class="relative pt-16 sm:pt-20">
+      <Image
+        src={ladon}
+        alt="Ladón, mascota de Ágora, presumiendo de ranking"
+        width={360}
+        densities={[1, 2]}
+        class="u-mascot absolute -top-2 right-0 z-10 w-[124px] sm:-right-4 sm:-top-4 sm:w-[200px]"
+        data-pop
+      />
+
+      <div class="u-panel relative p-2 sm:p-3" style="--edge: rgb(255 138 42 / 0.55)" data-lb data-reveal>
+        <div class="flex items-center justify-between gap-3 px-3 pb-3 pt-2">
+          <div role="tablist" aria-label="Tipo de ranking" class="flex gap-1 rounded-xl border border-line bg-surface/60 p-1">
+            <button
+              type="button"
+              role="tab"
+              aria-selected="true"
+              aria-controls="lb-jugadores"
+              data-lb-tab="jugadores"
+              class="rounded-lg px-3 py-1.5 font-mono text-[0.6rem] uppercase tracking-[0.16em] text-muted transition-colors aria-selected:bg-ladon aria-selected:text-ink"
+              >Individual</button
+            >
+            <button
+              type="button"
+              role="tab"
+              aria-selected="false"
+              aria-controls="lb-clanes"
+              data-lb-tab="clanes"
+              class="rounded-lg px-3 py-1.5 font-mono text-[0.6rem] uppercase tracking-[0.16em] text-muted transition-colors aria-selected:bg-ladon aria-selected:text-ink"
+              >Clanes</button
+            >
+          </div>
+          <span class="font-mono text-[0.58rem] uppercase tracking-[0.18em] text-muted">Temporada 1</span>
+        </div>
+
+        {
+          Object.entries(tablas).map(([key, rows], ti) => (
+            <ol id={`lb-${key}`} role="tabpanel" data-lb-panel={key} hidden={ti !== 0} class="space-y-1.5">
+              {rows.map((r, i) => (
+                <li
+                  class:list={[
+                    'lb-row flex items-center gap-3 rounded-xl px-3 py-2.5',
+                    i === 0 ? 'border border-gold/35 bg-gold/[0.07]' : 'bg-surface/50',
+                  ]}
+                  style={`--i:${i}`}
+                >
+                  <span
+                    class="w-6 text-center font-display text-[0.9rem] font-black"
+                    style={`color:${medal[i] ?? '#9AA0AD'}`}
+                  >
+                    {i + 1}
+                  </span>
+                  <span
+                    class="grid h-9 w-9 shrink-0 place-items-center rounded-full border font-display text-[0.7rem] font-black uppercase"
+                    style={`border-color:${(medal[i] ?? '#2E2E3A')}80;color:${medal[i] ?? '#9AA0AD'}`}
+                  >
+                    {r.n.slice(0, 2)}
+                  </span>
+                  <span class="min-w-0 flex-1">
+                    <span class="flex items-center gap-1.5 truncate text-[0.88rem] font-semibold">
+                      {r.n}
+                      {i === 0 && <Icon name="crown" class="h-3.5 w-3.5 text-gold" />}
+                    </span>
+                    <span class="block truncate text-[0.7rem] text-muted">{r.s}</span>
+                  </span>
+                  <span class="text-right">
+                    <span class="block font-mono text-[0.82rem] text-bone">{r.p.toLocaleString('es-ES')}</span>
+                    <span class:list={['block font-mono text-[0.58rem]', r.up ? 'text-neon' : 'text-danger']}>
+                      {r.up ? '▲' : '▼'} pts
+                    </span>
+                  </span>
+                </li>
+              ))}
+            </ol>
+          ))
+        }
+        <p class="px-3 pb-2 pt-3 text-center text-[0.66rem] text-muted">Ejemplo ilustrativo de la tabla de la app</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .lb-row {
+    animation: rowIn 0.55s var(--ease-out-expo) both;
+    animation-delay: calc(var(--i) * 60ms);
+  }
+  [data-lb-panel][hidden] .lb-row { animation: none; }
+  @keyframes rowIn {
+    from {
+      opacity: 0;
+      transform: translateX(14px);
+    }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-lb]').forEach((lb) => {
+    const tabs = [...lb.querySelectorAll<HTMLButtonElement>('[data-lb-tab]')];
+    const panels = [...lb.querySelectorAll<HTMLElement>('[data-lb-panel]')];
+    const open = (key: string | undefined) => {
+      tabs.forEach((t) => t.setAttribute('aria-selected', String(t.dataset.lbTab === key)));
+      panels.forEach((p) => {
+        p.hidden = p.dataset.lbPanel !== key;
+      });
+    };
+    tabs.forEach((t) => t.addEventListener('click', () => open(t.dataset.lbTab)));
+
+    // Cambia sola de pestaña mientras se ve, hasta que alguien la toque
+    let auto: number | undefined;
+    const io = new IntersectionObserver(([e]) => {
+      if (e?.isIntersecting && auto === undefined) {
+        auto = window.setInterval(() => {
+          const cur = tabs.findIndex((t) => t.getAttribute('aria-selected') === 'true');
+          open(tabs[(cur + 1) % tabs.length]?.dataset.lbTab);
+        }, 4200);
+      } else if (!e?.isIntersecting && auto !== undefined) {
+        window.clearInterval(auto);
+        auto = undefined;
+      }
+    });
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) io.observe(lb);
+    lb.addEventListener('pointerdown', () => {
+      io.disconnect();
+      if (auto !== undefined) window.clearInterval(auto);
+    }, { once: true });
+  });
+</script>

@@ -2,78 +2,178 @@
 import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import Icon from '../components/ui/Icon.astro';
+import Heading from '../components/ui/Heading.astro';
 import { breadcrumbSchema } from '../lib/schema.js';
 import { url } from '../lib/url.js';
+import { CONTACT } from '../data/site.js';
 import gorgo from '../assets/mascotas/gorgo-senala.png';
 
 // Formulario alojado en Formspree: la web es estática y no puede recibir envíos.
 const ENDPOINT = 'https://formspree.io/f/xrpzaoro';
 
+// Programa de creadores: de momento se habla por correo, caso a caso.
+const asunto = 'Programa de creadores de Ágora';
+const cuerpo = [
+  'Hola, equipo de Ágora:',
+  '',
+  'Quiero traer a mi comunidad a Ágora.',
+  '',
+  'Nombre o alias:',
+  'Enlaces a mi comunidad (Twitch, YouTube, TikTok, Discord…):',
+  'Tamaño aproximado de la comunidad:',
+  'Juegos a los que jugamos:',
+  '¿Ya tenéis clan en Ágora? (nombre):',
+  '',
+  'Gracias.',
+].join('\n');
+const mailCreadores = `mailto:${CONTACT.email}?subject=${encodeURIComponent(asunto)}&body=${encodeURIComponent(cuerpo)}`;
+
 const campos = [
-  { id: 'clan', name: 'Nombre del clan en Ágora', ph: 'Demon Angels', required: true },
-  { id: 'usuario', name: 'Nombre de usuario en Ágora', ph: '@tuusuario', required: true },
-  { id: 'real', name: 'Nombre real', ph: 'Cómo te llamamos', required: true },
+  { id: 'clan', name: 'Clan en Ágora', ph: 'Demon Angels', required: false, hint: 'opcional' },
+  { id: 'usuario', name: 'Usuario en Ágora', ph: '@tuusuario', required: false, hint: 'opcional' },
+  { id: 'real', name: 'Nombre real', ph: 'Cómo te llamamos', required: true, hint: '' },
   {
     id: 'comunidad',
     name: 'Comunidad o enlace a tus redes',
     ph: 'Discord, Twitch, Instagram, TikTok…',
     required: true,
+    hint: '',
+  },
+];
+
+const ventajas = [
+  {
+    icon: 'users',
+    t: 'Más de 25 plazas',
+    d: 'Un clan normal tiene 25 plazas. Si tu comunidad es grande, la ampliamos gratis para que entre entera.',
+  },
+  {
+    icon: 'bracket',
+    t: 'Torneos con tu nombre',
+    d: 'Creas torneos para los tuyos desde el móvil, con tus reglas, y los compartes con un enlace.',
+  },
+  {
+    icon: 'shield',
+    t: 'Te echamos una mano',
+    d: 'Te acompañamos en el primer torneo: formato, calendario y arbitraje.',
   },
 ];
 
 const numeros = [
-  { id: 'huecos', name: '¿Cuántos huecos necesitáis?', ph: '50', min: 1, max: 5000 },
+  { id: 'huecos', name: '¿Cuántas plazas necesitáis?', ph: '100', min: 1, max: 5000 },
   { id: 'admins', name: '¿Cuántos administran el grupo?', ph: '3', min: 1, max: 200 },
 ];
 ---
 
 <Base
-  title="Trae tu comunidad a Ágora"
-  description="¿Tienes clan, Discord o audiencia? Pide tu clan ampliado gratis en Ágora, con recompensas para los tuyos y herramientas para organizar vuestros torneos."
+  title="Trae tu comunidad a Ágora: clanes grandes y creadores"
+  description="Amplía tu clan de Ágora por encima de 25 plazas o únete al programa de creadores: si traes a tu comunidad durante el lanzamiento, te pagamos por cada jugador."
   schema={[
     breadcrumbSchema([
       { label: 'Inicio', href: '/' },
-      { label: 'Torneos', href: '/torneos' },
-      { label: 'Trae tu comunidad', href: '/comunidad' },
+      { label: 'Comunidades', href: '/comunidad' },
     ]),
   ]}
 >
   <section class="u-shell relative pb-[var(--spacing-section)] pt-12 sm:pt-16">
     <div
-      class="pointer-events-none absolute inset-x-0 top-0 h-[420px] bg-[radial-gradient(ellipse_60%_100%_at_50%_0%,rgb(10_255_122/0.1),transparent)]"
+      class="pointer-events-none absolute inset-x-0 top-0 h-[420px] bg-[radial-gradient(ellipse_60%_100%_at_50%_0%,rgb(143_209_79/0.1),transparent)]"
       aria-hidden="true"
     >
     </div>
 
-    <header class="relative mx-auto max-w-2xl text-center">
-      <p class="u-eyebrow">Para clanes, streamers y comunidades</p>
-      <h1 class="mt-3 text-display font-black uppercase sm:mt-4">
-        Trae tu comunidad<br /><span class="text-neon">y te lo ponemos fácil</span>
-      </h1>
-      <p class="mt-4 text-[0.94rem] leading-relaxed text-muted sm:mt-5 sm:text-[1.02rem]">
-        Rellena esto y te montamos un clan gratuito con un límite de miembros mucho más amplio,
-        recompensas para los tuyos y las herramientas para organizar vuestros torneos.
-      </p>
+    <Heading
+      as="h1"
+      class="relative"
+      tag="Para creadores, clanes y servidores"
+      tone="var(--color-gorgo)"
+      title='Trae tu comunidad <span style="color:var(--color-gorgo)">a Ágora</span>'
+      intro="Hay dos caminos, según de dónde vengas. Elige el tuyo."
+    />
 
-      <ul class="mt-6 flex flex-wrap justify-center gap-2">
+    <!-- Los dos caminos -->
+    <div class="relative mt-10 grid gap-4 md:grid-cols-2" data-reveal-group>
+      <a
+        href="#ampliar"
+        class="u-panel group block p-6 transition-transform duration-500 hover:-translate-y-1 sm:p-7"
+        style="--edge: rgb(143 209 79 / 0.55)"
+        title="Pedir la ampliación de tu clan en Ágora"
+        data-reveal-item
+      >
+        <span class="font-mono text-[0.6rem] uppercase tracking-[0.2em] text-gorgo">Ya tengo clan en Ágora</span>
+        <h2 class="mt-3 font-display text-[1.3rem] font-black uppercase leading-tight">Amplía tu clan</h2>
+        <p class="mt-2 max-w-sm text-[0.9rem] leading-relaxed text-muted">
+          Los clanes tienen 25 plazas. Si tu comunidad es más grande, pídenos más y te lo ampliamos
+          gratis.
+        </p>
+        <span class="mt-5 inline-flex items-center gap-2 font-display text-[0.72rem] font-bold uppercase tracking-wide text-gorgo">
+          Rellenar solicitud
+          <Icon name="arrow" class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+        </span>
+      </a>
+
+      <div
+        id="creadores"
+        class="u-panel scroll-mt-28 p-6 sm:p-7"
+        style="--edge: rgb(245 196 81 / 0.6)"
+        data-reveal-item
+      >
+        <span class="font-mono text-[0.6rem] uppercase tracking-[0.2em] text-gold">Vengo de fuera con mi comunidad</span>
+        <h2 class="mt-3 font-display text-[1.3rem] font-black uppercase leading-tight">
+          Programa de <span class="t-gold">creadores</span>
+        </h2>
+        <p class="mt-2 max-w-sm text-[0.9rem] leading-relaxed text-muted">
+          Streamers y creadores que traigan a su comunidad durante el lanzamiento: te pagamos por cada
+          jugador que entre. Lo hablamos por correo, caso a caso.
+        </p>
+        <a href={mailCreadores} class="u-btn u-btn--gold mt-5" title="Escribir a Ágora sobre el programa de creadores">
+          <Icon name="coin" class="h-4 w-4" />
+          Escríbenos
+        </a>
+        <p class="mt-3 font-mono text-[0.62rem] text-muted">{CONTACT.email}</p>
+      </div>
+    </div>
+
+    <div class="relative mt-20 grid gap-14 lg:grid-cols-[1fr_1fr] lg:gap-16">
+    <!-- Qué te llevas -->
+    <div>
+      <h2 class="font-display text-[1.1rem] font-black uppercase" data-reveal>Lo que te llevas</h2>
+      <ul class="mt-6 space-y-3" data-reveal-group>
         {
-          ['Clan ampliado gratis', 'Recompensas para los tuyos', 'Torneos con tu marca'].map((t) => (
-            <li class="rounded-full border border-line px-3 py-1.5 font-mono text-[0.52rem] uppercase tracking-[0.14em] text-muted sm:text-[0.56rem]">
-              {t}
+          ventajas.map((v) => (
+            <li class="flex gap-4 rounded-2xl border border-line bg-ink/50 p-4 sm:p-5" data-reveal-item>
+              <span class="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-gorgo/12 text-gorgo">
+                <Icon name={v.icon} class="h-5 w-5" />
+              </span>
+              <span>
+                <span class="block font-display text-[0.86rem] font-bold uppercase tracking-wide">{v.t}</span>
+                <span class="mt-1 block text-[0.88rem] leading-relaxed text-muted">{v.d}</span>
+              </span>
             </li>
           ))
         }
       </ul>
-    </header>
+
+      <p
+        class="u-chip mt-8 w-max max-w-full !border-gorgo/40 font-mono text-[0.58rem] uppercase tracking-[0.16em] text-gorgo"
+        data-reveal
+      >
+        <span class="relative flex h-2 w-2">
+          <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-gorgo opacity-70"></span>
+          <span class="relative inline-flex h-2 w-2 rounded-full bg-gorgo"></span>
+        </span>
+        Programa de lanzamiento · plazas limitadas
+      </p>
+    </div>
 
     <!-- Gorgo asoma por encima de la tarjeta y señala el formulario -->
-    <div class="relative mx-auto mt-16 max-w-xl sm:mt-20">
+    <div id="ampliar" class="relative mx-auto mt-16 w-full max-w-xl scroll-mt-40 self-start lg:sticky lg:top-28 lg:mt-0">
       <Image
         src={gorgo}
         alt="Gorgo, mascota de Ágora, señalando el formulario"
         width={420}
         densities={[1, 2]}
-        class="pointer-events-none absolute -top-[76px] left-1 z-10 w-[120px] -scale-x-100 drop-shadow-[0_16px_30px_rgb(0_0_0/0.6)] sm:-top-[104px] sm:left-4 sm:w-[164px]"
+        class="u-mascot absolute -top-[92px] right-2 z-10 w-[110px] -scale-x-100 sm:-top-[118px] sm:right-6 sm:w-[140px]"
         data-float="7"
       />
 
@@ -85,15 +185,19 @@ const numeros = [
         novalidate
       >
         <!-- Asunto del correo y trampa antispam -->
-        <input type="hidden" name="_subject" value="Nueva comunidad quiere entrar en Ágora" />
+        <input type="hidden" name="_subject" value="Solicitud de ampliación de clan en Ágora" />
         <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true" />
 
-        <div class="grid gap-3.5 sm:grid-cols-2">
+        <h2 class="font-display text-[1rem] font-black uppercase tracking-wide">Amplía tu clan</h2>
+        <p class="mt-1.5 text-[0.82rem] text-muted">Dos minutos. Te respondemos por correo.</p>
+
+        <div class="mt-6 grid gap-3.5 sm:grid-cols-2">
           {
             campos.map((c) => (
               <label class="block" class:list={[c.id === 'comunidad' && 'sm:col-span-2']}>
                 <span class="mb-1.5 block font-mono text-[0.6rem] uppercase tracking-[0.16em] text-muted sm:text-[0.64rem]">
                   {c.name}
+                  {c.hint && <span class="normal-case tracking-normal"> ({c.hint})</span>}
                 </span>
                 <input
                   class="u-input"
@@ -107,7 +211,6 @@ const numeros = [
               </label>
             ))
           }
-
           <label class="block sm:col-span-2">
             <span class="mb-1.5 block font-mono text-[0.6rem] uppercase tracking-[0.16em] text-muted sm:text-[0.64rem]">
               Correo de contacto
@@ -177,8 +280,8 @@ const numeros = [
           Solicitud enviada
         </h2>
         <p class="mx-auto mt-3 max-w-md text-[0.88rem] text-muted">
-          Lo revisamos y te escribimos con el clan ampliado y las recompensas para los tuyos.
-          Mientras tanto, consulta cómo entrar en Ágora.
+          Lo revisamos y te escribimos para ampliar tu clan. Mientras tanto, consulta cómo entrar
+          en Ágora.
         </p>
         <a
           href={url('/descargar')}
@@ -186,6 +289,7 @@ const numeros = [
           class="u-btn u-btn--ghost mt-6">Ver opciones de acceso</a
         >
       </div>
+    </div>
     </div>
   </section>
 </Base>

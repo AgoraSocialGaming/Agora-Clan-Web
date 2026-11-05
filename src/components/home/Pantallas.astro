@@ -1,0 +1,56 @@
+---
+import PhoneMockup from '../ui/PhoneMockup.astro';
+import Heading from '../ui/Heading.astro';
+
+import arena from '../../assets/app/agora-app-arena-torneos.png';
+import clanes from '../../assets/app/agora-app-clanes.png';
+import misiones from '../../assets/app/agora-app-misiones-racha.png';
+import perfil from '../../assets/app/agora-app-perfil-jugador.png';
+import juegos from '../../assets/app/agora-app-juegos-vinculados.png';
+
+const shots = [
+  { img: arena, n: 'Arena', d: 'Torneos, batallas y cofres. Todo lo competitivo, en un sitio.', alt: 'Arena de Ágora con batallas, torneos y creación de torneo personalizado' },
+  { img: clanes, n: 'Clanes', d: 'Crea el tuyo o únete a uno y compite en equipo.', alt: 'Pantalla de clanes de la app de Ágora' },
+  { img: misiones, n: 'Misiones y racha', d: 'Un objetivo nuevo cada día, con su recompensa.', alt: 'Racha diaria y misiones diarias en la app de Ágora' },
+  { img: perfil, n: 'Perfil', d: 'Marco, título, emblemas y nivel. Tu carta de presentación.', alt: 'Perfil de jugador de Ágora con marco, título y nivel' },
+  { img: juegos, n: 'Tus juegos', d: 'Tus juegos e ID en el perfil, con estadísticas verificadas cuando hay API oficial.', alt: 'Juegos vinculados e ID de juego en el perfil de Ágora' },
+];
+---
+
+<section id="app" class="scroll-mt-20 overflow-hidden py-[var(--spacing-section)]">
+  <div>
+    <div class="u-shell">
+      <Heading
+        tag="La app por dentro"
+        title="Así se ve Ágora"
+        intro="Pantallas reales de la app. Lo demás lo verás al entrar."
+      />
+    </div>
+
+    <!-- Móvil: carrusel con snap. Escritorio: fila escalonada con profundidad al hacer scroll -->
+    <div class="mt-10 lg:mt-14 lg:pb-10">
+      <ul
+        class="u-rail flex snap-x snap-mandatory gap-5 overflow-x-auto px-5 pb-4 [scrollbar-width:none] md:px-8 lg:mx-auto lg:max-w-[78rem] lg:snap-none lg:justify-between lg:overflow-visible lg:px-8 [&::-webkit-scrollbar]:hidden"
+      >
+        {
+          shots.map((s, i) => (
+            <li
+              class:list={['w-[210px] shrink-0 snap-center sm:w-[230px] lg:w-[calc((100%-4*1.25rem)/5)]', i % 2 === 1 && 'lg:translate-y-10']}
+            >
+              <div data-parallax={i % 2 === 1 ? '-18' : '14'}>
+                <PhoneMockup src={s.img} alt={s.alt} width={260} glow={false} crop />
+              </div>
+              <div class="mt-4 flex gap-3">
+                <span class="font-mono text-[0.62rem] text-neon">0{i + 1}</span>
+                <div>
+                  <p class="font-display text-[0.78rem] font-bold uppercase tracking-wide">{s.n}</p>
+                  <p class="mt-1 text-[0.8rem] leading-snug text-muted">{s.d}</p>
+                </div>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</section>

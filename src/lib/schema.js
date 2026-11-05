@@ -47,11 +47,13 @@ export const appSchema = () => ({
   image: abs('/img/og/default.png'),
   screenshot: abs('/img/og/default.png'),
   featureList: [
-    'Buscador de compañeros de juego',
-    'Torneos por brackets con arbitraje',
-    'Clanes con escudo y roles',
-    'Perfil RPG con nivel, marcos y títulos',
-    'Estadísticas verificadas por API oficial',
+    'Torneos oficiales con premios reales',
+    'Torneos personalizados para comunidades y clanes',
+    'Batallas con amigos, aleatorias y de clan',
+    'Ranking individual y de clanes por temporadas',
+    'Tarjetas regalo canjeables jugando torneos',
+    'Misiones, nivel, cofres, títulos, emblemas y marcos',
+    'ID de juego obligatorio y verificación por API oficial cuando existe',
   ],
   publisher: { '@id': abs('/#organization') },
 });

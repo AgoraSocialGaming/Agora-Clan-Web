@@ -2,172 +2,106 @@
 import { url } from '../lib/url.js';
 import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
-import Section from '../components/ui/Section.astro';
-import Rail from '../components/ui/Rail.astro';
+import Heading from '../components/ui/Heading.astro';
 import Preregistro from '../components/sections/Preregistro.astro';
 import Icon from '../components/ui/Icon.astro';
-import { breadcrumbSchema, faqSchema } from '../lib/schema.js';
+import { breadcrumbSchema, faqSchema, gameListSchema } from '../lib/schema.js';
+import { FAQ } from '../data/faq.js';
+import { LANZAMIENTO } from '../data/juegos.js';
 
+import styxxGuerrero from '../assets/mascotas/styxx-guerrero.png';
 import gorgoTablero from '../assets/mascotas/gorgo-tablero.png';
+import brawl from '../assets/juegos/brawl-stars.jpg';
+import clash from '../assets/juegos/clash-royale.png';
+import valorant from '../assets/juegos/valorant.jpg';
+import lol from '../assets/juegos/league-of-legends.jpg';
 
-const modos = [
+const covers: Record<string, ImageMetadata> = {
+  'brawl-stars': brawl,
+  'clash-royale': clash,
+  valorant,
+  'league-of-legends': lol,
+};
+
+const crear = [
+  { n: '1', t: 'Elige juego y formato', d: 'Muchos más juegos que los oficiales. Individual, por equipos o clan contra clan, con las plazas que quieras.' },
+  { n: '2', t: 'Pon tus reglas', d: 'Reglas de la partida, fechas y entrada. El torneo lleva tu nombre.' },
+  { n: '3', t: 'Invita con un enlace', d: 'Lo compartes en tu Discord, tu canal o tu clan y la gente se apunta desde la app.' },
+  { n: '4', t: 'El bracket avanza solo', d: 'Ágora empareja cada ronda, avisa a los jugadores y actualiza el cuadro con cada resultado.' },
+];
+
+const batallas = [
   {
-    id: 'duelo',
     icon: 'users',
-    tone: '#0AFF7A',
-    name: 'Duelo con amigos',
-    claim: 'El pique de siempre, con marcador',
-    body: 'Retas a alguien de tu lista y jugáis cuando os venga bien. Eliges el formato, de 1v1 hasta 5v5, y si va en amistoso o en competitivo.',
-    rows: [
-      ['Formato', '1v1 hasta 5v5'],
-      ['Modo', 'Amistoso o competitivo'],
-      ['Recompensa', 'XP, cofres y cosméticos'],
-    ],
+    t: 'Con amigos',
+    d: 'Retas a alguien de tu lista y jugáis cuando os venga bien. De 1v1 a 5v5, amistosa o con apuesta.',
+    rank: 'Ranking individual',
+    clan: false,
   },
   {
-    id: 'aleatoria',
     icon: 'bolt',
-    tone: '#F5C451',
-    name: 'Batalla aleatoria',
-    claim: 'Sin amigos conectados, sin excusas',
-    body: 'Emparejamiento rápido 1v1 contra jugadores de tu nivel que estén buscando partida en ese momento. Le das a buscar y en segundos tienes rival.',
-    rows: [
-      ['Formato', '1v1 por nivel'],
-      ['Acceso', 'Libre'],
-      ['Recompensa', 'XP, ranking y cofres'],
-    ],
+    t: 'Aleatorias',
+    d: 'Matchmaking contra un rival de tu nivel que esté buscando partida en ese momento.',
+    rank: 'Ranking individual',
+    clan: false,
   },
   {
-    id: 'torneos',
-    icon: 'trophy',
-    tone: '#FF4D5E',
-    name: 'Torneos por brackets',
-    claim: 'Donde se reparten los títulos',
-    body: 'Eliminatorias individuales o por clan. Los organiza Ágora o los creas tú desde el modo personalizado. Aquí entran los premios reales que aportan los patrocinadores.',
-    rows: [
-      ['Formato', 'Brackets individuales o de clan'],
-      ['Acceso', 'Libre o con inscripción'],
-      ['Recompensa', 'Cofres exclusivos y premios reales'],
-    ],
-  },
-  {
-    id: 'personalizado',
-    icon: 'bracket',
-    tone: '#8B7BF0',
-    name: 'Torneos personalizados',
-    claim: 'El tuyo, con tus reglas',
-    body: 'Móntalo tú en dos minutos: eliges si se juega en individual o por equipos y clanes, cuántos participantes entran y qué reglas se aplican. Ágora genera el bracket, reparte los emparejamientos ronda a ronda, avisa a cada jugador y actualiza el cuadro solo según llegan los resultados. Repartes los roles de organizador, invitas con un enlace y, si hay disputa, la resuelves desde el mismo panel.',
-    rows: [
-      ['Formato', 'Individual, por equipos o entre clanes'],
-      ['Bracket', 'Generado y actualizado solo'],
-      ['Control', 'Reglas, invitaciones y arbitraje'],
-    ],
+    icon: 'shield',
+    t: 'De clan',
+    d: 'Tu clan reta a otro. Cada victoria sube a tu clan y, al cerrar la temporada, hay recompensa para cada miembro.',
+    rank: 'Ranking de clanes',
+    clan: true,
   },
 ];
 
-const flujo = [
-  { n: '01', t: 'Vincula tu cuenta', d: 'Sin el ID del juego enlazado por API oficial no se entra a la sala. Es lo que mantiene fuera a las cuentas falsas.' },
-  { n: '02', t: 'Crea la sala', d: 'Eliges modalidad y formato, invitas al rival o al equipo y Ágora te muestra los IDs para montar la partida dentro del juego.' },
-  { n: '03', t: 'Se juega', d: 'La partida transcurre con normalidad. El chat queda registrado por si hace falta.' },
-  { n: '04', t: 'Reporte doble', d: 'Al terminar, cada parte reporta el resultado y puede adjuntar capturas como prueba.' },
-  { n: '05', t: 'Cierre o disputa', d: 'Si los dos reportes coinciden, el marcador se cierra al instante. Si no, un administrador revisa chat y pruebas y resuelve rápido.' },
+const partida = [
+  { t: 'Añade tu ID', d: 'Para competir en un juego, tu ID tiene que estar en tu perfil. Si el juego tiene API oficial, Ágora además verifica la cuenta y tus estadísticas.' },
+  { t: 'Se juega', d: 'Cada jugador ve el ID de su rival para montar la partida dentro del juego.' },
+  { t: 'Doble reporte', d: 'Al terminar, cada parte reporta el resultado y puede adjuntar capturas.' },
+  { t: 'Cierre o disputa', d: 'Si los reportes coinciden, se cierra al instante. Si no, un administrador revisa las pruebas y decide.' },
 ];
 
-const comunidad = [
-  {
-    i: 'users',
-    t: 'Clan ampliado, gratis',
-    d: 'Tu clan entra con un límite de miembros muy por encima del normal, sin coste y sin suscripción. Tu comunidad cabe entera desde el primer día.',
-  },
-  {
-    i: 'star',
-    t: 'Recompensas para los tuyos',
-    d: 'Pack de bienvenida para quienes lleguen contigo (cofres, marco y título) y recompensas para ti como organizador de cada torneo.',
-  },
-  {
-    i: 'bracket',
-    t: 'Torneos con tu marca',
-    d: 'Creas el bracket desde el móvil, invitas con un enlace y el torneo lleva tu nombre y el escudo de tu clan.',
-  },
-  {
-    i: 'shield',
-    t: 'Te echamos una mano',
-    d: 'Te acompañamos en el primer torneo: formato, calendario, premios y arbitraje. Después lo llevas tú solo en dos toques.',
-  },
-];
-
-const faqs = [
-  {
-    q: '¿Puedo organizar un torneo para mi comunidad?',
-    a: 'Sí. Cualquier usuario o clan puede crear su propio torneo desde el móvil: define el formato y los brackets, invita a quien quiera y lo gestiona desde la app.',
-  },
-  {
-    q: '¿Qué me llevo si traigo mi comunidad a Ágora?',
-    a: 'Un clan gratuito con un límite de miembros mucho más amplio del habitual, recompensas para ti y para tus miembros, y acompañamiento del equipo de Ágora para montar el primer torneo.',
-  },
-  {
-    q: '¿Qué pasa si mi rival miente en el resultado?',
-    a: 'Se abre una disputa automáticamente. Un administrador revisa el chat de la partida y las pruebas de ambas partes. Reportar en falso conlleva sanciones progresivas visibles en el perfil.',
-  },
-  {
-    q: '¿Qué premios reparten los torneos?',
-    a: 'Recompensas dentro de la app (XP, cofres exclusivos, marcos y títulos) y, en los torneos patrocinados, premios reales como hardware, periféricos o merchandising que llegan a tu casa.',
-  },
-];
+const faqs = FAQ.filter((g) => g.id === 'torneos' || g.id === 'premios').flatMap((g) => g.items).slice(0, 8);
 ---
 
 <Base
-  title="Torneos: duelos, batallas y brackets"
-  description="Duelos, batallas y torneos por brackets con premios reales. Organiza los torneos de tu comunidad desde el móvil, con clan ampliado gratis."
+  title="Torneos oficiales con premios y torneos para tu comunidad"
+  description="Juega torneos oficiales de Ágora con premios reales o crea torneos personalizados para tu comunidad o clan. Batallas, ranking de temporada y brackets automáticos."
   schema={[
     breadcrumbSchema([
       { label: 'Inicio', href: '/' },
       { label: 'Torneos', href: '/torneos' },
     ]),
+    gameListSchema('Juegos de los torneos oficiales de Ágora', LANZAMIENTO),
     faqSchema(faqs),
   ]}
 >
   <!-- HERO -->
-  <section class="u-shell relative grid gap-12 pb-4 pt-16 lg:grid-cols-[1.05fr_1fr] lg:items-center lg:pt-24">
+  <section class="u-shell relative grid gap-12 pb-6 pt-12 sm:pt-16 lg:grid-cols-[1.05fr_1fr] lg:items-center lg:pt-20">
     <div>
-      <p class="u-eyebrow" data-reveal>La arena</p>
-      <h1 class="mt-6 text-hero font-black uppercase">
-        Compite<br /><span class="text-neon">a tu ritmo</span>
-      </h1>
-      <p class="mt-5 max-w-lg text-[0.95rem] leading-relaxed text-muted sm:mt-6 sm:text-[1.05rem]" data-reveal data-reveal-delay="0.1">
-        Organizar un torneo entre amigos exigía una hoja de cálculo, un Discord, un bracket en otra
-        web y alguien haciendo de árbitro. En Ágora todo eso cabe en un botón.
-      </p>
+      <Heading
+        as="h1"
+        tag="Torneos"
+        title='Juega los oficiales. <span class="t-neon">Monta los tuyos.</span>'
+        intro="Los torneos oficiales los organiza Ágora y reparten premios reales. Los personalizados los crea cualquier jugador o comunidad, con sus propias reglas. Y fuera de los torneos, puedes retar a tus amigos, buscar rival o enfrentarte a otros clanes."
+      />
       <div class="mt-8 flex flex-wrap gap-3" data-reveal data-reveal-delay="0.16">
-        <a href="#modos" title="Modalidades para competir en Ágora" class="u-btn u-btn--primary">
-          Ver las modalidades
-          <Icon name="arrow" class="h-4 w-4" />
+        <a href="#oficiales" title="Torneos oficiales de Ágora con premios reales" class="u-btn u-btn--gold">
+          Torneos oficiales
+          <Icon name="trophy" class="h-4 w-4" />
         </a>
-        <a href="#comunidad" title="Trae tu comunidad a Ágora: clan ampliado gratis" class="u-btn u-btn--ghost">Tengo una comunidad</a>
+        <a href="#personalizados" title="Cómo crear un torneo personalizado en Ágora" class="u-btn u-btn--ghost">Crear mi torneo</a>
       </div>
     </div>
 
-    <!-- Cuadro de torneo: la firma visual de la página -->
+    <!-- Cuadro de torneo: se dibuja solo; la final lleva premio -->
     <div class="relative min-w-0" data-reveal data-reveal-delay="0.08">
-      <div
-        class="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(closest-side,rgb(10_255_122/0.14),transparent)]"
-        aria-hidden="true"
-      >
-      </div>
-      <svg viewBox="0 0 420 250" class="w-full" role="img" aria-label="Cuadro de torneo por eliminatorias">
-        <g class="bracket-lines" fill="none" stroke="rgb(10 255 122 / 0.45)" stroke-width="1.2" stroke-linecap="round">
-          <path d="M118 42h34" />
-          <path d="M118 100h34" />
-          <path d="M152 42V100" />
-          <path d="M152 71h34" />
-          <path d="M118 166h34" />
-          <path d="M118 208h34" />
-          <path d="M152 166V208" />
-          <path d="M152 187h34" />
-          <path d="M286 71h16" />
-          <path d="M286 187h16" />
-          <path d="M302 71V187" />
-          <path d="M302 129h14" />
+      <div class="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(closest-side,rgb(10_255_122/0.12),transparent)]" aria-hidden="true"></div>
+      <svg viewBox="0 0 440 250" class="w-full" role="img" aria-label="Cuadro de torneo por eliminatorias con premio en la final">
+        <g fill="none" stroke="rgb(10 255 122 / 0.5)" stroke-width="1.2" stroke-linecap="round" data-draw>
+          <path d="M118 42h34M118 100h34M152 42V100M152 71h34" />
+          <path d="M118 166h34M118 208h34M152 166V208M152 187h34" />
+          <path d="M286 71h16M286 187h16M302 71V187M302 129h14" />
         </g>
         {
           [
@@ -177,330 +111,218 @@ const faqs = [
             { y: 194, label: 'Jugador 4', on: false },
           ].map((s) => (
             <g>
-              <rect
-                x="18"
-                y={s.y}
-                width="100"
-                height="28"
-                rx="6"
-                fill="rgb(23 23 32 / 0.9)"
-                stroke={s.on ? 'rgb(10 255 122 / 0.65)' : 'rgb(46 46 58)'}
-              />
-              <text
-                x="32"
-                y={s.y + 18}
-                fill={s.on ? '#0AFF7A' : '#9AA0AD'}
-                font-family="JetBrains Mono, monospace"
-                font-size="9"
-                letter-spacing="1.4"
-              >
-                {s.label.toUpperCase()}
-              </text>
+              <rect x="18" y={s.y} width="100" height="28" rx="6" fill="rgb(23 23 32 / 0.9)" stroke={s.on ? 'rgb(10 255 122 / 0.65)' : 'rgb(46 46 58)'} />
+              <text x="32" y={s.y + 18} fill={s.on ? '#0AFF7A' : '#9AA0AD'} font-family="JetBrains Mono, monospace" font-size="9" letter-spacing="1.4">{s.label.toUpperCase()}</text>
             </g>
           ))
         }
         {
-          [
-            { y: 57, label: 'Semifinal', on: true },
-            { y: 173, label: 'Semifinal', on: true },
-          ].map((s) => (
+          [57, 173].map((y) => (
             <g>
-              <rect
-                x="186"
-                y={s.y}
-                width="100"
-                height="28"
-                rx="6"
-                fill="rgb(23 23 32 / 0.9)"
-                stroke={s.on ? 'rgb(10 255 122 / 0.65)' : 'rgb(46 46 58)'}
-              />
-              <text
-                x="200"
-                y={s.y + 18}
-                fill={s.on ? '#0AFF7A' : '#9AA0AD'}
-                font-family="JetBrains Mono, monospace"
-                font-size="9"
-                letter-spacing="1.4"
-              >
-                {s.label.toUpperCase()}
-              </text>
+              <rect x="186" y={y} width="100" height="28" rx="6" fill="rgb(23 23 32 / 0.9)" stroke="rgb(10 255 122 / 0.65)" />
+              <text x="200" y={y + 18} fill="#0AFF7A" font-family="JetBrains Mono, monospace" font-size="9" letter-spacing="1.4">SEMIFINAL</text>
             </g>
           ))
         }
-        <rect x="316" y="115" width="88" height="28" rx="6" fill="rgb(10 255 122 / 0.12)" stroke="rgb(10 255 122)" />
-        <text x="332" y="133" fill="#0AFF7A" font-family="JetBrains Mono, monospace" font-size="9" letter-spacing="1.4">FINAL</text>
+        <rect x="316" y="111" width="112" height="36" rx="8" fill="rgb(245 196 81 / 0.12)" stroke="#F5C451" />
+        <text x="330" y="127" fill="#F5C451" font-family="JetBrains Mono, monospace" font-size="9" letter-spacing="1.4">FINAL</text>
+        <text x="330" y="140" fill="#F5C451" font-family="JetBrains Mono, monospace" font-size="7.5" letter-spacing="1.2" opacity="0.8">PREMIO REAL</text>
       </svg>
     </div>
   </section>
 
-  <!-- MODOS -->
-  <Section id="modos" eyebrow="Modalidades" title="Cuatro maneras de entrar" intro="Cada una responde a un momento distinto: un pique con un amigo, diez minutos sueltos, un fin de semana de competición o el torneo que montas tú. Toca una para ver los detalles.">
-    <div class="mt-12 space-y-4" data-reveal-group>
-      {
-        modos.map((m) => (
-          <article id={m.id} class="u-card group relative scroll-mt-24 overflow-hidden" data-reveal-item>
-            <span
-              class="absolute inset-y-0 left-0 w-[3px] transition-all duration-500 group-hover:w-[5px]"
-              style={`background:${m.tone}`}
-              aria-hidden="true"
-            />
-
-            <details class="modo">
-              <summary class="flex cursor-pointer list-none items-center gap-4 p-6 transition-colors duration-300 hover:bg-surface/60 sm:p-7 [&::-webkit-details-marker]:hidden">
-                <span
-                  class="grid h-11 w-11 shrink-0 place-items-center rounded-lg transition-transform duration-500 group-hover:scale-105"
-                  style={`background:${m.tone}1a; color:${m.tone}`}
-                >
-                  <Icon name={m.icon} class="h-5 w-5" />
-                </span>
-
-                <span class="min-w-0 flex-1">
-                  <span class="block font-display text-[0.88rem] font-black uppercase tracking-wide sm:text-[1rem]">{m.name}</span>
-                  <span class="mt-0.5 block font-mono text-[0.58rem] uppercase tracking-[0.16em] text-muted">
-                    {m.claim}
-                  </span>
-                </span>
-
-                <span class="modo-cta flex shrink-0 items-center gap-2 rounded-full border border-line px-3 py-1.5 font-mono text-[0.52rem] uppercase tracking-[0.14em] text-muted transition-colors duration-300">
-                  <span class="modo-cta-txt hidden sm:inline">Ver más</span>
-                  <Icon name="arrow" class="modo-chevron h-3.5 w-3.5 rotate-90 transition-transform duration-500" />
-                </span>
-              </summary>
-
-              <div class="modo-cuerpo">
-                <div class="grid gap-6 px-6 pb-6 sm:px-7 sm:pb-7 lg:grid-cols-[1.2fr_1fr] lg:items-center lg:gap-10">
-                  <p class="max-w-lg text-[0.85rem] leading-relaxed text-muted sm:text-[0.92rem]">{m.body}</p>
-
-                  <dl class="divide-y divide-line overflow-hidden rounded-xl border border-line">
-                    {m.rows.map(([k, v]) => (
-                      <div class="flex items-baseline justify-between gap-4 px-4 py-3">
-                        <dt class="font-mono text-[0.58rem] uppercase tracking-[0.14em] text-muted">{k}</dt>
-                        <dd class="text-right text-[0.82rem]">{v}</dd>
-                      </div>
-                    ))}
-                  </dl>
-                </div>
-              </div>
-            </details>
-          </article>
-        ))
-      }
-    </div>
-
-  </Section>
-
-  <!-- FLUJO -->
-  <Section
-    eyebrow="De principio a fin"
-    title="Cómo se resuelve una partida"
-    intro="Autorreporte por las dos partes, validación automática cuando coinciden y arbitraje humano solo cuando hay conflicto."
-  >
-    <Rail label="Cómo se resuelve una partida" class="mt-12" wrap>
-      {
-        flujo.map((s) => (
-          <li class="u-card w-[224px] shrink-0 snap-start p-5 sm:p-6 sm:w-[280px] lg:w-[calc((100%-1.5rem)/3)]">
-            <p class="font-mono text-[0.6rem] uppercase tracking-[0.22em] text-neon">{s.n}</p>
-            <h3 class="mt-2 font-display text-[0.88rem] font-bold uppercase tracking-wide">{s.t}</h3>
-            <p class="mt-2.5 text-[0.85rem] text-muted">{s.d}</p>
-          </li>
-        ))
-      }
-      <li class="w-[224px] shrink-0 snap-start rounded-[var(--radius-card)] border border-dashed border-line p-5 sm:p-6 sm:w-[280px] lg:w-[calc((100%-1.5rem)/3)]">
-        <Icon name="trophy" class="h-5 w-5 text-neon" />
-        <p class="mt-3 text-[0.85rem] text-muted">
-          Y pase lo que pase, cada partida avanza el contador de cofres: ganes o pierdas, te llevas
-          algo.
-        </p>
-      </li>
-    </Rail>
-  </Section>
-
-  <!-- COMUNIDAD -->
-  <Section id="comunidad">
-    <span id="crear" class="block scroll-mt-24" aria-hidden="true"></span>
-    <div class="relative overflow-hidden rounded-[22px] border border-neon/25 bg-[linear-gradient(160deg,rgb(10_255_122/0.08),transparent_60%)] p-6 sm:p-10 lg:p-12" data-reveal>
-      <div
-        class="pointer-events-none absolute -right-10 -top-16 h-72 w-72 rounded-full bg-[radial-gradient(closest-side,rgb(10_255_122/0.16),transparent)]"
-        aria-hidden="true"
-      >
-      </div>
-
-      <div class="relative grid gap-12 lg:grid-cols-[1.2fr_1fr] lg:items-center">
-        <div class="min-w-0">
-          <p class="u-eyebrow">Para clanes, streamers y comunidades</p>
-          <h2 class="mt-4 text-display">
-            Trae tu comunidad<br /><span class="text-neon">y te lo ponemos fácil</span>
-          </h2>
-          <p class="mt-5 max-w-xl text-muted">
-            Si ya tienes grupo, servidor de Discord o audiencia, no empiezas de cero: clan gratuito
-            con un límite de miembros mucho más amplio, recompensas para los tuyos y las
-            herramientas para montar vuestros torneos dentro de la app totalmente gratis.
-          </p>
-
-          <details class="comunidad mt-7" data-comunidad>
-            <summary class="flex cursor-pointer list-none items-center gap-3 rounded-xl border border-neon/35 bg-neon/[0.06] px-4 py-3.5 lg:hidden [&::-webkit-details-marker]:hidden">
-              <span class="relative flex h-2.5 w-2.5 shrink-0">
-                <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-neon opacity-70"></span>
-                <span class="relative inline-flex h-2.5 w-2.5 rounded-full bg-neon"></span>
-              </span>
-              <span class="min-w-0 flex-1">
-                <span class="block font-display text-[0.78rem] font-black uppercase tracking-wide text-neon">
-                  Ver qué te damos
-                </span>
-                <span class="mt-0.5 block font-mono text-[0.55rem] uppercase tracking-[0.14em] text-muted">
-                  Cuatro ventajas y cómo se pide
-                </span>
-              </span>
-              <Icon name="arrow" class="comunidad-chevron h-4 w-4 shrink-0 rotate-90 text-neon transition-transform duration-500" />
-            </summary>
-
-            <div class="comunidad-cuerpo">
-              <div>
-
-          <ul class="mt-6 grid gap-2.5 sm:grid-cols-2 sm:gap-4 lg:mt-0" data-reveal-group>
+  <!-- OFICIALES -->
+  <section id="oficiales" class="u-shell scroll-mt-24 py-[var(--spacing-section)]">
+    <div class="u-panel overflow-hidden" style="--edge: rgb(245 196 81 / 0.6)">
+      <div class="pointer-events-none absolute inset-0 bg-[radial-gradient(55%_80%_at_90%_50%,rgb(245_196_81/0.13),transparent_70%)]" aria-hidden="true"></div>
+      <div class="relative grid items-center gap-10 p-6 sm:p-10 lg:grid-cols-[1.2fr_0.8fr] lg:p-14">
+        <div>
+          <Heading
+            tag="Torneos oficiales"
+            tone="var(--color-gold)"
+            title='Organizados por Ágora, <span class="t-gold">con premios reales</span>'
+            intro="Son los torneos con los premios más grandes: premios reales para el podio, anunciados antes de empezar. Individuales o por clanes, con el arbitraje del equipo de Ágora, y cuentan para tu ranking de temporada."
+          />
+          <div id="juegos" class="mt-7 scroll-mt-28" data-reveal>
+            <p class="font-mono text-[0.58rem] uppercase tracking-[0.18em] text-muted">Se juegan en</p>
+            <ul class="mt-3 flex flex-wrap gap-2">
+              {
+                LANZAMIENTO.map((g) => (
+                  <li class="flex items-center gap-2 rounded-full border border-line bg-ink/70 py-1 pl-1 pr-3">
+                    <Image src={covers[g.slug]} alt="" width={48} densities={[1, 2]} class="h-6 w-6 rounded-full object-cover" />
+                    <span class="text-[0.78rem]">{g.name}</span>
+                  </li>
+                ))
+              }
+            </ul>
+            <p class="mt-3 max-w-lg text-[0.8rem] leading-relaxed text-muted">
+              Los juegos con API oficial, para que cada cuenta y cada resultado se puedan verificar. Los
+              torneos personalizados admiten muchos más.
+            </p>
+          </div>
+          <ul class="mt-8 grid gap-3 sm:grid-cols-3" data-reveal-group>
             {
-              comunidad.map((c) => (
-                <li class="u-card flex items-start gap-3 p-4 sm:block sm:p-5" data-reveal-item>
-                  <Icon name={c.i} class="mt-0.5 h-5 w-5 shrink-0 text-neon" />
-                  <div class="min-w-0 sm:mt-3.5">
-                    <h3 class="font-display text-[0.8rem] font-bold uppercase tracking-wide">{c.t}</h3>
-                    <p class="mt-1.5 text-[0.8rem] text-muted">{c.d}</p>
-                  </div>
+              [
+                { i: 'trophy', t: 'Premios reales', d: 'Para el podio de cada torneo.' },
+                { i: 'gift', t: 'Tarjetas regalo', d: 'Cada torneo suma, aunque no ganes.' },
+                { i: 'crown', t: 'Ranking', d: 'Cuenta para tu temporada.' },
+              ].map((p) => (
+                <li class="rounded-2xl border border-gold/25 bg-gold/[0.05] p-4" data-reveal-item>
+                  <Icon name={p.i} class="h-5 w-5 text-gold" />
+                  <p class="mt-3 font-display text-[0.78rem] font-bold uppercase tracking-wide">{p.t}</p>
+                  <p class="mt-1 text-[0.82rem] text-muted">{p.d}</p>
                 </li>
               ))
             }
           </ul>
-
-          <ol class="mt-8 grid gap-2.5 sm:grid-cols-3 sm:gap-3">
-            {
-              [
-                ['01', 'Escríbenos contando quién eres y cuánta gente traes.'],
-                ['02', 'Te montamos el clan ampliado y las recompensas.'],
-                ['03', 'Lanzas tu primer torneo el día del estreno.'],
-              ].map(([n, t]) => (
-                <li class="flex items-baseline gap-3 rounded-lg border border-line px-4 py-3 sm:block">
-                  <p class="font-mono text-[0.58rem] uppercase tracking-[0.2em] text-neon">{n}</p>
-                  <p class="text-[0.8rem] text-muted sm:mt-1.5">{t}</p>
-                </li>
-              ))
-            }
-          </ol>
-
-          <div class="mt-8 flex flex-wrap gap-3">
-            <a
-              href={url('/comunidad')}
-              title="Rellena la solicitud para traer tu comunidad a Ágora"
-              class="u-btn u-btn--primary"
-            >
-              Traigo mi comunidad
-              <Icon name="arrow" class="h-4 w-4" />
-            </a>
-            <a href={url('/descargar')} title="Cómo entrar en Ágora" class="u-btn u-btn--ghost">Ver opciones de acceso</a>
-          </div>
-
-              </div>
-            </div>
-          </details>
+          <p class="mt-6 text-[0.8rem] text-muted" data-reveal>
+            Los torneos con premio físico enviado a casa son solo para mayores de 18 años.
+          </p>
         </div>
-
-        <div class="relative hidden justify-center lg:flex">
-          <Image
-            src={gorgoTablero}
-            alt="Gorgo, mascota de Ágora, organizando un cuadro de torneo"
-            width={520}
-            densities={[1, 2]}
-            class="w-full max-w-[360px] drop-shadow-[0_24px_50px_rgb(0_0_0/0.65)]"
-            data-parallax="26"
-          />
-        </div>
+        <Image
+          src={styxxGuerrero}
+          alt="Styxx, mascota de Ágora, preparado para competir con espada y escudo"
+          width={460}
+          densities={[1, 2]}
+          class="u-mascot mx-auto w-full max-w-[340px]"
+          data-pop
+        />
       </div>
     </div>
-  </Section>
+  </section>
+
+  <!-- PERSONALIZADOS -->
+  <section id="personalizados" class="u-shell scroll-mt-24 py-[var(--spacing-section)]">
+    <div class="grid items-center gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
+      <div>
+        <Heading
+          tag="Torneos personalizados"
+          tone="var(--color-gorgo)"
+          title='Tu torneo, <span style="color:var(--color-gorgo)">en dos minutos</span>'
+          intro="Para tu clan, tu servidor de Discord o tu comunidad. Lo creas desde el móvil, en muchos más juegos que los oficiales, y Ágora se encarga del resto."
+        />
+        <Image
+          src={gorgoTablero}
+          alt="Gorgo, mascota de Ágora, moviendo las piezas en un tablero de estrategia"
+          width={560}
+          densities={[1, 2]}
+          class="u-mascot mt-8 w-full max-w-[420px]"
+          data-pop
+        />
+      </div>
+
+      <ol class="relative space-y-3" data-reveal-group>
+        <span class="absolute bottom-6 left-[1.55rem] top-6 w-px bg-gradient-to-b from-gorgo/60 via-gorgo/25 to-transparent" aria-hidden="true"></span>
+        {
+          crear.map((c) => (
+            <li class="relative flex gap-4 rounded-2xl border border-line bg-ink/70 p-4 sm:p-5" data-reveal-item>
+              <span class="relative z-10 grid h-8 w-8 shrink-0 place-items-center rounded-full border border-gorgo/50 bg-ink font-display text-[0.8rem] font-black text-gorgo">
+                {c.n}
+              </span>
+              <span>
+                <span class="block font-display text-[0.86rem] font-bold uppercase tracking-wide">{c.t}</span>
+                <span class="mt-1 block text-[0.88rem] leading-relaxed text-muted">{c.d}</span>
+              </span>
+            </li>
+          ))
+        }
+        <li class="flex flex-wrap gap-2 pl-1 pt-2" data-reveal-item>
+          {
+            ['Individual', 'Por equipos', 'Clan contra clan', 'Entrada a tu elección', 'Roles de organizador', 'Resolución de disputas'].map((t) => (
+              <span class="rounded-lg border border-line px-2.5 py-1 font-mono text-[0.6rem] uppercase tracking-[0.12em] text-muted">{t}</span>
+            ))
+          }
+        </li>
+      </ol>
+    </div>
+
+    <div class="mt-10 flex flex-col gap-5 rounded-2xl border border-gorgo/30 bg-gorgo/[0.05] p-5 sm:flex-row sm:items-center sm:justify-between sm:p-7" data-reveal>
+      <p class="max-w-xl text-[0.94rem] text-muted">
+        <strong class="text-bone">¿Tienes comunidad?</strong> Ampliamos tu clan por encima de las 25
+        plazas y, si la traes desde fuera, entra en el programa de creadores.
+      </p>
+      <a href={url('/comunidad')} title="Trae tu comunidad a Ágora: programa para creadores" class="u-btn shrink-0 !bg-gorgo !text-ink">
+        Traer mi comunidad
+        <Icon name="arrow" class="h-4 w-4" />
+      </a>
+    </div>
+  </section>
+
+  <!-- BATALLAS -->
+  <section id="batallas" class="u-shell scroll-mt-24 py-[var(--spacing-section)]">
+    <Heading
+      tag="Batallas"
+      tone="var(--color-ladon)"
+      title="Batallas: partidas fuera de torneo"
+      intro="No hace falta esperar a un torneo para competir. Las batallas también cuentan para la temporada: las de clan suben a tu clan; las demás, a ti."
+    />
+    <div class="mt-10 grid gap-3 md:grid-cols-3" data-reveal-group>
+      {
+        batallas.map((b) => (
+          <article class="u-card p-6" data-reveal-item>
+            <span
+              class:list={[
+                'grid h-11 w-11 place-items-center rounded-xl',
+                b.clan ? 'bg-ladon/15 text-ladon' : 'bg-neon/10 text-neon',
+              ]}
+            >
+              <Icon name={b.icon} class="h-5 w-5" />
+            </span>
+            <h3 class="mt-5 font-display text-[0.95rem] font-black uppercase">Batallas {b.t.toLowerCase()}</h3>
+            <p class="mt-2 text-[0.88rem] leading-relaxed text-muted">{b.d}</p>
+            <p class:list={['mt-4 font-mono text-[0.58rem] uppercase tracking-[0.16em]', b.clan ? 'text-ladon' : 'text-neon/80']}>
+              Suma al {b.rank.toLowerCase()}
+            </p>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- CÓMO SE RESUELVE UNA PARTIDA -->
+  <section id="partida" class="u-shell scroll-mt-24 py-[var(--spacing-section)]">
+    <Heading tag="Juego limpio" title="Cómo se resuelve una partida" />
+    <ol class="mt-10 grid gap-px overflow-hidden rounded-2xl border border-line bg-line sm:grid-cols-2 lg:grid-cols-4" data-reveal-group>
+      {
+        partida.map((p, i) => (
+          <li class="bg-ink p-5 sm:p-6" data-reveal-item>
+            <p class="font-mono text-[0.62rem] text-neon">0{i + 1}</p>
+            <h3 class="mt-3 font-display text-[0.85rem] font-bold uppercase tracking-wide">{p.t}</h3>
+            <p class="mt-2 text-[0.86rem] leading-relaxed text-muted">{p.d}</p>
+          </li>
+        ))
+      }
+    </ol>
+  </section>
+
+
+  <!-- DUDAS -->
+  <section class="u-shell py-[var(--spacing-section)]">
+    <div class="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
+      <div>
+        <Heading tag="Dudas" title="Sobre torneos y premios" />
+        <a href={url('/faq')} class="u-btn u-btn--ghost mt-8" title="Preguntas frecuentes sobre Ágora" data-reveal>
+          Todas las preguntas
+          <Icon name="arrow" class="h-4 w-4" />
+        </a>
+      </div>
+      <div class="divide-y divide-line border-y border-line" data-reveal>
+        {
+          faqs.map((f) => (
+            <details class="group">
+              <summary class="flex cursor-pointer list-none items-center justify-between gap-6 py-5 [&::-webkit-details-marker]:hidden">
+                <h3 class="font-body text-[0.98rem] font-semibold tracking-normal transition-colors group-open:text-neon">{f.q}</h3>
+                <span class="grid h-7 w-7 shrink-0 place-items-center rounded-full border border-line text-muted transition-all duration-300 group-open:rotate-45 group-open:border-neon group-open:text-neon">
+                  <Icon name="plus" class="h-3.5 w-3.5" />
+                </span>
+              </summary>
+              <p class="max-w-2xl pb-6 text-[0.92rem] leading-relaxed text-muted">{f.a}</p>
+            </details>
+          ))
+        }
+      </div>
+    </div>
+  </section>
 
   <Preregistro compact />
 </Base>
-
-<style>
-  /* Bloque de comunidad: plegado en móvil, siempre abierto en escritorio */
-  .comunidad-cuerpo {
-    display: grid;
-    grid-template-rows: 0fr;
-    opacity: 0;
-    transition:
-      grid-template-rows 0.55s var(--ease-out-expo),
-      opacity 0.45s ease;
-  }
-  .comunidad-cuerpo > div { overflow: hidden; }
-  .comunidad[open] .comunidad-cuerpo { grid-template-rows: 1fr; opacity: 1; }
-  .comunidad[open] .comunidad-chevron { transform: rotate(-90deg); }
-  @media (min-width: 1024px) {
-    .comunidad { margin-top: 0; }
-    .comunidad-cuerpo { grid-template-rows: 1fr; opacity: 1; transition: none; }
-  }
-
-  /* Modalidades desplegables */
-  .modo-cuerpo {
-    display: grid;
-    grid-template-rows: 0fr;
-    opacity: 0;
-    transition:
-      grid-template-rows 0.5s var(--ease-out-expo),
-      opacity 0.4s ease;
-  }
-  .modo-cuerpo > div { overflow: hidden; }
-  .modo[open] .modo-cuerpo { grid-template-rows: 1fr; opacity: 1; }
-  .modo[open] .modo-chevron { transform: rotate(-90deg); }
-  .modo[open] .modo-cta { border-color: color-mix(in srgb, var(--color-neon) 45%, transparent); color: var(--color-neon); }
-  .modo:not([open]) summary:hover .modo-cta { border-color: color-mix(in srgb, var(--color-neon) 45%, transparent); color: var(--color-neon); }
-  /* Pequeño latido en la pastilla mientras está cerrada, para invitar a tocarla */
-  .modo:not([open]) .modo-chevron { animation: modoLatido 2.4s ease-in-out infinite; }
-  @keyframes modoLatido {
-    0%, 100% { transform: rotate(90deg) translateX(0); }
-    50% { transform: rotate(90deg) translateX(2px); }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .modo-cuerpo { transition: none; }
-    .modo:not([open]) .modo-chevron { animation: none; }
-  }
-
-  .bracket-lines path {
-    stroke-dasharray: 200;
-    stroke-dashoffset: 200;
-    animation: bracketDraw 1.6s var(--ease-out-expo) forwards;
-  }
-  .bracket-lines path:nth-child(2) { animation-delay: 0.06s; }
-  .bracket-lines path:nth-child(3) { animation-delay: 0.12s; }
-  .bracket-lines path:nth-child(4) { animation-delay: 0.18s; }
-  .bracket-lines path:nth-child(5) { animation-delay: 0.24s; }
-  .bracket-lines path:nth-child(6) { animation-delay: 0.30s; }
-  .bracket-lines path:nth-child(7) { animation-delay: 0.36s; }
-  .bracket-lines path:nth-child(8) { animation-delay: 0.42s; }
-  .bracket-lines path:nth-child(9) { animation-delay: 0.48s; }
-  .bracket-lines path:nth-child(10) { animation-delay: 0.54s; }
-  .bracket-lines path:nth-child(11) { animation-delay: 0.60s; }
-  .bracket-lines path:nth-child(12) { animation-delay: 0.66s; }
-  @keyframes bracketDraw {
-    to {
-      stroke-dashoffset: 0;
-    }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .bracket-lines path {
-      stroke-dashoffset: 0;
-      animation: none;
-    }
-  }
-</style>
-
-<script>
-  // En escritorio el bloque de comunidad va siempre desplegado; en móvil arranca plegado.
-  const comunidad = document.querySelector<HTMLDetailsElement>('[data-comunidad]');
-  if (comunidad) {
-    const ancho = window.matchMedia('(min-width: 1024px)');
-    const sincronizar = () => {
-      if (ancho.matches) comunidad.open = true;
-    };
-    ancho.addEventListener('change', sincronizar);
-    sincronizar();
-  }
-</script>
