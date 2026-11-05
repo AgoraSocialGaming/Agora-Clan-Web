@@ -9,7 +9,7 @@ export const FAQ = [
       {
         home: true,
         q: '¿Qué es Ágora?',
-        a: 'La app de torneos para comunidades gamer. Puedes jugar torneos oficiales con premios reales, crear torneos para tu comunidad, retar a tus amigos, buscar rival con matchmaking y enfrentar a tu clan con otros clanes. Todo cuenta para el ranking de cada temporada.',
+        a: 'La app de torneos para jugadores, clanes y comunidades. Puedes jugar torneos oficiales con premios reales, crear torneos para tu comunidad, retar a tus amigos, buscar rival con matchmaking y enfrentar a tu clan con otros clanes. Todo cuenta para el ranking de cada temporada.',
       },
       {
         home: true,

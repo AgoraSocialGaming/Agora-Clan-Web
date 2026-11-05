@@ -169,7 +169,9 @@
     });
 
     each(root, '[data-app-cta]', function (element) {
-      element.textContent = state.founderOpen ? 'Entrar antes' : 'Descargar';
+      // Mismo texto que el HTML estático hasta que la app esté publicada:
+      // así el botón no cambia de texto mientras se consulta la config.
+      element.textContent = state.live ? 'Descargar' : 'Entrar antes';
     });
 
     each(root, '[data-phase-status]', function (element) {
