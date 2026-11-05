@@ -12,7 +12,15 @@ const path = Astro.url.pathname.slice(base.length).replace(/\/$/, '') || '/';
 const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWith(href));
 ---
 
-<header class="fixed inset-x-0 top-0 z-50" data-header>
+<!-- Franja opaca bajo la barra de estado del móvil (notch / isla dinámica).
+     Sin ella, en iPhone se veía el contenido de la página por encima de la cabecera. -->
+<div
+  class="pointer-events-none fixed inset-x-0 top-0 z-[55] h-[env(safe-area-inset-top)] bg-ink"
+  aria-hidden="true"
+>
+</div>
+
+<header class="fixed inset-x-0 top-[env(safe-area-inset-top)] z-50" data-header>
   <div
     class="relative border-b border-transparent transition-[background-color,border-color,backdrop-filter] duration-500"
     data-header-bar
@@ -23,7 +31,7 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWit
       data-progress
       aria-hidden="true"></span>
     <div class="u-shell flex h-[70px] items-center justify-between gap-4">
-      <a href={url('/')} title="Ágora: torneos para tu comunidad con premios reales" class="shrink-0 transition-opacity hover:opacity-70" aria-label="Ágora — inicio">
+      <a href={url('/')} title="Ágora: app de torneos gaming con premios reales" class="shrink-0 transition-opacity hover:opacity-70" aria-label="Ágora — inicio">
         <Logo class="h-8 w-auto" width={260} priority />
       </a>
 
@@ -57,10 +65,10 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWit
       <div class="flex items-center gap-2">
         <a
           href={url('/descargar')}
-          title="Descargar Ágora para iOS y Android"
+          title="Entra en Ágora antes que nadie"
           class="u-btn u-btn--primary hidden sm:inline-flex !px-4 !py-2.5 !text-[0.68rem]"
         >
-          <span data-app-cta>Descargar</span>
+          <span data-app-cta>Entrar antes</span>
         </a>
 
         <button
@@ -98,11 +106,11 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWit
   </div>
 
   <div
-    class="absolute inset-x-0 top-0 max-h-[100dvh] -translate-y-3 overflow-y-auto overscroll-contain border-b border-line bg-ink/95 opacity-0 shadow-[0_30px_80px_-30px_rgb(0_0_0/0.9)] backdrop-blur-xl transition-[transform,opacity] duration-300 ease-[var(--ease-out-expo)]"
+    class="absolute inset-x-0 top-0 max-h-[100dvh] -translate-y-3 overflow-y-auto overscroll-contain border-b border-line bg-ink/95 pt-[env(safe-area-inset-top)] opacity-0 shadow-[0_30px_80px_-30px_rgb(0_0_0/0.9)] backdrop-blur-xl transition-[transform,opacity] duration-300 ease-[var(--ease-out-expo)]"
     data-menu-panel
   >
     <div class="u-shell flex h-[70px] items-center justify-between gap-4 border-b border-line">
-      <a href={url('/')} title="Ágora: torneos para tu comunidad con premios reales" class="shrink-0" aria-label="Ágora — inicio">
+      <a href={url('/')} title="Ágora: app de torneos gaming con premios reales" class="shrink-0" aria-label="Ágora — inicio">
         <Logo class="h-8 w-auto" width={260} />
       </a>
       <button
@@ -167,8 +175,8 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWit
       </ul>
 
       <div class="mt-6" data-menu-item style={`--i:${NAV.length}`}>
-        <a href={url('/descargar')} class="u-btn u-btn--primary w-full" title="Descargar Ágora para iOS y Android">
-          <span data-app-cta>Descargar</span>
+        <a href={url('/descargar')} class="u-btn u-btn--primary w-full" title="Entra en Ágora antes que nadie">
+          <span data-app-cta>Entrar antes</span>
           <Icon name="arrow" class="h-4 w-4" />
         </a>
       </div>
@@ -221,6 +229,18 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWit
       transform: none;
     }
   }
+
+  /* Móvil: al bajar, la cabecera sube detrás de la franja de la barra de estado
+     y solo queda a la vista la línea de progreso (2 px) y su borde (1 px). */
+  @media (max-width: 1023px) {
+    [data-header] {
+      transition: transform 0.5s var(--ease-out-expo);
+      will-change: transform;
+    }
+    [data-header].is-hidden {
+      transform: translateY(calc(-100% + 3px));
+    }
+  }
 </style>
 
 <script>
@@ -242,6 +262,41 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWit
   };
   window.addEventListener('scroll', solid, { passive: true });
   solid();
+
+  /* --- Móvil: esconder al bajar, mostrar al subir --- */
+  const header = document.querySelector<HTMLElement>('[data-header]');
+  const mobile = window.matchMedia('(max-width: 1023px)');
+  let lastY = window.scrollY;
+  let ticking = false;
+  const autoHide = () => {
+    ticking = false;
+    if (!header) return;
+    const y = window.scrollY;
+    const delta = y - lastY;
+    const menuOpen = document.querySelector('[data-menu]')?.classList.contains('is-open');
+    if (!mobile.matches || menuOpen || y < 90) {
+      header.classList.remove('is-hidden');
+      lastY = y;
+      return;
+    }
+    // Umbral pequeño para que no tiemble con el inercial del dedo
+    if (Math.abs(delta) < 8) return;
+    header.classList.toggle('is-hidden', delta > 0);
+    lastY = y;
+  };
+  window.addEventListener(
+    'scroll',
+    () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(autoHide);
+      }
+    },
+    { passive: true },
+  );
+  mobile.addEventListener('change', autoHide);
+  // Si alguien navega con teclado y el foco entra en la cabecera, se muestra
+  header?.addEventListener('focusin', () => header.classList.remove('is-hidden'));
 
   /* --- Pastilla de preselección en escritorio --- */
   const nav = document.querySelector<HTMLElement>('[data-desk-nav]');

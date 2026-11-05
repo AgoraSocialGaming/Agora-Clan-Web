@@ -214,7 +214,7 @@ test('applying a phase only reveals that phase and clears stale store links', as
   assert.equal(view.ios.hidden, true);
   assert.equal(view.ios.attr('href'), null);
   assert.equal(view.pending.hidden, false);
-  assert.equal(view.cta.textContent, 'Descargar');
+  assert.equal(view.cta.textContent, 'Entrar antes');
 
   phase.apply(view.document, phase.unknownState(true));
   assert.equal(view.blocks.unknown.hidden, false);
@@ -223,7 +223,7 @@ test('applying a phase only reveals that phase and clears stale store links', as
   // Sin config se siguen viendo los botones «Próximamente», sin enlaces activos.
   assert.equal(view.pending.hidden, false);
   assert.match(view.status.textContent, /Ágora llega a iOS y Android/);
-  assert.equal(view.cta.textContent, 'Descargar');
+  assert.equal(view.cta.textContent, 'Entrar antes');
 });
 
 test('without configured store links live mode never fabricates hrefs', async () => {
@@ -313,7 +313,7 @@ test('built pages start neutral, hide founder preregistration, and keep store UR
   ]);
 
   for (const page of [index, descargar, referral, tournament]) {
-    assert.match(page, /data-app-cta[^>]*>Descargar/);
+    assert.match(page, /data-app-cta[^>]*>Entrar antes/);
     // Las URLs viajan en el módulo de datos para inyectarlas en runtime, pero
     // el marcado estático no debe exponer ningún enlace de tienda.
     const markup = page.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, '');

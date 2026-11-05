@@ -103,7 +103,17 @@
 5. **Juegos**: Brawl Stars, Clash Royale, League of Legends y Valorant son los de los **torneos oficiales**; los personalizados admiten muchos más. Fuera la sección «Dónde se compite».
 6. Revisión completa de textos: sin «entre medias», sin frases genéricas, cada bloque dice qué es y para qué sirve.
 
-## 6. Pendiente
+## 6. Ronda 4
+
+1. **Botón de cabecera fijo en «Entrar antes»** desde el HTML: ya no cambia de texto mientras se consulta la config. Solo pasa a «Descargar» cuando la app está publicada.
+2. **iPhone**: `viewport-fit=cover` + franja opaca bajo la barra de estado; ya no se ve el contenido por encima de la cabecera. `theme-color` pasa a `#101016`.
+3. **Cabecera en móvil**: se esconde al bajar (queda solo la línea de progreso) y vuelve al subir. En escritorio no cambia.
+4. **Posicionamiento para todos los jugadores, no solo creadores**:
+   - Título: «Ágora: app de torneos gaming con premios reales».
+   - H1: «Torneos. Clanes. Premios reales.»
+   - Descripción y textos generales: «la app de torneos para jugadores, clanes y comunidades».
+
+## 7. Pendiente
 
 - Imagen OG (`public/img/og/default.png`): conviene una nueva con el mensaje de premios reales.
 - Capturas reales de ranking, batallas de clanes, canje de tarjetas regalo y torneo oficial cuando estén, para sustituir la tabla de ejemplo.

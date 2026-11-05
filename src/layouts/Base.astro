@@ -40,7 +40,7 @@ const { title, description, rawTitle, image, noindex, schema } = Astro.props;
       >Saltar al contenido</a
     >
     <Header />
-    <main id="contenido" class="pt-[70px]">
+    <main id="contenido" class="pt-[calc(70px+env(safe-area-inset-top))]">
       <slot />
     </main>
     <Footer />

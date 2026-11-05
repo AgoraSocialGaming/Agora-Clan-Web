@@ -10,8 +10,9 @@ export const SITE = {
   locale: 'es-ES',
   lang: 'es',
   description:
-    'La app de torneos para comunidades y clanes. Organiza los tuyos, juega torneos oficiales con premios reales y sube en el ranking de cada temporada.',
-  themeColor: '#0AFF7A',
+    'La app de torneos gaming para jugadores, clanes y comunidades: torneos oficiales con premios reales, batallas, ranking por temporadas y torneos propios.',
+  // Color de la barra del navegador: el fondo de la web, no el verde (en móvil quedaba chillón).
+  themeColor: '#101016',
   twitterHandle: '@agoraclan_',
 };
 
@@ -60,7 +61,7 @@ export const NAV = [
     href: '/',
     icon: 'home',
     hint: 'Qué es Ágora, de un vistazo',
-    title: 'Ágora: torneos para tu comunidad con premios reales',
+    title: 'Ágora: app de torneos gaming con premios reales',
   },
   {
     label: 'Torneos',
