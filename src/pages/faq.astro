@@ -4,115 +4,20 @@ import Base from '../layouts/Base.astro';
 import Section from '../components/ui/Section.astro';
 import Preregistro from '../components/sections/Preregistro.astro';
 import Icon from '../components/ui/Icon.astro';
+import Heading from '../components/ui/Heading.astro';
 import { breadcrumbSchema, faqSchema } from '../lib/schema.js';
-import { FORM } from '../data/site.js';
+import { CONTACT } from '../data/site.js';
+import { FAQ } from '../data/faq.js';
 import gorgo from '../assets/mascotas/gorgo-sofa.png';
 
-const grupos = [
-  {
-    id: 'general',
-    label: 'General',
-    items: [
-      {
-        q: '¿Qué es Ágora exactamente?',
-        a: 'Una plataforma social y competitiva para gamers: red social, buscador de compañeros, sistema de clanes, motor de torneos con brackets y perfil RPG persistente, todo en la misma app.',
-      },
-      {
-        q: '¿Cuándo se lanza y en qué plataformas?',
-        a: 'Ágora está pensada para iOS y Android, con foco inicial en España. En la página de descarga verás el estado actualizado de su disponibilidad en App Store y Google Play, con el enlace de cada tienda cuando esté confirmada, y cómo entrar.',
-      },
-      {
-        q: '¿Cuánto cuesta usar Ágora?',
-        a: 'Descargar la app y competir es libre. Existen cosméticos opcionales y una suscripción de comodidad, pero nada de eso da ventaja competitiva.',
-      },
-      {
-        q: '¿Está en español?',
-        a: 'Sí, Ágora nace en español. La app también está disponible en inglés desde los ajustes.',
-      },
-    ],
-  },
-  {
-    id: 'competir',
-    label: 'Competir',
-    items: [
-      {
-        q: '¿Necesito un equipo para entrar a un torneo?',
-        a: 'No. Puedes inscribirte en solitario en los torneos individuales, o unirte a un clan si prefieres competir por equipos.',
-      },
-      {
-        q: '¿Cómo se registra el resultado de una partida?',
-        a: 'Cada parte reporta el resultado al terminar y puede adjuntar capturas. Si los dos reportes coinciden, el marcador se cierra al instante. Si no, se abre una disputa que revisa un administrador.',
-      },
-      {
-        q: '¿Qué pasa si alguien hace trampas?',
-        a: 'El reporte en falso conlleva sanciones progresivas, avisadas de antemano y visibles en el perfil como contador de disputas. La reincidencia implica perder el acceso a las modalidades competitivas.',
-      },
-      {
-        q: '¿Puedo crear mi propio torneo?',
-        a: 'Sí. Cualquier usuario o clan puede montar un torneo desde el móvil: define el formato y los brackets, invita a quien quiera y lo gestiona sobre la marcha.',
-      },
-      {
-        q: '¿Qué me dais si traigo mi comunidad a Ágora?',
-        a: 'Un clan gratuito con un límite de miembros mucho más amplio del habitual, recompensas para ti y para los tuyos, y ayuda del equipo para montar vuestro primer torneo. Cuéntanoslo en agoraclan.com/comunidad y te respondemos con el clan montado.',
-      },
-      {
-        q: '¿Por qué tengo que vincular mi cuenta del juego?',
-        a: 'Porque es lo que hace creíble el ranking. Sin cuenta enlazada por API oficial no se accede a batallas ni torneos de ese juego, y eso reduce drásticamente las cuentas falsas.',
-      },
-    ],
-  },
-  {
-    id: 'premios',
-    label: 'Premios y juego limpio',
-    items: [
-      {
-        q: '¿Qué se gana compitiendo?',
-        a: 'Recompensas dentro de la app: XP, cofres, marcos, títulos y emblemas que se quedan en tu perfil para siempre. En los torneos patrocinados hay además premios reales, como periféricos, hardware o merchandising que se envían al ganador.',
-      },
-      {
-        q: '¿El resultado depende de la suerte?',
-        a: 'No. El resultado depende exclusivamente de la destreza de los jugadores: no hay azar en el emparejamiento, ni en los brackets, ni en cómo se determina el ganador. Habilidad pura.',
-      },
-      {
-        q: '¿Los cofres se pueden comprar?',
-        a: 'Nunca. Los cofres se obtienen jugando, con la racha diaria, viendo anuncios o como premio de torneo. Ningún mecanismo aleatorio de recompensa está a la venta.',
-      },
-      {
-        q: '¿Pagar da ventaja competitiva?',
-        a: 'No. Lo que se compra es apariencia y comodidad. Un usuario que paga y uno que no entran al mismo torneo exactamente en las mismas condiciones. Es lo único que hace creíble un ranking.',
-      },
-    ],
-  },
-  {
-    id: 'cuenta',
-    label: 'Cuenta y edad',
-    items: [
-      {
-        q: '¿Desde qué edad puedo usar Ágora?',
-        a: `El pre-registro y la app están pensados para mayores de ${FORM.minAge} años. Los torneos con premio real enviado a casa son exclusivamente para mayores de 18, y se verifica en la inscripción.`,
-      },
-      {
-        q: '¿Qué datos recogéis?',
-        a: 'Identificadores de cuenta, correo, el contenido que publicas, los identificadores de juego vinculados por API oficial y datos de uso. Nada de datos sensibles.',
-      },
-      {
-        q: '¿Puedo borrar mi cuenta?',
-        a: 'Sí, desde la propia app. También puedes ejercer los derechos de acceso, rectificación, supresión y portabilidad escribiéndonos.',
-      },
-      {
-        q: 'Reservé plaza, ¿y ahora qué?',
-        a: 'Confirma el correo que te hemos enviado. Cuando la app esté publicada, entra con la misma cuenta y reclama el Pack Fundador.',
-      },
-    ],
-  },
-];
+const grupos = FAQ;
 
 const todas = grupos.flatMap((g) => g.items);
 ---
 
 <Base
   title="Preguntas frecuentes sobre Ágora"
-  description="Torneos, premios, vinculación de cuentas de juego, edades y pre-registro. Todo lo que se pregunta sobre Ágora, respondido y ordenado por temas."
+  description="Torneos oficiales y personalizados, premios reales, tarjetas regalo, ranking de temporada, comunidades y cuenta. Las dudas sobre Ágora, ordenadas por temas."
   schema={[
     breadcrumbSchema([
       { label: 'Inicio', href: '/' },
@@ -123,20 +28,16 @@ const todas = grupos.flatMap((g) => g.items);
 >
   <section class="u-shell pt-16 lg:pt-24">
     <div class="grid gap-10 lg:grid-cols-[1.3fr_1fr] lg:items-center">
-      <div class="max-w-2xl">
-        <p class="u-eyebrow" data-reveal>Preguntas frecuentes</p>
-        <h1 class="mt-6 text-hero font-black uppercase">
-          Resolvamos<br /><span class="text-neon">las dudas</span>
-        </h1>
-        <p class="mt-5 text-[0.95rem] leading-relaxed text-muted sm:mt-6 sm:text-[1.05rem]" data-reveal data-reveal-delay="0.1">
-          Si algo no está aquí, escríbenos a
-          <a href="mailto:support@agoraclan.com" title="Escribir a soporte de Ágora" class="text-neon underline underline-offset-4"
-            >support@agoraclan.com</a
+      <Heading as="h1" tag="Preguntas frecuentes" title='Todo lo que <span class="t-neon">nos preguntáis</span>'>
+        <p class="u-lead mt-4">
+          Torneos, premios, ranking, comunidades y cuenta. Si algo no está aquí, escríbenos a
+          <a href={`mailto:${CONTACT.email}`} title="Escribir a soporte de Ágora" class="text-neon underline underline-offset-4"
+            >{CONTACT.email}</a
           > y lo añadimos.
         </p>
-      </div>
-      <div class="hidden justify-center lg:flex" data-reveal>
-        <Image src={gorgo} alt="Gorgo, mascota de Ágora, repantingado con el mando" width={480} densities={[1, 2]} class="w-full max-w-[330px] drop-shadow-[0_24px_50px_rgb(0_0_0/0.6)]" />
+      </Heading>
+      <div class="hidden justify-center lg:flex">
+        <Image src={gorgo} alt="Gorgo, mascota de Ágora, repantingado con el mando" width={480} densities={[1, 2]} class="u-mascot w-full max-w-[330px]" data-pop />
       </div>
     </div>
   </section>
@@ -169,7 +70,7 @@ const todas = grupos.flatMap((g) => g.items);
               {g.items.map((f) => (
                 <details class="group">
                   <summary class="flex cursor-pointer list-none items-center justify-between gap-6 py-5 [&::-webkit-details-marker]:hidden">
-                    <h3 class="font-display text-[0.9rem] font-bold uppercase tracking-wide transition-colors group-open:text-neon">
+                    <h3 class="font-body text-[0.98rem] font-semibold tracking-normal transition-colors group-open:text-neon">
                       {f.q}
                     </h3>
                     <span class="grid h-7 w-7 shrink-0 place-items-center rounded-full border border-line text-muted transition-all duration-300 group-open:rotate-45 group-open:border-neon group-open:text-neon">

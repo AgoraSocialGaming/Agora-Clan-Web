@@ -1,0 +1,217 @@
+---
+import { Image } from 'astro:assets';
+import { url } from '../../lib/url.js';
+import Icon from '../ui/Icon.astro';
+import PhoneMockup from '../ui/PhoneMockup.astro';
+import Tilt from '../ui/Tilt.astro';
+import { LANZAMIENTO } from '../../data/juegos.js';
+
+import inicio from '../../assets/app/agora-app-inicio.png';
+import brawl from '../../assets/juegos/brawl-stars.jpg';
+import clash from '../../assets/juegos/clash-royale.png';
+import valorant from '../../assets/juegos/valorant.jpg';
+import lol from '../../assets/juegos/league-of-legends.jpg';
+
+const covers: Record<string, ImageMetadata> = {
+  'brawl-stars': brawl,
+  'clash-royale': clash,
+  valorant,
+  'league-of-legends': lol,
+};
+---
+
+<section
+  class="hero relative overflow-hidden"
+  data-spotlight
+  style="--mx: 72%; --my: 32%"
+>
+  <!-- Foco que sigue al ratón + rejilla de arena -->
+  <div class="hero-light pointer-events-none absolute inset-0" aria-hidden="true"></div>
+  <div
+    class="pointer-events-none absolute inset-0 opacity-50 [background-image:linear-gradient(rgb(10_255_122/0.045)_1px,transparent_1px),linear-gradient(90deg,rgb(10_255_122/0.045)_1px,transparent_1px)] [background-size:56px_56px] [mask-image:radial-gradient(ellipse_75%_70%_at_70%_20%,black,transparent)]"
+    aria-hidden="true"
+  >
+  </div>
+
+  <!-- Bracket gigante que se dibuja detrás del móvil -->
+  <svg
+    class="pointer-events-none absolute right-[-4%] top-[10%] hidden h-[76%] w-[50%] lg:block"
+    viewBox="0 0 600 420"
+    fill="none"
+    stroke="rgb(10 255 122 / 0.16)"
+    stroke-width="1.2"
+    stroke-linecap="round"
+    data-draw
+    aria-hidden="true"
+  >
+    <path d="M10 40h90v80h-90M100 80h80" />
+    <path d="M10 180h90v80h-90M100 220h80" />
+    <path d="M180 80v140M180 150h110" />
+    <path d="M10 300h90v80h-90M100 340h80" />
+    <path d="M290 150v190h-110" />
+    <path d="M290 245h130" />
+    <path d="M420 245h160" stroke="rgb(245 196 81 / 0.5)" />
+  </svg>
+
+  <div
+    class="u-shell relative grid gap-12 pb-16 pt-10 sm:pt-14 lg:min-h-[calc(100svh-70px)] lg:grid-cols-[1.08fr_0.92fr] lg:items-center lg:gap-6 lg:pb-20 lg:pt-8"
+  >
+    <div class="relative z-10">
+      <p
+        class="inline-flex items-center gap-2.5 rounded-full border border-gold/30 bg-gold/[0.07] py-1.5 pl-2 pr-3.5"
+        data-reveal
+      >
+        <span class="grid h-5 w-5 place-items-center rounded-full bg-gold text-ink">
+          <Icon name="trophy" class="h-3 w-3" />
+        </span>
+        <span class="font-mono text-[0.62rem] uppercase tracking-[0.2em] text-gold sm:text-[0.66rem]"
+          >Torneos con premios reales</span
+        >
+      </p>
+
+      <h1 class="hero-title mt-6 font-black uppercase">
+        <span class="hero-line" style="--d: 0s">Tu comunidad.</span>
+        <span class="hero-line" style="--d: 0.08s">Tus torneos.</span>
+        <span class="hero-line t-gold" style="--d: 0.16s">Premios reales.</span>
+      </h1>
+
+      <p class="u-lead mt-6 max-w-[34rem] !text-[1rem] sm:!text-[1.12rem]" data-reveal data-reveal-delay="0.2">
+        <strong class="font-semibold text-bone">Ágora es la app de torneos para comunidades gamer.</strong>
+        Juega torneos oficiales con premios reales, crea los tuyos para tu gente y lleva a tu clan a lo
+        más alto del ranking.
+      </p>
+
+      <div class="mt-8 flex flex-wrap items-center gap-3" data-reveal data-reveal-delay="0.28">
+        <a href="#pre-registro" class="u-btn u-btn--primary" title="Únete a Ágora">
+          Únete a Ágora
+          <Icon name="arrow" class="h-4 w-4" />
+        </a>
+        <a
+          href={url('/comunidad')}
+          class="u-btn u-btn--ghost"
+          title="Trae tu comunidad a Ágora: programa para creadores"
+        >
+          <Icon name="users" class="h-4 w-4" />
+          Tengo una comunidad
+        </a>
+      </div>
+
+      <!-- Juegos de los torneos oficiales (los demás modos admiten muchos más) -->
+      <div class="mt-10 flex flex-wrap items-center gap-x-4 gap-y-3" data-reveal data-reveal-delay="0.36">
+        <p class="font-mono text-[0.6rem] uppercase tracking-[0.2em] text-muted">Torneos oficiales en</p>
+        <ul class="flex flex-wrap gap-2">
+          {
+            LANZAMIENTO.map((g) => (
+              <li class="flex items-center gap-2 rounded-full border border-line bg-surface/60 py-1 pl-1 pr-3">
+                <Image
+                  src={covers[g.slug]}
+                  alt=""
+                  width={48}
+                  densities={[1, 2]}
+                  class="h-6 w-6 rounded-full object-cover"
+                />
+                <span class="text-[0.74rem] text-bone/90">{g.name}</span>
+              </li>
+            ))
+          }
+        </ul>
+        <p class="w-full text-[0.78rem] text-muted">
+          Y muchos más juegos en los torneos que crea la comunidad.
+        </p>
+      </div>
+    </div>
+
+    <!-- Móvil + avisos flotantes: lo que pasa dentro de la app -->
+    <div class="relative mx-auto w-full max-w-[440px] lg:mr-0" data-reveal data-reveal-delay="0.12">
+      <Tilt class="w-full" rotate={7}>
+        <div class="relative px-10 py-6 sm:px-14">
+          <PhoneMockup
+            src={inicio}
+            alt="Pantalla de inicio de la app de Ágora con clanes, ranking y misiones"
+            width={320}
+            class="mx-auto w-full max-w-[220px] sm:max-w-[290px]"
+            offset={2}
+            priority
+          />
+
+          <div
+            class="u-chip absolute left-0 top-[14%] z-20 !border-gold/40 sm:-left-4"
+            data-atropos-offset="9"
+            data-float="7"
+          >
+            <span class="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-gold/15 text-gold">
+              <Icon name="trophy" class="h-[18px] w-[18px]" />
+            </span>
+            <span class="leading-tight">
+              <span class="block font-display text-[0.66rem] font-bold uppercase tracking-wide text-gold">Torneo oficial</span>
+              <span class="block text-[0.72rem] text-muted">Premio real para el podio</span>
+            </span>
+          </div>
+
+          <div
+            class="u-chip absolute right-0 top-[46%] z-20 !border-neon/40"
+            data-atropos-offset="12"
+            data-float="9"
+          >
+            <span class="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-neon/12 text-neon">
+              <Icon name="bracket" class="h-[18px] w-[18px]" />
+            </span>
+            <span class="leading-tight">
+              <span class="block font-display text-[0.66rem] font-bold uppercase tracking-wide text-neon">Tu torneo</span>
+              <span class="block text-[0.72rem] text-muted">Tus reglas, bracket automático</span>
+            </span>
+          </div>
+
+          <div
+            class="u-chip absolute bottom-[8%] left-2 z-20 sm:-left-2"
+            data-atropos-offset="7"
+            data-float="6"
+          >
+            <span class="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-ladon/15 text-ladon">
+              <Icon name="crown" class="h-[18px] w-[18px]" />
+            </span>
+            <span class="leading-tight">
+              <span class="block font-display text-[0.66rem] font-bold uppercase tracking-wide">Tu clan sube</span>
+              <span class="block text-[0.72rem] text-muted">#3 en el ranking de temporada</span>
+            </span>
+          </div>
+        </div>
+      </Tilt>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero-light {
+    background: radial-gradient(
+      38rem 30rem at var(--mx) var(--my),
+      rgb(10 255 122 / 0.13),
+      transparent 65%
+    );
+    transition: background 0.2s linear;
+  }
+
+  .hero-title {
+    font-size: clamp(1.8rem, 8.2vw, 4rem);
+    line-height: 1;
+    letter-spacing: -0.03em;
+  }
+  @media (min-width: 1024px) {
+    .hero-title {
+      font-size: clamp(2.3rem, 3.95vw, 3.6rem);
+      white-space: nowrap;
+    }
+  }
+  .hero-line {
+    display: block;
+    animation: lineIn 0.9s var(--ease-out-expo) both;
+    animation-delay: var(--d);
+  }
+  @keyframes lineIn {
+    from {
+      opacity: 0;
+      transform: translateY(0.45em);
+      filter: blur(6px);
+    }
+  }
+</style>

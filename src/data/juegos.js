@@ -10,7 +10,7 @@ export const LANZAMIENTO = [
     color: '#FFC01E',
     cover: 'brawl-stars.jpg',
     mark: 'supercell',
-    note: 'Vinculación por API oficial y estadísticas en tu perfil.',
+    note: 'API oficial: cuenta y estadísticas verificadas.',
   },
   {
     slug: 'clash-royale',

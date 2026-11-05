@@ -27,7 +27,8 @@ export default defineConfig({
   },
   integrations: [
     sitemap({
-      filter: (page) => !page.includes('/legal/') && !page.includes('/gracias'),
+      filter: (page) =>
+        !page.includes('/legal/') && !page.includes('/gracias') && !/\/juegos\/?$/.test(page),
       changefreq: 'weekly',
       priority: 0.7,
       lastmod: new Date(),

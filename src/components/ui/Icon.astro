@@ -1,6 +1,6 @@
 ---
-interface Props { name: string; class?: string }
-const { name, class: className = 'h-5 w-5' } = Astro.props;
+interface Props { name: string; class?: string; style?: string }
+const { name, class: className = 'h-5 w-5', style } = Astro.props;
 const p: Record<string, string> = {
   home: 'M4 11.5 12 4l8 7.5M6 10v10h12V10',
   trophy: 'M7 4h10v5a5 5 0 0 1-10 0V4ZM7 6H4v1a4 4 0 0 0 3 3.8M17 6h3v1a4 4 0 0 1-3 3.8M9 20h6M12 14v6',
@@ -12,16 +12,24 @@ const p: Record<string, string> = {
   bolt: 'M13 3 5 14h6l-1 7 8-11h-6l1-7Z',
   shield: 'M12 3 4 6v6c0 4.4 3.3 8.3 8 9 4.7-.7 8-4.6 8-9V6l-8-3Z',
   users: 'M9 11a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7ZM2.5 20c0-3.3 2.9-5.5 6.5-5.5s6.5 2.2 6.5 5.5M16 4.5a3.5 3.5 0 0 1 0 7M18 14.7c2 .7 3.5 2.4 3.5 4.8',
-  bracket: 'M3 6h4l3 6 3-6h4M3 18h4l3-6M21 12h-4',
+  bracket: 'M3 5h6v6H3M9 8h4M3 13h6v6H3M9 16h4M13 8v8M13 12h8',
   plus: 'M12 5v14M5 12h14',
   play: 'M8 5.5v13l11-6.5-11-6.5Z',
   star: 'M12 3.5 14.6 9l6 .9-4.3 4.2 1 6-5.3-2.8L6.7 20l1-6L3.4 9.9l6-.9L12 3.5Z',
   clock: 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18ZM12 7v5l3.5 2',
+  gift: 'M4 11h16v9H4v-9ZM3 7h18v4H3V7ZM12 7v13M12 7c-1.5-3-5-3.5-5.5-1.5S9 7 12 7Zm0 0c1.5-3 5-3.5 5.5-1.5S15 7 12 7Z',
+  crown: 'M4 18h16M4.5 15 3 7l5 3.5L12 5l4 5.5L21 7l-1.5 8h-15Z',
+  swords: 'M14.5 4H20v5.5L10 19.5 7.5 17 4.5 20M4 4h5.5v1M9.5 4 13 7.5M4 4v5.5L7 12.5M17 17l3 3M16 14.5l-1.5 1.5',
+  target: 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18ZM12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM12 12h.01',
+  coin: 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18ZM9 9.5c0-1 1.2-1.8 3-1.8s3 .8 3 1.8-1.2 1.6-3 1.9c-1.8.3-3 .9-3 1.9s1.2 1.9 3 1.9 3-.8 3-1.8M12 6.5v1.2M12 16.2v1.3',
+  link: 'M10 14a4.5 4.5 0 0 0 6.4 0l3-3a4.5 4.5 0 0 0-6.4-6.4l-1 1M14 10a4.5 4.5 0 0 0-6.4 0l-3 3a4.5 4.5 0 0 0 6.4 6.4l1-1',
+  flame: 'M12 21c3.9 0 6.5-2.6 6.5-6.3 0-4.4-4.2-6.4-4.7-10.7-2.6 1.6-4 4.2-3.6 7-1.4-.6-2.1-1.8-2.3-3C6.4 9.6 5.5 11.8 5.5 14.7 5.5 18.4 8.1 21 12 21Z',
 };
 ---
 <svg
   viewBox="0 0 24 24"
   class={className}
+  style={style}
   fill="none"
   stroke="currentColor"
   stroke-width="1.7"

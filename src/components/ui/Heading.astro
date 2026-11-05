@@ -1,0 +1,42 @@
+---
+/**
+ * Cabecera de sección. La etiqueta lleva un conector de bracket ( ]─ ) en vez
+ * del típico antetítulo + regla: es la firma visual de Ágora.
+ */
+interface Props {
+  tag?: string;
+  title: string;
+  intro?: string;
+  /** Color de la etiqueta y del conector */
+  tone?: string;
+  align?: 'left' | 'center';
+  as?: 'h1' | 'h2';
+  class?: string;
+}
+const {
+  tag,
+  title,
+  intro,
+  tone = 'var(--color-neon)',
+  align = 'left',
+  as: Tag = 'h2',
+  class: className = '',
+} = Astro.props;
+const center = align === 'center';
+---
+
+<header class:list={[center ? 'mx-auto max-w-2xl text-center' : 'max-w-2xl', className]} data-reveal>
+  {
+    tag && (
+      <p class="u-node" style={`--node:${tone}`}>
+        <svg viewBox="0 0 26 14" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
+          <path d="M1 1.5h7v11H1M8 7h17" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+        {tag}
+      </p>
+    )
+  }
+  <Tag class="u-h2 mt-4"><Fragment set:html={title} /></Tag>
+  {intro && <p class:list={['u-lead mt-4', center && 'mx-auto max-w-xl']}>{intro}</p>}
+  <slot />
+</header>

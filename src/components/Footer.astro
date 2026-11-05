@@ -1,5 +1,5 @@
 ---
-import { NAV, SOCIAL, LEGAL, SITE } from '../data/site.js';
+import { NAV, SOCIAL, LEGAL, SITE, CONTACT } from '../data/site.js';
 import { url } from '../lib/url.js';
 import Logo from './ui/Logo.astro';
 import BrandMark from './ui/BrandMark.astro';
@@ -12,8 +12,8 @@ const year = new Date().getFullYear();
       <div>
         <Logo class="h-9 w-auto" width={280} />
         <p class="mt-5 max-w-xs text-sm text-muted">
-          La arena digital donde cualquiera puede competir. Sin equipo, sin contactos y sin
-          depender de nadie.
+          La app de torneos para comunidades gamer. Torneos oficiales con premios reales, torneos de
+          comunidad, batallas y ranking por temporadas.
         </p>
         <p class="mt-5 font-mono text-[0.66rem] uppercase tracking-[0.2em] text-neon">
           Los juegos no cambiaron. Nosotros sí.
@@ -64,7 +64,11 @@ const year = new Date().getFullYear();
               title="Soporte de Ágora"
               class="text-sm text-muted transition-colors hover:text-neon">Soporte</a
             >
-            <p class="mt-1 font-mono text-[0.66rem] text-line">agoragaming99@gmail.com</p>
+            <a
+              href={`mailto:${CONTACT.email}`}
+              title="Escribir al soporte de Ágora"
+              class="mt-1 block font-mono text-[0.7rem] text-muted transition-colors hover:text-neon">{CONTACT.email}</a
+            >
           </li>
         </ul>
       </div>

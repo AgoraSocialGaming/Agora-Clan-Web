@@ -108,7 +108,10 @@ const progreso = () => {
    por fin hay algo de profundidad.                                        */
 const parallax = () => {
   if (reduced) return;
+  const wide = window.matchMedia('(min-width: 1024px)').matches;
   document.querySelectorAll('[data-parallax]').forEach((el) => {
+    // En los carruseles horizontales de móvil el parallax vertical no pinta nada
+    if (!wide && el.closest('.u-rail')) return;
     const dist = parseFloat(el.dataset.parallax) || 40;
     gsap.fromTo(
       el,
@@ -137,6 +140,57 @@ const flotar = () => {
   });
 };
 
+/* ── Mascotas: entran con un pequeño salto cuando aparece su sección ───── */
+const pop = () => {
+  document.querySelectorAll('[data-pop]').forEach((el) => {
+    gsap.to(el, {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      rotate: 0,
+      duration: reduced ? 0 : 1.1,
+      delay: reduced ? 0 : parseFloat(el.dataset.pop || '0.15'),
+      ease: 'elastic.out(1, 0.62)',
+      scrollTrigger: { trigger: el, start: 'top 90%', once: true },
+    });
+  });
+};
+
+/* ── Líneas de bracket que se dibujan al hacer scroll ──────────────────── */
+const draw = () => {
+  document.querySelectorAll('[data-draw]').forEach((svg) => {
+    const paths = svg.querySelectorAll('path, line, polyline');
+    paths.forEach((p) => {
+      const len = p.getTotalLength ? p.getTotalLength() : 400;
+      p.style.strokeDasharray = `${len}`;
+      p.style.strokeDashoffset = reduced ? '0' : `${len}`;
+    });
+    if (reduced) return;
+    const scrub = svg.dataset.draw === 'scrub';
+    gsap.to(paths, {
+      strokeDashoffset: 0,
+      duration: 1.4,
+      stagger: 0.08,
+      ease: 'power2.inOut',
+      scrollTrigger: scrub
+        ? { trigger: svg, start: 'top 85%', end: 'bottom 45%', scrub: 0.6 }
+        : { trigger: svg, start: 'top 88%', once: true },
+    });
+  });
+};
+
+/* ── Foco de luz que sigue al puntero (hero) ───────────────────────────── */
+const spotlight = () => {
+  if (reduced || !fine) return;
+  document.querySelectorAll('[data-spotlight]').forEach((el) => {
+    el.addEventListener('pointermove', (e) => {
+      const r = el.getBoundingClientRect();
+      el.style.setProperty('--mx', `${e.clientX - r.left}px`);
+      el.style.setProperty('--my', `${e.clientY - r.top}px`);
+    });
+  });
+};
+
 /* ── Arranque ──────────────────────────────────────────────────────────── */
 const init = () => {
   window.__motionListo = true;
@@ -147,6 +201,9 @@ const init = () => {
   progreso();
   parallax();
   flotar();
+  pop();
+  draw();
+  spotlight();
   ScrollTrigger.refresh();
 };
 

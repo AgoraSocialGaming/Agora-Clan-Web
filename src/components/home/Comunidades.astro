@@ -1,0 +1,97 @@
+---
+import { Image } from 'astro:assets';
+import { url } from '../../lib/url.js';
+import Icon from '../ui/Icon.astro';
+import Heading from '../ui/Heading.astro';
+import gorgo from '../../assets/mascotas/gorgo-senala.png';
+
+const ventajas = [
+  {
+    icon: 'users',
+    t: 'Tu clan, de más de 25 plazas',
+    d: 'Un clan normal tiene 25. Si tu comunidad es grande, te lo ampliamos gratis.',
+  },
+  {
+    icon: 'coin',
+    t: 'Programa de creadores',
+    d: '¿Traes a tu comunidad desde fuera? Durante el lanzamiento te pagamos por cada jugador. Lo hablamos por correo.',
+  },
+  {
+    icon: 'bracket',
+    t: 'Torneos con tu nombre',
+    d: 'Organiza torneos para los tuyos desde el primer día y dales un motivo para volver cada semana.',
+  },
+];
+---
+
+<section id="comunidades" class="relative scroll-mt-24 overflow-hidden py-[var(--spacing-section)]">
+  <div
+    class="pointer-events-none absolute inset-0 bg-[radial-gradient(55%_70%_at_15%_60%,rgb(143_209_79/0.14),transparent_70%)]"
+    aria-hidden="true"
+  >
+  </div>
+  <div class="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-gorgo/40 to-transparent" aria-hidden="true"></div>
+  <div class="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-gorgo/40 to-transparent" aria-hidden="true"></div>
+
+  <div class="u-shell relative grid items-center gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
+    <!-- Gorgo, el estratega, señala la oferta -->
+    <div class="relative order-2 mx-auto w-full max-w-[260px] sm:max-w-[380px] lg:order-1">
+      <Image
+        src={gorgo}
+        alt="Gorgo, mascota de Ágora, señalando el programa para comunidades"
+        width={460}
+        densities={[1, 2]}
+        class="u-mascot w-full"
+        data-pop
+      />
+      <p
+        class="u-chip mx-auto -mt-2 w-max max-w-full !border-gorgo/40 font-mono text-[0.58rem] uppercase tracking-[0.16em] text-gorgo"
+        data-reveal
+        data-reveal-delay="0.3"
+      >
+        <span class="relative flex h-2 w-2">
+          <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-gorgo opacity-70"></span>
+          <span class="relative inline-flex h-2 w-2 rounded-full bg-gorgo"></span>
+        </span>
+        Programa de lanzamiento · plazas limitadas
+      </p>
+    </div>
+
+    <div class="order-1 lg:order-2">
+      <Heading
+        tag="Para creadores, clanes y servidores"
+        tone="var(--color-gorgo)"
+        title='¿Tienes comunidad? <span style="color:var(--color-gorgo)">Tráela a Ágora.</span>'
+        intro="Streamers, creadores, clanes y servidores de Discord: en Ágora cabe toda tu gente y podéis competir en vuestros propios torneos."
+      />
+
+      <ul class="mt-9 space-y-3" data-reveal-group>
+        {
+          ventajas.map((v) => (
+            <li class="flex gap-4 rounded-2xl border border-line bg-ink/50 p-4 backdrop-blur-sm transition-colors duration-500 hover:border-gorgo/45 sm:p-5" data-reveal-item>
+              <span class="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-gorgo/12 text-gorgo">
+                <Icon name={v.icon} class="h-5 w-5" />
+              </span>
+              <span>
+                <span class="block font-display text-[0.86rem] font-bold uppercase tracking-wide">{v.t}</span>
+                <span class="mt-1 block text-[0.88rem] leading-relaxed text-muted">{v.d}</span>
+              </span>
+            </li>
+          ))
+        }
+      </ul>
+
+      <div class="mt-8 flex flex-wrap items-center gap-x-5 gap-y-3" data-reveal>
+        <a
+          href={url('/comunidad')}
+          class="u-btn !bg-gorgo !text-ink hover:!shadow-[0_0_34px_-6px_rgb(143_209_79/0.7)] hover:-translate-y-0.5"
+          title="Trae tu comunidad a Ágora: programa para creadores"
+        >
+          Quiero traer mi comunidad
+          <Icon name="arrow" class="h-4 w-4" />
+        </a>
+        <p class="text-[0.78rem] text-muted">Ampliar tu clan o unirte al programa de creadores.</p>
+      </div>
+    </div>
+  </div>
+</section>

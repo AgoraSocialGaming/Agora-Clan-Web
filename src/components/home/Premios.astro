@@ -1,0 +1,121 @@
+---
+import { Image } from 'astro:assets';
+import { url } from '../../lib/url.js';
+import Icon from '../ui/Icon.astro';
+import Heading from '../ui/Heading.astro';
+
+import styxxCofre from '../../assets/mascotas/styxx-cofre.png';
+import cofrePlata from '../../assets/cofres/cofre-plata.png';
+import cofreMadera from '../../assets/cofres/cofre-madera.png';
+---
+
+<section id="premios" class="u-shell scroll-mt-24 py-[var(--spacing-section)]">
+  <div
+    class="u-panel overflow-hidden"
+    style="--edge: rgb(245 196 81 / 0.6)"
+  >
+    <!-- Halo dorado -->
+    <div
+      class="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_80%_at_85%_100%,rgb(245_196_81/0.16),transparent_70%)]"
+      aria-hidden="true"
+    >
+    </div>
+
+    <div class="relative grid gap-10 p-6 sm:p-10 lg:grid-cols-[1fr_1fr] lg:items-end lg:gap-6 lg:p-14 lg:pb-0">
+      <div class="lg:pb-14">
+        <Heading
+          tag="Premios reales"
+          tone="var(--color-gold)"
+          title='Gana <span class="t-gold">premios reales</span> jugando torneos'
+          intro="Los torneos oficiales de Ágora reparten premios de verdad entre los mejores: consolas, juegos, periféricos o saldo. Cada torneo anuncia los suyos antes de empezar."
+        />
+
+        <ul class="mt-8 grid gap-3 sm:grid-cols-2" data-reveal-group>
+          <li class="rounded-2xl border border-gold/25 bg-gold/[0.05] p-4" data-reveal-item>
+            <Icon name="trophy" class="h-5 w-5 text-gold" />
+            <p class="mt-3 font-display text-[0.8rem] font-bold uppercase tracking-wide">Premios para el podio</p>
+            <p class="mt-1.5 text-[0.84rem] leading-relaxed text-muted">
+              Te inscribes desde la app, compites en tu juego y los mejores se llevan el premio a casa.
+            </p>
+          </li>
+          <li class="rounded-2xl border border-gold/25 bg-gold/[0.05] p-4" data-reveal-item>
+            <Icon name="gift" class="h-5 w-5 text-gold" />
+            <p class="mt-3 font-display text-[0.8rem] font-bold uppercase tracking-wide">Tarjetas regalo por jugar</p>
+            <p class="mt-1.5 text-[0.84rem] leading-relaxed text-muted">
+              Aunque no ganes, cada torneo que juegas suma para canjear tarjetas regalo en la app.
+            </p>
+          </li>
+        </ul>
+
+        <a
+          href={url('/torneos#oficiales')}
+          class="u-btn u-btn--gold mt-8"
+          title="Cómo funcionan los torneos oficiales de Ágora"
+          data-reveal
+        >
+          Ver los torneos oficiales
+          <Icon name="arrow" class="h-4 w-4" />
+        </a>
+      </div>
+
+      <!-- Podio: Styxx gana y abre su premio en lo más alto -->
+      <div class="relative mx-auto w-full max-w-[460px]" aria-hidden="true">
+        <div class="relative grid grid-cols-3 items-end gap-2 sm:gap-3">
+          <div class="flex flex-col items-center">
+            <Image src={cofrePlata} alt="" width={160} densities={[1, 2]} class="u-mascot mb-2 w-[62%]" data-pop="0.35" />
+            <div class="podium h-[92px] sm:h-[120px]" style="--c: #c9ccd6">
+              <span>2</span>
+            </div>
+          </div>
+          <div class="flex flex-col items-center">
+            <Image
+              src={styxxCofre}
+              alt=""
+              width={320}
+              densities={[1, 2]}
+              class="u-mascot -mb-1 w-[128%] max-w-none"
+              data-pop="0.1"
+            />
+            <div class="podium podium--gold h-[132px] sm:h-[170px]" style="--c: #f5c451">
+              <span>1</span>
+            </div>
+          </div>
+          <div class="flex flex-col items-center">
+            <Image src={cofreMadera} alt="" width={160} densities={[1, 2]} class="u-mascot mb-2 w-[56%]" data-pop="0.5" />
+            <div class="podium h-[70px] sm:h-[90px]" style="--c: #c08a55">
+              <span>3</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .podium {
+    position: relative;
+    width: 100%;
+    display: grid;
+    place-items: start center;
+    padding-top: 0.9rem;
+    border-radius: 12px 12px 0 0;
+    border: 1px solid color-mix(in srgb, var(--c) 45%, transparent);
+    border-bottom: 0;
+    background: linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--c) 22%, transparent),
+      color-mix(in srgb, var(--c) 4%, transparent)
+    );
+  }
+  .podium span {
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: clamp(1.6rem, 4vw, 2.6rem);
+    line-height: 1;
+    color: var(--c);
+  }
+  .podium--gold {
+    box-shadow: 0 -20px 60px -20px rgb(245 196 81 / 0.55);
+  }
+</style>

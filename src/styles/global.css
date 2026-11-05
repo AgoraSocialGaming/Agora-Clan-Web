@@ -19,6 +19,11 @@
   --color-muted: #9aa0ad;
   --color-danger: #ff4d5e;
   --color-gold: #f5c451;
+  --color-gold-deep: #c8902a;
+  /* Un color por mascota: cada una tiene su papel en la web */
+  --color-styxx: #3b8dff; /* el jugador: gana, progresa, da la bienvenida */
+  --color-gorgo: #8fd14f; /* el estratega: comunidades y torneos propios */
+  --color-ladon: #ff8a2a; /* el rival: ranking, batallas y pique */
 
   /* Tipografía */
   --font-display: 'Orbitron', ui-sans-serif, system-ui, sans-serif;
@@ -287,6 +292,96 @@
 }
 
 /* ==========================================================================
+   REDISEÑO 2026-11 · piezas propias de Ágora
+   ========================================================================== */
+@layer components {
+  /* Grano muy fino sobre todo el fondo: quita el aspecto de plantilla plana */
+  .u-grain::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 70;
+    pointer-events: none;
+    opacity: 0.045;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* Etiqueta de sección con forma de nodo de bracket: ]─ */
+  .u-node {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--node, var(--color-neon));
+  }
+  .u-node svg { width: 26px; height: 14px; flex-shrink: 0; }
+
+  .u-h2 {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(1.75rem, 4.2vw, 3.25rem);
+    line-height: 1.04;
+    letter-spacing: -0.02em;
+  }
+  .u-lead {
+    color: var(--color-muted);
+    font-size: clamp(0.95rem, 1.4vw, 1.08rem);
+    line-height: 1.65;
+  }
+
+  .t-gold {
+    background: linear-gradient(100deg, #ffe7a6 0%, var(--color-gold) 38%, var(--color-gold-deep) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .t-neon { color: var(--color-neon); }
+
+  /* Botón dorado: solo para lo que tiene que ver con premios */
+  .u-btn--gold {
+    background: linear-gradient(180deg, #ffd76e, var(--color-gold) 55%, var(--color-gold-deep));
+    color: #1a1206;
+  }
+  .u-btn--gold:hover {
+    box-shadow: 0 0 36px -6px rgb(245 196 81 / 0.7);
+    transform: translateY(-2px);
+  }
+
+  /* Chip flotante tipo notificación de la app */
+  .u-chip {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    border-radius: 14px;
+    border: 1px solid var(--color-line);
+    background: rgb(20 20 28 / 0.86);
+    backdrop-filter: blur(14px);
+    padding: 0.65rem 0.85rem;
+    box-shadow: 0 18px 40px -18px rgb(0 0 0 / 0.9);
+  }
+
+  /* Superficie con borde degradado (sin la tarjeta genérica de siempre) */
+  .u-panel {
+    position: relative;
+    border-radius: 22px;
+    background:
+      linear-gradient(var(--color-ink), var(--color-ink)) padding-box,
+      linear-gradient(150deg, var(--edge, rgb(10 255 122 / 0.45)), rgb(46 46 58 / 0.6) 40%, rgb(46 46 58 / 0.25)) border-box;
+    border: 1px solid transparent;
+  }
+
+  /* Mascotas: sombra común para que todas «pisen» el mismo suelo */
+  .u-mascot {
+    pointer-events: none;
+    user-select: none;
+    filter: drop-shadow(0 22px 34px rgb(0 0 0 / 0.65));
+  }
+}
+
+/* ==========================================================================
    MOVIMIENTO
    Estado inicial aplicado solo si JS está vivo (evita contenido invisible).
    ========================================================================== */
@@ -304,8 +399,14 @@
   transition: opacity 0.4s ease;
 }
 
+.js [data-reveal-item] { opacity: 0; transform: translateY(22px); }
+.js [data-pop] { opacity: 0; transform: translateY(30px) scale(0.86) rotate(-5deg); }
+.js.sin-motion [data-pop] { opacity: 1 !important; transform: none !important; }
+
 @media (prefers-reduced-motion: reduce) {
-  .js [data-reveal] { opacity: 1 !important; transform: none !important; }
+  .js [data-reveal],
+  .js [data-reveal-item],
+  .js [data-pop] { opacity: 1 !important; transform: none !important; }
   *,
   *::before,
   *::after {

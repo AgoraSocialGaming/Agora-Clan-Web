@@ -163,22 +163,20 @@
     });
 
     each(root, '[data-store-pending]', function (element) {
-      // En `unknown` no se afirma ni disponibilidad ni cierre: sin controles.
-      setHidden(element, state.live === true || state.phase === PHASE.UNKNOWN);
+      // Botones de tienda desactivados («Próximamente»): visibles mientras no
+      // haya enlaces publicados, incluso si la config no responde.
+      setHidden(element, state.live === true);
     });
 
     each(root, '[data-app-cta]', function (element) {
-      element.textContent = state.live
-        ? 'Descargar'
-        : state.founderOpen
-          ? 'Entrar antes'
-          : 'Ver disponibilidad';
+      element.textContent = state.founderOpen ? 'Entrar antes' : 'Descargar';
     });
 
     each(root, '[data-phase-status]', function (element) {
       if (state.phase === PHASE.UNKNOWN && state.error) {
+        // Mensaje neutro: sin afirmar apertura ni cierre, y sin parecer un fallo.
         element.textContent =
-          'No hemos podido comprobar el estado ahora mismo. Inténtalo de nuevo en unos minutos.';
+          'Ágora llega a iOS y Android. Los enlaces de descarga aparecerán aquí en cuanto la app esté publicada.';
       }
     });
 
@@ -241,10 +239,30 @@
       });
   }
 
-  function init(root, configUrl, fetchImpl) {
-    return loadConfig(configUrl, fetchImpl).then(function (state) {
-      return apply(root, state);
+  // Reintentos ante fallos puntuales de red o de la API: sin ellos la página
+  // se quedaba en el estado neutro aunque la config estuviera disponible.
+  var RETRY_DELAYS = [900, 2500];
+
+  function wait(ms) {
+    return new Promise(function (resolve) {
+      if (ms > 0 && typeof setTimeout === 'function') setTimeout(resolve, ms);
+      else resolve();
     });
+  }
+
+  function init(root, configUrl, fetchImpl, retryDelays) {
+    var delays = Array.isArray(retryDelays) ? retryDelays : RETRY_DELAYS;
+    function attempt(index) {
+      return loadConfig(configUrl, fetchImpl).then(function (state) {
+        if (state.error && index < delays.length) {
+          return wait(delays[index]).then(function () {
+            return attempt(index + 1);
+          });
+        }
+        return apply(root, state);
+      });
+    }
+    return attempt(0);
   }
 
   global.AgoraPhase = {

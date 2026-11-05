@@ -1,0 +1,169 @@
+---
+import { Image } from 'astro:assets';
+import { url } from '../../lib/url.js';
+import Icon from '../ui/Icon.astro';
+import Heading from '../ui/Heading.astro';
+import { LANZAMIENTO } from '../../data/juegos.js';
+
+import brawl from '../../assets/juegos/brawl-stars.jpg';
+import clash from '../../assets/juegos/clash-royale.png';
+import valorant from '../../assets/juegos/valorant.jpg';
+import lol from '../../assets/juegos/league-of-legends.jpg';
+
+const covers: Record<string, ImageMetadata> = {
+  'brawl-stars': brawl,
+  'clash-royale': clash,
+  valorant,
+  'league-of-legends': lol,
+};
+
+const batallas = [
+  {
+    icon: 'users',
+    t: 'Batallas con amigos',
+    d: 'Reta a quien quieras, de 1v1 a 5v5. Amistosas o con apuesta: lo decidís vosotros.',
+    rank: 'Ranking individual',
+    clan: false,
+  },
+  {
+    icon: 'bolt',
+    t: 'Batallas aleatorias',
+    d: 'Matchmaking contra un rival de tu nivel. Buscas partida y en segundos tienes enfrente a alguien.',
+    rank: 'Ranking individual',
+    clan: false,
+  },
+  {
+    icon: 'shield',
+    t: 'Batallas de clan',
+    d: 'Tu clan contra otro. Cada victoria sube a tu clan y, al cerrar la temporada, hay recompensa para cada miembro.',
+    rank: 'Ranking de clanes',
+    clan: true,
+  },
+];
+---
+
+<section id="torneos" class="u-shell scroll-mt-24 py-[var(--spacing-section)]">
+  <Heading
+    tag="Cómo se compite"
+    title='Elige tu <span class="t-neon">batalla</span>'
+    intro="Todo lo que juegas cuenta para la temporada: las batallas de clan suben a tu clan en su ranking; el resto, a ti en el tuyo."
+  />
+
+  <div class="mt-12 grid gap-4 lg:grid-cols-[1.1fr_1fr]">
+    <!-- Torneos oficiales: el modo estrella -->
+    <article
+      id="oficiales"
+      class="u-panel group relative scroll-mt-28 overflow-hidden p-6 sm:p-8"
+      style="--edge: rgb(245 196 81 / 0.65)"
+      data-reveal
+    >
+      <div
+        class="pointer-events-none absolute -right-20 -top-20 h-72 w-72 rounded-full bg-[radial-gradient(closest-side,rgb(245_196_81/0.22),transparent)] blur-2xl"
+        aria-hidden="true"
+      >
+      </div>
+      <div class="relative flex items-center justify-between gap-4">
+        <span class="rounded-full border border-gold/40 bg-gold/10 px-3 py-1 font-mono text-[0.6rem] uppercase tracking-[0.2em] text-gold">
+          Premios reales
+        </span>
+        <span class="grid h-11 w-11 place-items-center rounded-xl border border-gold/40 text-gold">
+          <Icon name="trophy" class="h-5 w-5" />
+        </span>
+      </div>
+      <h3 class="relative mt-6 font-display text-[1.5rem] font-black uppercase leading-tight sm:text-[1.9rem]">
+        Torneos <span class="t-gold">oficiales</span>
+      </h3>
+      <p class="relative mt-3 max-w-md text-[0.95rem] leading-relaxed text-muted">
+        Los organiza Ágora y son los que reparten los premios más grandes: premios reales para el
+        podio, anunciados antes de empezar. Brackets individuales o de clan, con arbitraje del equipo.
+      </p>
+
+      <p class="relative mt-7 font-mono text-[0.58rem] uppercase tracking-[0.18em] text-muted">Se juegan en</p>
+      <ul class="relative mt-3 flex flex-wrap gap-2">
+        {
+          LANZAMIENTO.map((g) => (
+            <li class="flex items-center gap-2 rounded-full border border-line bg-ink/70 py-1 pl-1 pr-3">
+              <Image src={covers[g.slug]} alt="" width={48} densities={[1, 2]} class="h-6 w-6 rounded-full object-cover" />
+              <span class="text-[0.76rem]">{g.name}</span>
+            </li>
+          ))
+        }
+      </ul>
+
+      <div class="relative mt-8 flex flex-wrap items-center gap-x-5 gap-y-3">
+        <a href={url('/torneos#oficiales')} class="u-btn u-btn--ghost !border-gold/40 hover:!border-gold hover:!text-gold" title="Torneos oficiales de Ágora con premios reales">
+          Cómo funcionan
+          <Icon name="arrow" class="h-4 w-4" />
+        </a>
+        <span class="font-mono text-[0.58rem] uppercase tracking-[0.16em] text-muted">Suma al ranking individual</span>
+      </div>
+    </article>
+
+    <!-- Batallas -->
+    <ul class="grid gap-4" data-reveal-group>
+      {
+        batallas.map((b) => (
+          <li class="vs u-card relative overflow-hidden p-5 sm:p-6" data-reveal-item>
+            <div class="flex items-start gap-4">
+              <span
+                class:list={[
+                  'grid h-11 w-11 shrink-0 place-items-center rounded-xl',
+                  b.clan ? 'bg-ladon/15 text-ladon' : 'bg-neon/10 text-neon',
+                ]}
+              >
+                <Icon name={b.icon} class="h-5 w-5" />
+              </span>
+              <div>
+                <h3 class="font-display text-[0.95rem] font-black uppercase">{b.t}</h3>
+                <p class="mt-1.5 text-[0.88rem] leading-relaxed text-muted">{b.d}</p>
+                <p class:list={['mt-3 font-mono text-[0.58rem] uppercase tracking-[0.16em]', b.clan ? 'text-ladon' : 'text-neon/80']}>
+                  Suma al {b.rank.toLowerCase()}
+                </p>
+              </div>
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+
+  <!-- Torneos personalizados -->
+  <div
+    id="personalizados"
+    class="mt-4 flex scroll-mt-28 flex-col gap-6 rounded-[22px] border border-neon/30 bg-neon/[0.04] p-6 sm:p-8 lg:flex-row lg:items-center lg:justify-between"
+    data-reveal
+  >
+    <div class="flex gap-4">
+      <span class="grid h-11 w-11 shrink-0 place-items-center rounded-xl border border-neon/40 text-neon">
+        <Icon name="bracket" class="h-5 w-5" />
+      </span>
+      <div>
+        <h3 class="font-display text-[1.05rem] font-black uppercase sm:text-[1.2rem]">Y tus propios torneos</h3>
+        <p class="mt-2 max-w-2xl text-[0.92rem] leading-relaxed text-muted">
+          Crea torneos para tu clan o tu comunidad, también en muchos más juegos que los oficiales. Tú
+          pones el formato, las plazas, las reglas y la entrada; Ágora genera el bracket y lo actualiza
+          con cada resultado.
+        </p>
+      </div>
+    </div>
+    <a href={url('/torneos#personalizados')} class="u-btn u-btn--ghost shrink-0" title="Cómo crear un torneo personalizado en Ágora">
+      Cómo crear un torneo
+      <Icon name="arrow" class="h-4 w-4" />
+    </a>
+  </div>
+</section>
+
+<style>
+  .vs::after {
+    content: 'VS';
+    position: absolute;
+    right: 1rem;
+    bottom: -0.5rem;
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: 3.4rem;
+    line-height: 1;
+    color: rgb(255 255 255 / 0.035);
+    pointer-events: none;
+  }
+</style>
