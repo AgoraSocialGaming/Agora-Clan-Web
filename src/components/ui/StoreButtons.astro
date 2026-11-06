@@ -44,7 +44,7 @@ const stores = [
           </span>
         </a>
         <span
-          data-store-pending
+          data-store-pending={s.key}
           aria-disabled="true"
           class:list={[
             'inline-flex cursor-not-allowed select-none items-center gap-3 rounded-xl border border-line bg-surface/50 opacity-80',

@@ -18,10 +18,17 @@ export const SITE = {
 
 // --- Estado de las tiendas --------------------------------------------------
 // Las URLs reales viven aquí, pero la web solo las expone cuando
-// GET /api/v1/config confirma `signup_enabled && !invite_required`. `live`
-// es el estado estático (sin afirmar disponibilidad) y no se toca a mano.
+// GET /api/v1/config confirma el acceso público normal (`signup_enabled &&
+// !invite_required`) Y el flag estricto de esa tienda (`ios_public_available`
+// / `android_public_available`). Son flags independientes: una plataforma
+// puede estar publicada y la otra pendiente.
+//
+// `APP.live` es el interruptor estático histórico y no se toca a mano. `stores`
+// solo alimenta los datos estructurados cuando alguien haya comprobado la ficha
+// pública real; los enlaces visibles siempre dependen de la config en runtime.
 export const APP = {
   live: false,
+  stores: { ios: false, android: false },
   ios: 'https://apps.apple.com/app/id6790832454',
   android: 'https://play.google.com/store/apps/details?id=com.agoraclan.app',
 };

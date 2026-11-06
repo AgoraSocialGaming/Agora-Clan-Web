@@ -117,8 +117,9 @@ const stores = [
                 <h2 class="u-h2 mt-6">
                   La arena <br /><span class="text-neon">está abierta</span>
                 </h2>
-                <p class="u-lead mt-4 max-w-md">
-                  Descarga Ágora gratis en App Store o Google Play y juega tu primer torneo hoy.
+                <p class="u-lead mt-4 max-w-md" data-store-status>
+                  El acceso ya está abierto. Los enlaces de descarga aparecerán aquí en cuanto las
+                  apps estén publicadas.
                 </p>
               </div>
 
@@ -306,17 +307,33 @@ const stores = [
                 <p class="mt-3 text-sm text-muted">Elige tu tienda. La descarga y el registro son gratis.</p>
                 <div class="mt-5 grid gap-2.5">
                   {stores.map((s) => (
-                    <a
-                      data-store-link={s.key}
-                      class="flex items-center gap-3 rounded-lg border border-line bg-surface/40 px-4 py-3 transition-colors hover:border-neon/50"
-                      title={`Descargar Ágora en ${s.store}`}
-                    >
-                      <BrandMark mark={s.mark} class="h-5 w-5" title={s.store} />
-                      <span class="text-left">
-                        <span class="block font-display text-[0.82rem] font-bold uppercase tracking-wide">{s.store}</span>
-                        <span class="block font-mono text-[0.55rem] uppercase tracking-[0.16em] text-muted">{s.sub}</span>
+                    <div>
+                      <a
+                        data-store-link={s.key}
+                        hidden
+                        target="_blank"
+                        rel="noopener"
+                        class="flex items-center gap-3 rounded-lg border border-line bg-surface/40 px-4 py-3 transition-colors hover:border-neon/50"
+                        title={`Descargar Ágora en ${s.store}`}
+                      >
+                        <BrandMark mark={s.mark} class="h-5 w-5" title={s.store} />
+                        <span class="text-left">
+                          <span class="block font-display text-[0.82rem] font-bold uppercase tracking-wide">{s.store}</span>
+                          <span class="block font-mono text-[0.55rem] uppercase tracking-[0.16em] text-muted">{s.sub}</span>
+                        </span>
+                      </a>
+                      <span
+                        data-store-pending={s.key}
+                        aria-disabled="true"
+                        class="flex cursor-not-allowed select-none items-center gap-3 rounded-lg border border-line bg-surface/40 px-4 py-3 opacity-80"
+                      >
+                        <BrandMark mark={s.mark} class="h-5 w-5 text-muted" title={s.store} />
+                        <span class="text-left">
+                          <span class="block font-display text-[0.82rem] font-bold uppercase tracking-wide text-bone/80">{s.store}</span>
+                          <span class="block font-mono text-[0.55rem] uppercase tracking-[0.16em] text-gold">Próximamente</span>
+                        </span>
                       </span>
-                    </a>
+                    </div>
                   ))}
                 </div>
                 <a href={url('/soporte')} class="mt-5 inline-flex text-[0.8rem] text-neon underline underline-offset-2" title="Soporte de Ágora">
