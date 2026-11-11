@@ -21,8 +21,10 @@
 
   // URLs de las tiendas. La fuente única es `APP` en src/data/site.js y se
   // inyecta con `configure` antes de `init`; mientras no lleguen, no se
-  // expone ningún enlace. La UI solo las usa cuando la config confirma `live`.
+  // expone ningún enlace. La UI solo las usa cuando la config confirma el
+  // acceso público normal y el flag estricto de esa tienda.
   var STORE_LINKS = { ios: '', android: '' };
+  var STORE_NAMES = { ios: 'App Store', android: 'Google Play' };
 
   function configure(options) {
     var links = options && options.storeLinks;
@@ -33,21 +35,86 @@
     return STORE_LINKS;
   }
 
+  function noStores() {
+    return { ios: false, android: false };
+  }
+
   function unknownState(error) {
     return {
       phase: PHASE.UNKNOWN,
+      // `live` se mantiene como alias de `registrationOpen`: describe el
+      // acceso público normal, NO la publicación en las tiendas. Los enlaces,
+      // botones y copias de tienda usan siempre `stores`.
       live: false,
+      registrationOpen: false,
       founderOpen: false,
       signupEnabled: false,
       inviteRequired: false,
+      stores: noStores(),
+      anyStore: false,
       known: false,
       error: error === true,
     };
   }
 
   /**
-   * Traduce la config pública a una fase. `live` gana a `preregister`: una vez
-   * abierto el acceso normal, la oferta de fundador deja de mostrarse.
+   * Una tienda solo está disponible con acceso público normal Y su flag
+   * `*_public_available` a `true` estricto. Ausente, `false`, texto o
+   * cualquier otro valor deja la tienda cerrada.
+   */
+  function storeAvailability(config, registrationOpen) {
+    return {
+      ios: registrationOpen === true && config.ios_public_available === true,
+      android: registrationOpen === true && config.android_public_available === true,
+    };
+  }
+
+  function anyStore(stores) {
+    return !!stores && (stores.ios === true || stores.android === true);
+  }
+
+  /** Un enlace solo se publica si la tienda está abierta y hay URL canónica. */
+  function storeReady(stores, platform) {
+    return !!stores && stores[platform] === true && !!STORE_LINKS[platform];
+  }
+
+  function readyStores(stores) {
+    return {
+      ios: storeReady(stores, 'ios'),
+      android: storeReady(stores, 'android'),
+    };
+  }
+
+  /** Copia de disponibilidad: solo nombra una tienda que esté realmente lista. */
+  function storeStatusText(stores) {
+    var ready = readyStores(stores);
+    var live = [];
+    var pending = [];
+    if (ready.ios) live.push(STORE_NAMES.ios);
+    else pending.push(STORE_NAMES.ios);
+    if (ready.android) live.push(STORE_NAMES.android);
+    else pending.push(STORE_NAMES.android);
+
+    if (live.length === 2) {
+      return 'El acceso ya está abierto: Ágora ya está en App Store y Google Play.';
+    }
+    if (live.length === 1) {
+      return (
+        'El acceso ya está abierto: Ágora ya está en ' +
+        live[0] +
+        '. ' +
+        pending[0] +
+        ' llegará pronto.'
+      );
+    }
+    return 'El acceso ya está abierto. Los enlaces de App Store y Google Play aparecerán aquí en cuanto las apps estén publicadas.';
+  }
+
+  /**
+   * Traduce la config pública a una fase de registro. `live` gana a
+   * `preregister`: una vez abierto el acceso normal, la oferta de fundador
+   * deja de mostrarse. La disponibilidad de cada tienda se resuelve aparte en
+   * `stores`, para que el acceso web pueda estar abierto sin publicar apps.
    * Cualquier valor ausente o inesperado falla cerrado.
    */
   function resolveConfig(config) {
@@ -63,21 +130,29 @@
 
     var signupEnabled = config.signup_enabled === true;
     var inviteRequired = config.invite_required === true;
-    var live = signupEnabled && !inviteRequired;
+    var registrationOpen = signupEnabled && !inviteRequired;
 
     // Sin el flag no se puede afirmar ni apertura ni cierre: estado neutral.
-    if (!live && typeof config.preregistration_open !== 'boolean') {
+    if (!registrationOpen && typeof config.preregistration_open !== 'boolean') {
       return unknownState(false);
     }
 
-    var founderOpen = !live && config.preregistration_open === true;
+    var founderOpen = !registrationOpen && config.preregistration_open === true;
+    var stores = storeAvailability(config, registrationOpen);
 
     return {
-      phase: live ? PHASE.LIVE : founderOpen ? PHASE.PREREGISTER : PHASE.UPCOMING,
-      live: live,
+      phase: registrationOpen
+        ? PHASE.LIVE
+        : founderOpen
+          ? PHASE.PREREGISTER
+          : PHASE.UPCOMING,
+      live: registrationOpen,
+      registrationOpen: registrationOpen,
       founderOpen: founderOpen,
       signupEnabled: signupEnabled,
       inviteRequired: inviteRequired,
+      stores: stores,
+      anyStore: anyStore(stores),
       known: true,
       error: false,
     };
@@ -141,9 +216,13 @@
   }
 
   /** Aplica una fase al DOM. Solo muestra la fase activa y nunca deja enlaces
-   * de tienda activos fuera de `live`. */
+   * de tienda activos fuera de `live` + flag estricto de esa tienda. */
   function apply(root, state) {
     if (!root || !state || !state.phase) return state;
+
+    var stores = state.stores || noStores();
+    var ready = readyStores(stores);
+    var hasReadyStore = ready.ios || ready.android;
 
     each(root, '[data-phase]', function (element) {
       setHidden(element, element.getAttribute('data-phase') !== state.phase);
@@ -151,7 +230,7 @@
 
     each(root, '[data-store-link]', function (element) {
       var store = element.getAttribute('data-store-link');
-      var href = state.live ? STORE_LINKS[store] : '';
+      var href = ready[store] === true ? STORE_LINKS[store] : '';
       if (href) {
         element.setAttribute('href', href);
         element.setAttribute('rel', 'noopener');
@@ -163,15 +242,26 @@
     });
 
     each(root, '[data-store-pending]', function (element) {
-      // Botones de tienda desactivados («Próximamente»): visibles mientras no
-      // haya enlaces publicados, incluso si la config no responde.
-      setHidden(element, state.live === true);
+      // Cada botón «Próximamente» está atado a su tienda: una plataforma puede
+      // estar publicada mientras la otra sigue pendiente. Sin clave (marcado
+      // antiguo) solo se oculta cuando hay al menos un enlace real.
+      var store = element.getAttribute('data-store-pending');
+      var available = store ? ready[store] === true : hasReadyStore;
+      setHidden(element, available === true);
     });
 
     each(root, '[data-app-cta]', function (element) {
-      // Mismo texto que el HTML estático hasta que la app esté publicada:
-      // así el botón no cambia de texto mientras se consulta la config.
-      element.textContent = state.live ? 'Descargar' : 'Entrar antes';
+      // «Descargar» solo si hay un enlace de tienda real; con el acceso abierto
+      // pero sin apps publicadas, el CTA no promete una descarga inexistente.
+      if (hasReadyStore) element.textContent = 'Descargar';
+      else if (state.registrationOpen === true) element.textContent = 'Entrar';
+      else element.textContent = 'Entrar antes';
+    });
+
+    each(root, '[data-store-status]', function (element) {
+      if (state.registrationOpen === true) {
+        element.textContent = storeStatusText(stores);
+      }
     });
 
     each(root, '[data-phase-status]', function (element) {
@@ -193,9 +283,12 @@
     var state = {
       phase: PHASE.UPCOMING,
       live: false,
+      registrationOpen: false,
       founderOpen: false,
       signupEnabled: false,
       inviteRequired: false,
+      stores: noStores(),
+      anyStore: false,
       known: true,
       error: false,
       closedByServer: true,
@@ -276,6 +369,7 @@
     submitOutcome: submitOutcome,
     apply: apply,
     applyClosed: applyClosed,
+    storeStatusText: storeStatusText,
     loadConfig: loadConfig,
     init: init,
   };
